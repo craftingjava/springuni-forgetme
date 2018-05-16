@@ -21,6 +21,13 @@ public class SubscriberRepositoryTest extends BaseRepositoryTest<Subscriber, Sub
     assertTrue(subscriber.getStatusChanges().stream().anyMatch(it -> it.getStatus().equals(UNSUBSCRIBED)));
   }
 
+  @Test
+  public void givenSavedSubscriber_whenFindByEmailHash_thenFound() {
+    saveEntity();
+    Optional<Subscriber> subscriberOptional = repository.findByEmailHash(entity.getEmailHash());
+    assertTrue(subscriberOptional.isPresent());
+  }
+
   @Override
   protected Subscriber createEntity() throws Exception {
     return new Subscriber("github@laszlocsontos.com");
