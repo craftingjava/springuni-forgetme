@@ -27,7 +27,10 @@ public class Subscriber extends AbstractEntity {
   private SubscriberStatus status;
 
   @ElementCollection
-  @CollectionTable(name = "subscriber_status_change", joinColumns = @JoinColumn(name = "subscriber_id"))
+  @CollectionTable(
+      name = "subscriber_status_change",
+      joinColumns = @JoinColumn(name = "subscriber_id")
+  )
   private List<SubscriberStatusChange> statusChanges = new ArrayList<>();
 
   public Subscriber(@NonNull String email) {
