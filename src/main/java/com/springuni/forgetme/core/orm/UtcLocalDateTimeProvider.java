@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
 @Component("utcLocalDateTimeProvider")
 public class UtcLocalDateTimeProvider implements DateTimeProvider {
 
-    @Override
-    public Optional<TemporalAccessor> getNow() {
-        return Optional.of(LocalDateTime.now(UTC));
-    }
+  @Override
+  public Optional<TemporalAccessor> getNow() {
+    return Optional.of(LocalDateTime.now(UTC));
+  }
 
 }
