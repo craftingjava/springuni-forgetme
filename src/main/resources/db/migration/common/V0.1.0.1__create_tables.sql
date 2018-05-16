@@ -14,3 +14,5 @@ CREATE TABLE subscriber_status_change (
   changed_date timestamp not NULL,
   CONSTRAINT subscriber_status_change_subscriber_id_fk FOREIGN KEY (subscriber_id) REFERENCES subscriber(id)
 );
+
+CREATE INDEX subscriber_status_change_subscriber_id_idx ON subscriber_status_change(subscriber_id);
