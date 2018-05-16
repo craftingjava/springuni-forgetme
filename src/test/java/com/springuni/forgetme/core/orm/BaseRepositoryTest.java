@@ -53,15 +53,6 @@ public abstract class BaseRepositoryTest<E extends AbstractEntity, R extends Bas
   }
 
   @Test
-  public void givenEntityWithAssignedId_whenSave_thenAssignedIdUsed() {
-    UUID id = getId();
-    entity.setId(id);
-    saveEntity();
-    assertEquals(id, entity.getId());
-    assertFalse(entity.isNew());
-  }
-
-  @Test
   public void givenEntityWithoutId_whenSave_thenIdGenerated() {
     entity.setId(null);
     saveEntity();
