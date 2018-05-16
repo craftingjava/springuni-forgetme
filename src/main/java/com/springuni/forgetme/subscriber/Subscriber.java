@@ -39,7 +39,7 @@ public class Subscriber extends AbstractEntity {
 
   public Subscriber(@NonNull String email, @NonNull SubscriberStatus status) {
     this.emailHash = Sha512DigestUtils.shaHex(email);
-    this.status = status;
+    setStatus(status);
   }
 
   public void setStatus(SubscriberStatus status) {
