@@ -3,7 +3,6 @@ package com.springuni.forgetme.datahandler;
 import com.springuni.forgetme.core.orm.AbstractEntity;
 import java.util.UUID;
 import javax.persistence.Entity;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

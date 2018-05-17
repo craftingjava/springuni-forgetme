@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import com.springuni.forgetme.core.orm.BaseRepositoryTest;
 import java.util.Optional;
-import java.util.UUID;
 import org.junit.Test;
 
 public class SubscriberRepositoryTest extends BaseRepositoryTest<Subscriber, SubscriberRepository> {
@@ -15,7 +14,8 @@ public class SubscriberRepositoryTest extends BaseRepositoryTest<Subscriber, Sub
     entity.setStatus(UNSUBSCRIBED);
     saveEntity();
     Subscriber subscriber = repository.findById(entity.getId()).get();
-    assertTrue(subscriber.getStatusChanges().stream().anyMatch(it -> it.getStatus().equals(UNSUBSCRIBED)));
+    assertTrue(
+        subscriber.getStatusChanges().stream().anyMatch(it -> it.getStatus().equals(UNSUBSCRIBED)));
   }
 
   @Test

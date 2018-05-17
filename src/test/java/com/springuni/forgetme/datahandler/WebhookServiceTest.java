@@ -41,7 +41,7 @@ public class WebhookServiceTest {
 
     try {
       webhookService.submitData(DATA_HANDLER_ID, DATA_HANDLER_KEY, EMPTY_MAP);
-      Assert.fail(EntityNotFoundException.class  + " expected.");
+      Assert.fail(EntityNotFoundException.class + " expected.");
     } catch (EntityNotFoundException e) {
       // This is what we expected
     }
@@ -56,7 +56,7 @@ public class WebhookServiceTest {
 
     try {
       webhookService.submitData(DATA_HANDLER_ID, UUID.randomUUID(), EMPTY_MAP);
-      Assert.fail(EntityNotFoundException.class  + " expected.");
+      Assert.fail(EntityNotFoundException.class + " expected.");
     } catch (EntityNotFoundException e) {
       // This is what we expected
     }

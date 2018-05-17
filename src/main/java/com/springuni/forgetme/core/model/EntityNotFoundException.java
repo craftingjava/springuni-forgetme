@@ -27,8 +27,8 @@ import lombok.Getter;
 @Getter
 public class EntityNotFoundException extends GeneralEntityException {
 
-    public EntityNotFoundException(String fieldName, Object fieldValue) {
-        super(fieldName, fieldValue);
-    }
+  public EntityNotFoundException(String fieldName, Object fieldValue) {
+    super(fieldName, fieldValue);
+  }
 
 }
