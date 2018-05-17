@@ -4,8 +4,10 @@ import com.springuni.forgetme.core.orm.AbstractEntity;
 import java.util.UUID;
 import javax.persistence.Entity;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @Entity
 @NoArgsConstructor
 public class DataHandler extends AbstractEntity {
@@ -16,6 +18,11 @@ public class DataHandler extends AbstractEntity {
   public DataHandler(String name) {
     this.name = name;
     resetKey();
+  }
+
+  public DataHandler(String name, UUID key) {
+    this.name = name;
+    this.key = key;
   }
 
   public UUID resetKey() {
