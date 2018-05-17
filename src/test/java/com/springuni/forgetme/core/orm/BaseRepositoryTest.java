@@ -25,6 +25,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 @Import(TestConfig.class)
 public abstract class BaseRepositoryTest<E extends AbstractEntity, R extends BaseRepository<E, UUID>> {
 
+  protected static final UUID ID = UUID.randomUUID();
+  protected static final UUID NON_EXISTENT_ID = UUID.randomUUID();
+
   @Autowired
   protected R repository;
 
@@ -73,9 +76,13 @@ public abstract class BaseRepositoryTest<E extends AbstractEntity, R extends Bas
 
   protected abstract E createEntity() throws Exception;
 
-  protected abstract UUID getId();
+  protected UUID getId() {
+    return ID;
+  }
 
-  protected abstract UUID getNonExistentId();
+  protected UUID getNonExistentId() {
+    return NON_EXISTENT_ID;
+  }
 
   protected void saveEntity() {
     entity = repository.save(entity);
