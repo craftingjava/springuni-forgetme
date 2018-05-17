@@ -7,6 +7,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class WebhookServiceImpl implements WebhookService {
@@ -26,6 +27,7 @@ public class WebhookServiceImpl implements WebhookService {
   }
 
   @Override
+  @Transactional
   public void submitData(UUID dataHandlerId, UUID key, Map<String, Object> data) {
     DataHandler dataHandler = dataHandlerRepository
         .findById(dataHandlerId)
