@@ -1,5 +1,7 @@
 package com.springuni.forgetme.datahandler;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 import java.util.Map;
 import java.util.UUID;
 import org.springframework.http.HttpEntity;
@@ -18,11 +20,16 @@ public class WebhookController {
     this.webhookService = webhookService;
   }
 
-  @PostMapping(path = "/api/datahandlers/{id}/webhook/{key}")
-  public HttpEntity webhook(
-      @PathVariable UUID id, @PathVariable UUID key, @RequestBody Map<String, Object> data) {
+  @PostMapping(
+      path = "/webhook/{dataHandlerId}/{dataHandlerKey}",
+      consumes = APPLICATION_JSON_VALUE
+  )
+  public HttpEntity submitData(
+      @PathVariable UUID dataHandlerId, @PathVariable UUID dataHandlerKey,
+      @RequestBody Map<String, Object> jsonData) {
 
-    webhookService.submitData(id, key, data);
+    webhookService.submitData(dataHandlerId, dataHandlerKey, jsonData);
+
     return ResponseEntity.accepted().build();
   }
 
