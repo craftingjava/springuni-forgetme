@@ -26,13 +26,13 @@ public class WebhookServiceTest {
   @Mock
   private DataHandlerRepository dataHandlerRepository;
   @Mock
-  private MessageChannel webhookInboundChannler;
+  private MessageChannel webhookOutboundChannel;
 
   private WebhookService webhookService;
 
   @Before
   public void setUp() throws Exception {
-    webhookService = new WebhookServiceImpl(dataHandlerRepository, webhookInboundChannler);
+    webhookService = new WebhookServiceImpl(dataHandlerRepository, webhookOutboundChannel);
   }
 
   @Test
@@ -46,7 +46,7 @@ public class WebhookServiceTest {
       // This is what we expected
     }
 
-    then(webhookInboundChannler).shouldHaveZeroInteractions();
+    then(webhookOutboundChannel).shouldHaveZeroInteractions();
   }
 
   @Test
@@ -61,7 +61,7 @@ public class WebhookServiceTest {
       // This is what we expected
     }
 
-    then(webhookInboundChannler).shouldHaveZeroInteractions();
+    then(webhookOutboundChannel).shouldHaveZeroInteractions();
   }
 
   @Test
@@ -71,7 +71,7 @@ public class WebhookServiceTest {
 
     webhookService.submitData(DATA_HANDLER_ID, DATA_HANDLER_KEY, EMPTY_MAP);
 
-    then(webhookInboundChannler).should().send(any(Message.class));
+    then(webhookOutboundChannel).should().send(any(Message.class));
   }
 
 }

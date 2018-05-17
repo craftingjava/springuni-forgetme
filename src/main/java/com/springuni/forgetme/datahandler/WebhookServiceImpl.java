@@ -16,14 +16,14 @@ public class WebhookServiceImpl implements WebhookService {
   static final String DATA_HANDLER_NAME = "_data_handler_name";
 
   private final DataHandlerRepository dataHandlerRepository;
-  private final MessageChannel webhookInboundChannler;
+  private final MessageChannel webhookOutboundChannel;
 
   public WebhookServiceImpl(
       DataHandlerRepository dataHandlerRepository,
-      MessageChannel webhookInboundChannler) {
+      MessageChannel webhookOutboundChannel) {
 
     this.dataHandlerRepository = dataHandlerRepository;
-    this.webhookInboundChannler = webhookInboundChannler;
+    this.webhookOutboundChannel = webhookOutboundChannel;
   }
 
   @Override
@@ -45,7 +45,7 @@ public class WebhookServiceImpl implements WebhookService {
         .setHeader(DATA_HANDLER_NAME, dataHandler.getName())
         .build();
 
-    webhookInboundChannler.send(message);
+    webhookOutboundChannel.send(message);
   }
 
 }
