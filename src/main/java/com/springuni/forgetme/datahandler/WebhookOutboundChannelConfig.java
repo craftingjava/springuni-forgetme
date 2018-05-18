@@ -2,7 +2,6 @@ package com.springuni.forgetme.datahandler;
 
 import static com.springuni.forgetme.core.amqp.QueueConfig.FORGETME_WEBHOOK_EXCHANGE_NAME;
 
-import com.springuni.forgetme.core.amqp.QueueConfig;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -4,8 +4,6 @@ import static com.springuni.forgetme.subscriber.SubscriberStatus.SUBSCRIBED;
 import static com.springuni.forgetme.subscriber.SubscriberStatus.UNSUBSCRIBED;
 import static org.junit.Assert.assertEquals;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 public class SubscriberTest {

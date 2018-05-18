@@ -3,8 +3,6 @@ package com.springuni.forgetme.subscriber;
 import static com.springuni.forgetme.core.amqp.QueueConfig.FORGETME_WEBHOOK_QUEUE_NAME;
 import static org.springframework.integration.json.ObjectToJsonTransformer.ResultType.NODE;
 
-import com.springuni.forgetme.core.amqp.QueueConfig;
-import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,9 +10,7 @@ import org.springframework.integration.amqp.dsl.Amqp;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
-import org.springframework.integration.dsl.Transformers;
 import org.springframework.integration.json.ObjectToJsonTransformer;
-import org.springframework.integration.json.ObjectToJsonTransformer.ResultType;
 import org.springframework.messaging.MessageChannel;
 
 @Configuration
@@ -29,7 +25,8 @@ public class SubscriberInboundChannelConfig {
   public IntegrationFlow subscriberInboundFlow(
       MessageChannel subscriberInboundChannel, ConnectionFactory connectionFactory) {
 
-    return IntegrationFlows.from(Amqp.inboundAdapter(connectionFactory, FORGETME_WEBHOOK_QUEUE_NAME))
+    return IntegrationFlows
+        .from(Amqp.inboundAdapter(connectionFactory, FORGETME_WEBHOOK_QUEUE_NAME))
         .transform(new ObjectToJsonTransformer(NODE))
         .transform(new SubscriberTransformer())
         .channel(subscriberInboundChannel)
