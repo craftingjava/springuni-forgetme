@@ -11,7 +11,7 @@ public class SubscriberRepositoryTest extends BaseRepositoryTest<Subscriber, Sub
 
   @Test
   public void givenSubscriberStatusChanged_whenFindById_thenChangePersisted() {
-    entity.setStatus(UNSUBSCRIBED);
+    entity.updateStatus(UNSUBSCRIBED);
     saveEntity();
     Subscriber subscriber = repository.findById(entity.getId()).get();
     assertTrue(

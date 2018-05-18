@@ -1,5 +1,8 @@
 package com.springuni.forgetme.datahandler;
 
+import static com.springuni.forgetme.core.amqp.QueueConfig.FORGETME_WEBHOOK_EXCHANGE_NAME;
+
+import com.springuni.forgetme.core.amqp.QueueConfig;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +27,7 @@ public class WebhookOutboundChannelConfig {
 
     return IntegrationFlows.from(webhookOutboundChannel)
         .transform(Transformers.toJson())
-        .handle(Amqp.outboundAdapter(amqpTemplate))
+        .handle(Amqp.outboundAdapter(amqpTemplate).exchangeName(FORGETME_WEBHOOK_EXCHANGE_NAME))
         .get();
   }
 

@@ -1,6 +1,7 @@
 package com.springuni.forgetme.subscriber;
 
 import static com.springuni.forgetme.subscriber.SubscriberStatus.SUBSCRIBED;
+import static java.util.Collections.unmodifiableList;
 import static javax.persistence.EnumType.STRING;
 
 import com.springuni.forgetme.core.orm.AbstractEntity;
@@ -39,12 +40,24 @@ public class Subscriber extends AbstractEntity {
 
   public Subscriber(@NonNull String email, @NonNull SubscriberStatus status) {
     this.emailHash = Sha512DigestUtils.shaHex(email);
-    setStatus(status);
+    updateStatus(status);
   }
 
-  public void setStatus(SubscriberStatus status) {
+  void setStatus(SubscriberStatus status) {
+    this.status = status;
+  }
+
+  public void updateStatus(SubscriberStatus status) {
+    if (status.equals(this.status)) {
+      return;
+    }
+
     this.status = status;
     statusChanges.add(new SubscriberStatusChange(status));
+  }
+
+  public List<SubscriberStatusChange> getStatusChanges() {
+    return unmodifiableList(statusChanges);
   }
 
 }
