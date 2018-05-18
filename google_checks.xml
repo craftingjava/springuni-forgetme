@@ -219,8 +219,8 @@
     </module>
 
     <module name="JavadocMethod">
-      <!-- https://stackoverflow.com/a/23868574 -->
       <property name="severity" value="ignore"/>
+      <property name="tokens" value=""/>
     </module>
 
     <module name="MethodName">

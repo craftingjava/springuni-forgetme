@@ -12,14 +12,16 @@ import org.springframework.context.annotation.Configuration;
 public class QueueConfig {
 
   public static final String FORGETME_WEBHOOK_EXCHANGE_NAME = "forgetme-webhook.exchange";
-  public static final String FORGETME_WEBHOOK_DEAD_LETTER_EXCHANGE_NAME = "forgetme-webhook.dead-letter.exchange";
+  public static final String FORGETME_WEBHOOK_DEAD_LETTER_EXCHANGE_NAME =
+      "forgetme-webhook.dead-letter.exchange";
 
   public static final String FORGETME_WEBHOOK_QUEUE_NAME = "forgetme-webhook.queue";
-  public static final String FORGETME_WEBHOOK_DEAD_LETTER_QUEUE_NAME = "forgetme-webhook.dead-letter.queue";
+  public static final String FORGETME_WEBHOOK_DEAD_LETTER_QUEUE_NAME =
+      "forgetme-webhook.dead-letter.queue";
 
   public static final String FORGETME_WEBHOOK_ROUTING_KEY_NAME = "forgetme-webhook";
 
-  /*** Exchanges ***/
+  /// Exchanges ///
 
   @Bean
   public DirectExchange forgetmeWebhookExchange() {
@@ -31,7 +33,7 @@ public class QueueConfig {
     return new DirectExchange(FORGETME_WEBHOOK_DEAD_LETTER_EXCHANGE_NAME);
   }
 
-  /*** Queues ***/
+  /// Queues ///
 
   @Bean
   public Queue forgetmeWebhookQueue() {
@@ -46,7 +48,7 @@ public class QueueConfig {
     return QueueBuilder.durable(FORGETME_WEBHOOK_DEAD_LETTER_QUEUE_NAME).build();
   }
 
-  /*** Bindings ***/
+  /// Bindings ///
 
   @Bean
   public Binding orderBinding(DirectExchange forgetmeWebhookExchange, Queue forgetmeWebhookQueue) {
