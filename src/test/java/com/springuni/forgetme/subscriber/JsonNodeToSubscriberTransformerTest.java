@@ -4,8 +4,8 @@ import static com.springuni.forgetme.Mocks.EMAIL;
 import static com.springuni.forgetme.Mocks.EMAIL_HASH;
 import static com.springuni.forgetme.subscriber.SubscriberStatus.SUBSCRIBED;
 import static com.springuni.forgetme.subscriber.SubscriberStatus.UNSUBSCRIBED;
-import static com.springuni.forgetme.subscriber.SubscriberTransformer.EVENT_TYPE_SUBSCRIBED;
-import static com.springuni.forgetme.subscriber.SubscriberTransformer.EVENT_TYPE_UNSUBSCRIBED;
+import static com.springuni.forgetme.subscriber.JsonNodeToSubscriberTransformer.EVENT_TYPE_SUBSCRIBED;
+import static com.springuni.forgetme.subscriber.JsonNodeToSubscriberTransformer.EVENT_TYPE_UNSUBSCRIBED;
 import static org.junit.Assert.assertEquals;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -18,10 +18,10 @@ import org.junit.Test;
 import org.springframework.integration.transformer.GenericTransformer;
 
 @Slf4j
-public class SubscriberTransformerTest {
+public class JsonNodeToSubscriberTransformerTest {
 
   private final GenericTransformer<JsonNode, List<Subscriber>> transformer =
-      new SubscriberTransformer();
+      new JsonNodeToSubscriberTransformer();
 
   private ObjectNode jsonNode;
 
