@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class QueueConfig {
 
+  /// WEBHOOK ///
+
   public static final String FORGETME_WEBHOOK_EXCHANGE_NAME = "forgetme-webhook.exchange";
   public static final String FORGETME_WEBHOOK_DEAD_LETTER_EXCHANGE_NAME =
       "forgetme-webhook.dead-letter.exchange";
@@ -66,6 +68,60 @@ public class QueueConfig {
         .bind(forgetmeWebhookDeadLetterQueue)
         .to(forgetmeWebhookDeadLetterExchange)
         .with(FORGETME_WEBHOOK_ROUTING_KEY_NAME);
+  }
+
+  /// DATA HANDLER ///
+
+  public static final String FORGETME_DATAHANDLER_EXCHANGE_NAME = "forgetme-datahandler.exchange";
+  public static final String FORGETME_DATAHANDLER_REQUEST_QUEUE_NAME = "forgetme-datahandler-request.queue";
+  public static final String FORGETME_DATAHANDLER_RESPONSE_QUEUE_NAME = "forgetme-datahandler-response.queue";
+
+  public static final String FORGETME_DATAHANDLER_REQUEST_ROUTING_KEY_NAME = "forgetme-datahandler-request";
+  public static final String FORGETME_DATAHANDLER_RESPONSE_ROUTING_KEY_NAME = "forgetme-datahandler-response";
+
+  /// Exchanges ///
+
+  @Bean
+  public DirectExchange forgetmeDatahandlerExchange() {
+    return new DirectExchange(FORGETME_DATAHANDLER_EXCHANGE_NAME);
+  }
+
+  /// Queues ///
+
+  @Bean
+  public Queue forgetmeDatahandlerRequestQueue() {
+    return QueueBuilder
+        .durable(FORGETME_DATAHANDLER_REQUEST_QUEUE_NAME)
+        .build();
+  }
+
+  @Bean
+  public Queue forgetmeDatahandlerResponseQueue() {
+    return QueueBuilder
+        .durable(FORGETME_DATAHANDLER_RESPONSE_QUEUE_NAME)
+        .build();
+  }
+
+  /// Bindings ///
+
+  @Bean
+  public Binding forgetmeDatahandlerRequestBinding(
+      DirectExchange forgetmeDatahandlerExchange, Queue forgetmeDatahandlerRequestQueue) {
+
+    return BindingBuilder
+        .bind(forgetmeDatahandlerRequestQueue)
+        .to(forgetmeDatahandlerExchange)
+        .with(FORGETME_DATAHANDLER_REQUEST_ROUTING_KEY_NAME);
+  }
+
+  @Bean
+  public Binding forgetmeDatahandlerResponseBinding(
+      DirectExchange forgetmeDatahandlerExchange, Queue forgetmeDatahandlerResponseQueue) {
+
+    return BindingBuilder
+        .bind(forgetmeDatahandlerResponseQueue)
+        .to(forgetmeDatahandlerExchange)
+        .with(FORGETME_DATAHANDLER_RESPONSE_ROUTING_KEY_NAME);
   }
 
 }
