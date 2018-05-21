@@ -13,14 +13,6 @@ public class ApplicationMessage<T> extends GenericMessage<T> {
     super(payload, createHeaders(messageType, dataHandlerName));
   }
 
-  public String getDataHandlerName() {
-    return (String) getHeaders().get(DATA_HANDLER_NAME);
-  }
-
-  public MessageType getMessageType() {
-    return (MessageType) getHeaders().get(TYPE);
-  }
-
   private static Map<String, Object> createHeaders(
       MessageType messageType, String dataHandlerName) {
 
@@ -28,6 +20,14 @@ public class ApplicationMessage<T> extends GenericMessage<T> {
     headers.put(TYPE, messageType);
     headers.put(DATA_HANDLER_NAME, dataHandlerName);
     return headers;
+  }
+
+  public String getDataHandlerName() {
+    return (String) getHeaders().get(DATA_HANDLER_NAME);
+  }
+
+  public MessageType getMessageType() {
+    return (MessageType) getHeaders().get(TYPE);
   }
 
 }

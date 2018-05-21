@@ -7,7 +7,6 @@ import com.springuni.forgetme.datahandler.DataHandler;
 import com.springuni.forgetme.subscriber.Subscriber;
 import com.springuni.forgetme.subscriber.Subscription;
 import org.springframework.security.core.token.Sha512DigestUtils;
-import org.springframework.web.bind.WebDataBinder;
 
 public class Mocks {
 

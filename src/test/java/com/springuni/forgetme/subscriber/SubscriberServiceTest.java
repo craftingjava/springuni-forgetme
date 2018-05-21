@@ -5,11 +5,9 @@ import static com.springuni.forgetme.Mocks.EMAIL;
 import static com.springuni.forgetme.Mocks.EMAIL_HASH;
 import static com.springuni.forgetme.Mocks.createDataHandler;
 import static com.springuni.forgetme.Mocks.createSubscriber;
-import static com.springuni.forgetme.Mocks.createWebhookData;
 import static com.springuni.forgetme.subscriber.SubscriberStatus.UNSUBSCRIBED;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
