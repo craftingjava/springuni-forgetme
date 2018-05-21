@@ -11,35 +11,39 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class QueueConfig {
 
-  /// WEBHOOK ///
-
   public static final String FORGETME_WEBHOOK_EXCHANGE_NAME = "forgetme-webhook.exchange";
+
   public static final String FORGETME_WEBHOOK_DEAD_LETTER_EXCHANGE_NAME =
       "forgetme-webhook.dead-letter.exchange";
 
   public static final String FORGETME_WEBHOOK_QUEUE_NAME = "forgetme-webhook.queue";
+
   public static final String FORGETME_WEBHOOK_DEAD_LETTER_QUEUE_NAME =
       "forgetme-webhook.dead-letter.queue";
 
   public static final String FORGETME_WEBHOOK_ROUTING_KEY_NAME = "forgetme-webhook";
 
-  /// Exchanges ///
-  public static final String FORGETME_DATAHANDLER_EXCHANGE_NAME = "forgetme-datahandler.exchange";
-  public static final String FORGETME_DATAHANDLER_REQUEST_QUEUE_NAME = "forgetme-datahandler-request.queue";
+  public static final String FORGETME_DATAHANDLER_EXCHANGE_NAME =
+      "forgetme-datahandler.exchange";
 
-  /// Queues ///
-  public static final String FORGETME_DATAHANDLER_RESPONSE_QUEUE_NAME = "forgetme-datahandler-response.queue";
-  public static final String FORGETME_DATAHANDLER_REQUEST_ROUTING_KEY_NAME = "forgetme-datahandler-request";
+  public static final String FORGETME_DATAHANDLER_REQUEST_QUEUE_NAME =
+      "forgetme-datahandler-request.queue";
 
-  /// Bindings ///
-  public static final String FORGETME_DATAHANDLER_RESPONSE_ROUTING_KEY_NAME = "forgetme-datahandler-response";
+  public static final String FORGETME_DATAHANDLER_RESPONSE_QUEUE_NAME =
+      "forgetme-datahandler-response.queue";
+
+  public static final String FORGETME_DATAHANDLER_REQUEST_ROUTING_KEY_NAME =
+      "forgetme-datahandler-request";
+
+  public static final String FORGETME_DATAHANDLER_RESPONSE_ROUTING_KEY_NAME =
+      "forgetme-datahandler-response";
+
+  /// WEBHOOK ///
 
   @Bean
   public DirectExchange forgetmeWebhookExchange() {
     return new DirectExchange(FORGETME_WEBHOOK_EXCHANGE_NAME);
   }
-
-  /// DATA HANDLER ///
 
   @Bean
   public DirectExchange forgetmeWebhookDeadLetterExchange() {
@@ -60,7 +64,9 @@ public class QueueConfig {
   }
 
   @Bean
-  public Binding orderBinding(DirectExchange forgetmeWebhookExchange, Queue forgetmeWebhookQueue) {
+  public Binding forgetmeWebhookBinding(
+      DirectExchange forgetmeWebhookExchange, Queue forgetmeWebhookQueue) {
+
     return BindingBuilder
         .bind(forgetmeWebhookQueue)
         .to(forgetmeWebhookExchange)
@@ -77,14 +83,12 @@ public class QueueConfig {
         .with(FORGETME_WEBHOOK_ROUTING_KEY_NAME);
   }
 
-  /// Exchanges ///
+  /// DATA HANDLER ///
 
   @Bean
   public DirectExchange forgetmeDatahandlerExchange() {
     return new DirectExchange(FORGETME_DATAHANDLER_EXCHANGE_NAME);
   }
-
-  /// Queues ///
 
   @Bean
   public Queue forgetmeDatahandlerRequestQueue() {
@@ -99,8 +103,6 @@ public class QueueConfig {
         .durable(FORGETME_DATAHANDLER_RESPONSE_QUEUE_NAME)
         .build();
   }
-
-  /// Bindings ///
 
   @Bean
   public Binding forgetmeDatahandlerRequestBinding(
