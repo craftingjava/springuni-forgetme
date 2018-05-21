@@ -1,10 +1,8 @@
 package com.springuni.forgetme.subscriber;
 
 import static com.springuni.forgetme.Mocks.createSubscriber;
-import static com.springuni.forgetme.subscriber.SubscriberStatus.UNSUBSCRIBED;
 import static org.junit.Assert.assertTrue;
 
-import com.springuni.forgetme.Mocks;
 import com.springuni.forgetme.core.orm.BaseRepositoryTest;
 import java.util.Optional;
 import org.junit.Test;

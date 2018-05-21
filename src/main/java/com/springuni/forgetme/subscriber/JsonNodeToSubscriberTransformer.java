@@ -10,7 +10,8 @@ import java.util.stream.StreamSupport;
 import org.springframework.integration.transformer.GenericTransformer;
 import org.springframework.util.Assert;
 
-public class JsonNodeToSubscriberTransformer implements GenericTransformer<JsonNode, List<Subscriber>> {
+public class JsonNodeToSubscriberTransformer implements
+    GenericTransformer<JsonNode, List<Subscriber>> {
 
   // https://developers.mailerlite.com/docs/webhooks#section-available-events
   static final String EVENT_TYPE_UNSUBSCRIBED = "subscriber.unsubscribe";

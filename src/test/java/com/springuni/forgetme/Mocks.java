@@ -1,7 +1,5 @@
 package com.springuni.forgetme;
 
-import static com.springuni.forgetme.subscriber.SubscriberStatus.SUBSCRIBED;
-
 import com.springuni.forgetme.datahandler.DataHandler;
 import com.springuni.forgetme.subscriber.Subscriber;
 import com.springuni.forgetme.subscriber.Subscription;

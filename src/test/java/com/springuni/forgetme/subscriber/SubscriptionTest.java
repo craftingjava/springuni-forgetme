@@ -5,7 +5,6 @@ import static com.springuni.forgetme.subscriber.SubscriberStatus.SUBSCRIBED;
 import static com.springuni.forgetme.subscriber.SubscriberStatus.UNSUBSCRIBED;
 import static org.junit.Assert.assertEquals;
 
-import com.springuni.forgetme.Mocks;
 import org.junit.Test;
 
 public class SubscriptionTest {

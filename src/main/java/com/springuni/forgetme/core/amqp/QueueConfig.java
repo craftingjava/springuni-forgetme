@@ -24,18 +24,27 @@ public class QueueConfig {
   public static final String FORGETME_WEBHOOK_ROUTING_KEY_NAME = "forgetme-webhook";
 
   /// Exchanges ///
+  public static final String FORGETME_DATAHANDLER_EXCHANGE_NAME = "forgetme-datahandler.exchange";
+  public static final String FORGETME_DATAHANDLER_REQUEST_QUEUE_NAME = "forgetme-datahandler-request.queue";
+
+  /// Queues ///
+  public static final String FORGETME_DATAHANDLER_RESPONSE_QUEUE_NAME = "forgetme-datahandler-response.queue";
+  public static final String FORGETME_DATAHANDLER_REQUEST_ROUTING_KEY_NAME = "forgetme-datahandler-request";
+
+  /// Bindings ///
+  public static final String FORGETME_DATAHANDLER_RESPONSE_ROUTING_KEY_NAME = "forgetme-datahandler-response";
 
   @Bean
   public DirectExchange forgetmeWebhookExchange() {
     return new DirectExchange(FORGETME_WEBHOOK_EXCHANGE_NAME);
   }
 
+  /// DATA HANDLER ///
+
   @Bean
   public DirectExchange forgetmeWebhookDeadLetterExchange() {
     return new DirectExchange(FORGETME_WEBHOOK_DEAD_LETTER_EXCHANGE_NAME);
   }
-
-  /// Queues ///
 
   @Bean
   public Queue forgetmeWebhookQueue() {
@@ -49,8 +58,6 @@ public class QueueConfig {
   public Queue forgetmeWebhookDeadLetterQueue() {
     return QueueBuilder.durable(FORGETME_WEBHOOK_DEAD_LETTER_QUEUE_NAME).build();
   }
-
-  /// Bindings ///
 
   @Bean
   public Binding orderBinding(DirectExchange forgetmeWebhookExchange, Queue forgetmeWebhookQueue) {
@@ -69,15 +76,6 @@ public class QueueConfig {
         .to(forgetmeWebhookDeadLetterExchange)
         .with(FORGETME_WEBHOOK_ROUTING_KEY_NAME);
   }
-
-  /// DATA HANDLER ///
-
-  public static final String FORGETME_DATAHANDLER_EXCHANGE_NAME = "forgetme-datahandler.exchange";
-  public static final String FORGETME_DATAHANDLER_REQUEST_QUEUE_NAME = "forgetme-datahandler-request.queue";
-  public static final String FORGETME_DATAHANDLER_RESPONSE_QUEUE_NAME = "forgetme-datahandler-response.queue";
-
-  public static final String FORGETME_DATAHANDLER_REQUEST_ROUTING_KEY_NAME = "forgetme-datahandler-request";
-  public static final String FORGETME_DATAHANDLER_RESPONSE_ROUTING_KEY_NAME = "forgetme-datahandler-response";
 
   /// Exchanges ///
 
