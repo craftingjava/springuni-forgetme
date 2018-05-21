@@ -53,9 +53,9 @@ public class MailerLiteChannelConfig {
     return IntegrationFlows
         .from(Amqp.inboundAdapter(connectionFactory, FORGETME_DATAHANDLER_REQUEST_QUEUE_NAME))
         .handle(Http.outboundGateway(
-            "https://api.mailerlite.com/api/v2/subscribers/{email}/forget",
+            "https://api.mailerlite.com/api/v2/subscribers/email/forget",
             mailerLiterRestTemplate
-        ).uriVariable("email", "test@laszlocsontos.com"))
+        ).uriVariable("email", message -> message.toString()))
         .handle(Amqp.outboundAdapter(amqpTemplate).exchangeName(FORGETME_DATAHANDLER_EXCHANGE_NAME)
             .routingKey(FORGETME_DATAHANDLER_RESPONSE_ROUTING_KEY_NAME))
         .get();
