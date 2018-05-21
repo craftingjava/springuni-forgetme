@@ -1,9 +1,8 @@
 package com.springuni.forgetme.subscriber;
 
 import static com.springuni.forgetme.Mocks.EMAIL;
-import static com.springuni.forgetme.Mocks.EMAIL_HASH;
-import static com.springuni.forgetme.subscriber.JsonNodeToSubscriberTransformer.EVENT_TYPE_SUBSCRIBED;
-import static com.springuni.forgetme.subscriber.JsonNodeToSubscriberTransformer.EVENT_TYPE_UNSUBSCRIBED;
+import static com.springuni.forgetme.subscriber.JsonNodeToWebhookDataList.EVENT_TYPE_SUBSCRIBED;
+import static com.springuni.forgetme.subscriber.JsonNodeToWebhookDataList.EVENT_TYPE_UNSUBSCRIBED;
 import static com.springuni.forgetme.subscriber.SubscriberStatus.SUBSCRIBED;
 import static com.springuni.forgetme.subscriber.SubscriberStatus.UNSUBSCRIBED;
 import static org.junit.Assert.assertEquals;
@@ -11,6 +10,7 @@ import static org.junit.Assert.assertEquals;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.springuni.forgetme.core.model.WebhookData;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
@@ -18,10 +18,10 @@ import org.junit.Test;
 import org.springframework.integration.transformer.GenericTransformer;
 
 @Slf4j
-public class JsonNodeToSubscriberTransformerTest {
+public class JsonNodeToWebhookDataListTest {
 
-  private final GenericTransformer<JsonNode, List<Subscriber>> transformer =
-      new JsonNodeToSubscriberTransformer();
+  private final GenericTransformer<JsonNode, List<WebhookData>> transformer =
+      new JsonNodeToWebhookDataList();
 
   private ObjectNode jsonNode;
 
@@ -32,17 +32,17 @@ public class JsonNodeToSubscriberTransformerTest {
 
   @Test
   public void givenUnsubscribedEvent_whenTransform_thenTransformedToSubscriber() {
-    testTransform(EMAIL_HASH, UNSUBSCRIBED, EMAIL, EVENT_TYPE_UNSUBSCRIBED);
+    testTransform(EMAIL, UNSUBSCRIBED, EMAIL, EVENT_TYPE_UNSUBSCRIBED);
   }
 
   @Test
   public void givenSubscribedEvent_whenTransform_thenTransformedToSubscriber() {
-    testTransform(EMAIL_HASH, SUBSCRIBED, EMAIL, EVENT_TYPE_SUBSCRIBED);
+    testTransform(EMAIL, SUBSCRIBED, EMAIL, EVENT_TYPE_SUBSCRIBED);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void givenUnknownEvent_whenTransform_thenTransformedToSubscriber() {
-    testTransform(EMAIL_HASH, SUBSCRIBED, EMAIL, "unknown.event");
+    testTransform(EMAIL, SUBSCRIBED, EMAIL, "unknown.event");
   }
 
   private void populateJsonNode(String eventType, String email) {
@@ -53,19 +53,18 @@ public class JsonNodeToSubscriberTransformerTest {
   }
 
   private void testTransform(
-      String expectEmailHash, SubscriberStatus expectedStatus, String email, String eventType) {
+      String expectEmail, SubscriberStatus expectedStatus, String email, String eventType) {
 
     populateJsonNode(eventType, email);
 
-    List<Subscriber> subscribers = transformer.transform(jsonNode);
+    List<WebhookData> webhookDataList = transformer.transform(jsonNode);
 
-    assertEquals(1, subscribers.size());
+    assertEquals(1, webhookDataList.size());
 
-    Subscriber subscriber = subscribers.get(0);
-    assertEquals(expectEmailHash, subscriber.getEmailHash());
+    WebhookData webhookData = webhookDataList.get(0);
+    assertEquals(expectEmail, webhookData.getSubscriberEmail());
 
-    // TODO: Fix this once message types have been introduced
-    // assertEquals(expectedStatus, subscriber.getStatus());
+    assertEquals(expectedStatus, webhookData.getSubscriberStatus());
   }
 
 }

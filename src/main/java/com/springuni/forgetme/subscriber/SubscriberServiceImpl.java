@@ -1,6 +1,9 @@
 package com.springuni.forgetme.subscriber;
 
 import com.springuni.forgetme.core.model.EntityNotFoundException;
+import com.springuni.forgetme.core.model.WebhookData;
+import com.springuni.forgetme.datahandler.DataHandler;
+import com.springuni.forgetme.datahandler.DataHandlerRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.integration.annotation.ServiceActivator;
@@ -12,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class SubscriberServiceImpl implements SubscriberService {
 
+  private final DataHandlerRepository dataHandlerRepository;
   private final SubscriberRepository subscriberRepository;
 
   @Override
@@ -25,14 +29,16 @@ public class SubscriberServiceImpl implements SubscriberService {
   @Override
   @Transactional
   @ServiceActivator(inputChannel = "subscriberInboundChannel")
-  public void updateSubscriber(@NonNull Subscriber newSubscriber) {
+  public void updateSubscription(@NonNull WebhookData webhookData) {
+    String dataHandlerName = webhookData.getDataHandlerName();
+    DataHandler dataHandler = dataHandlerRepository.findByName(dataHandlerName)
+        .orElseThrow(() -> new EntityNotFoundException("dataHandlerName", dataHandlerName));
+
+    Subscriber newSubscriber = new Subscriber(webhookData.getSubscriberEmail());
     Subscriber subscriber = subscriberRepository.findByEmailHash(newSubscriber.getEmailHash())
         .orElse(newSubscriber);
 
-    // TODO: Fix this once message types have been introduced
-    if (!subscriber.isNew()) {
-      // newSubscriber.updateStatus(newSubscriber.getStatus());
-    }
+    subscriber.updateSubscription(dataHandler, webhookData.getSubscriberStatus());
 
     subscriberRepository.save(subscriber);
   }

@@ -3,6 +3,7 @@ package com.springuni.forgetme.subscriber;
 import static java.util.Collections.unmodifiableList;
 
 import com.springuni.forgetme.core.orm.AbstractEntity;
+import com.springuni.forgetme.datahandler.DataHandler;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -33,6 +34,19 @@ public class Subscriber extends AbstractEntity {
 
   void setSubscriptions(List<Subscription> subscriptions) {
     this.subscriptions = subscriptions;
+  }
+
+  public void updateSubscription(DataHandler dataHandler, SubscriberStatus status) {
+    Subscription subscription = subscriptions.stream()
+        .filter(it -> dataHandler.equals(it.getDataHandler()))
+        .findFirst()
+        .orElseGet(() -> {
+          Subscription newSubscription = new Subscription(this, dataHandler);
+          subscriptions.add(newSubscription);
+          return newSubscription;
+        });
+
+    subscription.updateStatus(status);
   }
 
 }

@@ -31,7 +31,7 @@ public class SubscriberInboundChannelConfig {
     return IntegrationFlows
         .from(Amqp.inboundAdapter(connectionFactory, FORGETME_WEBHOOK_QUEUE_NAME))
         .transform(new ObjectToJsonNodeTransformer(objectMapper))
-        .transform(new JsonNodeToSubscriberTransformer())
+        .transform(new JsonNodeToWebhookDataList())
         .split()
         .channel(subscriberInboundChannel)
         .get();

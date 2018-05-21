@@ -13,6 +13,8 @@ public interface DataHandlerRepository extends BaseRepository<DataHandler, UUID>
   @RestResource
   Optional<DataHandler> findById(UUID id);
 
+  Optional<DataHandler> findByName(String name);
+
   @Override
   @RestResource
   DataHandler save(DataHandler dataHandler);
