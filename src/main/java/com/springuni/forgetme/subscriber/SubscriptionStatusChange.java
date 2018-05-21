@@ -12,14 +12,14 @@ import lombok.NoArgsConstructor;
 @Data
 @Embeddable
 @NoArgsConstructor
-public class SubscriberStatusChange {
+public class SubscriptionStatusChange {
 
   @Enumerated(STRING)
   private SubscriberStatus status;
 
   private LocalDateTime changedDate;
 
-  public SubscriberStatusChange(SubscriberStatus status) {
+  public SubscriptionStatusChange(SubscriberStatus status) {
     this.status = status;
     changedDate = LocalDateTime.now(UTC);
   }

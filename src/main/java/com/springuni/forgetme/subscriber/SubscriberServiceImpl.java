@@ -29,8 +29,9 @@ public class SubscriberServiceImpl implements SubscriberService {
     Subscriber subscriber = subscriberRepository.findByEmailHash(newSubscriber.getEmailHash())
         .orElse(newSubscriber);
 
+    // TODO: Fix this once message types have been introduced
     if (!subscriber.isNew()) {
-      newSubscriber.updateStatus(newSubscriber.getStatus());
+      // newSubscriber.updateStatus(newSubscriber.getStatus());
     }
 
     subscriberRepository.save(subscriber);

@@ -1,17 +1,13 @@
 package com.springuni.forgetme.subscriber;
 
-import static com.springuni.forgetme.subscriber.SubscriberStatus.SUBSCRIBED;
 import static java.util.Collections.unmodifiableList;
-import static javax.persistence.EnumType.STRING;
 
 import com.springuni.forgetme.core.orm.AbstractEntity;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CollectionTable;
-import javax.persistence.ElementCollection;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -24,40 +20,19 @@ public class Subscriber extends AbstractEntity {
 
   private String emailHash;
 
-  @Enumerated(STRING)
-  private SubscriberStatus status;
-
-  @ElementCollection
-  @CollectionTable(
-      name = "subscriber_status_change",
-      joinColumns = @JoinColumn(name = "subscriber_id")
-  )
-  private List<SubscriberStatusChange> statusChanges = new ArrayList<>();
+  @OneToMany(mappedBy = "subscriber", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Subscription> subscriptions = new ArrayList<>();
 
   public Subscriber(@NonNull String email) {
-    this(email, SUBSCRIBED);
-  }
-
-  public Subscriber(@NonNull String email, @NonNull SubscriberStatus status) {
     this.emailHash = Sha512DigestUtils.shaHex(email);
-    updateStatus(status);
   }
 
-  void setStatus(SubscriberStatus status) {
-    this.status = status;
+  public List<Subscription> getSubscriptions() {
+    return unmodifiableList(subscriptions);
   }
 
-  public void updateStatus(SubscriberStatus status) {
-    if (status.equals(this.status)) {
-      return;
-    }
-
-    this.status = status;
-    statusChanges.add(new SubscriberStatusChange(status));
-  }
-
-  public List<SubscriberStatusChange> getStatusChanges() {
-    return unmodifiableList(statusChanges);
+  void setSubscriptions(List<Subscription> subscriptions) {
+    this.subscriptions = subscriptions;
   }
 
 }

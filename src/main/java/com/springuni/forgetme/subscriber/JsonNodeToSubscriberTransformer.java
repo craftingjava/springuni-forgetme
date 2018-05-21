@@ -42,7 +42,8 @@ public class JsonNodeToSubscriberTransformer implements GenericTransformer<JsonN
     String email = event.path("data").path("subscriber").path("email").asText();
     Assert.hasText(email, "email address cannot be null or empty");
 
-    return new Subscriber(email, status);
+    // TODO: return a message object here
+    return null;
   }
 
 }
