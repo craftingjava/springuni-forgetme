@@ -5,9 +5,9 @@ import static java.util.Collections.unmodifiableList;
 import static javax.persistence.EnumType.STRING;
 
 import com.springuni.forgetme.core.orm.AbstractEntity;
-import com.springuni.forgetme.datahandler.DataHandler;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
@@ -28,9 +28,7 @@ public class Subscription extends AbstractEntity {
   @JoinColumn(name = "subscriber_id")
   private Subscriber subscriber;
 
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  @JoinColumn(name = "dataHandler_id")
-  private DataHandler dataHandler;
+  private UUID dataHandlerId;
 
   @Enumerated(STRING)
   private SubscriberStatus status;
@@ -42,15 +40,15 @@ public class Subscription extends AbstractEntity {
   )
   private List<SubscriptionStatusChange> statusChanges = new ArrayList<>();
 
-  public Subscription(Subscriber subscriber, DataHandler dataHandler) {
-    this(subscriber, dataHandler, SUBSCRIBED);
+  public Subscription(Subscriber subscriber, UUID dataHandlerId) {
+    this(subscriber, dataHandlerId, SUBSCRIBED);
   }
 
   public Subscription(
-      Subscriber subscriber, DataHandler dataHandler, SubscriberStatus status) {
+      Subscriber subscriber, UUID dataHandlerId, SubscriberStatus status) {
 
     this.subscriber = subscriber;
-    this.dataHandler = dataHandler;
+    this.dataHandlerId = dataHandlerId;
 
     updateStatus(status);
   }

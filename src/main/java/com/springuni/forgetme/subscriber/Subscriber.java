@@ -3,9 +3,9 @@ package com.springuni.forgetme.subscriber;
 import static java.util.Collections.unmodifiableList;
 
 import com.springuni.forgetme.core.orm.AbstractEntity;
-import com.springuni.forgetme.datahandler.DataHandler;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -36,17 +36,19 @@ public class Subscriber extends AbstractEntity {
     this.subscriptions = subscriptions;
   }
 
-  public void updateSubscription(DataHandler dataHandler, SubscriberStatus status) {
+  public void updateSubscription(UUID dataHandlerId, SubscriberStatus status) {
     Subscription subscription = subscriptions.stream()
-        .filter(it -> dataHandler.equals(it.getDataHandler()))
+        .filter(it -> dataHandlerId.equals(it.getDataHandlerId()))
         .findFirst()
-        .orElseGet(() -> {
-          Subscription newSubscription = new Subscription(this, dataHandler);
-          subscriptions.add(newSubscription);
-          return newSubscription;
-        });
+        .orElseGet(() -> createSubscription(dataHandlerId));
 
     subscription.updateStatus(status);
+  }
+
+  private Subscription createSubscription(UUID dataHandlerId) {
+    Subscription newSubscription = new Subscription(this, dataHandlerId);
+    subscriptions.add(newSubscription);
+    return newSubscription;
   }
 
 }

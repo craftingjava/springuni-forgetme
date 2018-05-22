@@ -5,29 +5,47 @@ import static com.springuni.forgetme.subscriber.SubscriberStatus.UNSUBSCRIBED;
 import static java.util.stream.Collectors.toList;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.springuni.forgetme.core.model.WebhookData;
-import java.util.List;
+import java.util.Collection;
 import java.util.stream.StreamSupport;
-import org.springframework.integration.transformer.GenericTransformer;
-import org.springframework.util.Assert;
+import org.springframework.integration.transformer.MessageTransformationException;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.util.StringUtils;
 
-public class JsonNodeToWebhookDataList implements
-    GenericTransformer<JsonNode, List<WebhookData>> {
+public class JsonNodeToWebhookDataList extends AbstractJsonNodeTransformer {
 
   // https://developers.mailerlite.com/docs/webhooks#section-available-events
   static final String EVENT_TYPE_UNSUBSCRIBED = "subscriber.unsubscribe";
   static final String EVENT_TYPE_SUBSCRIBED = "subscriber.create";
 
   @Override
-  public List<WebhookData> transform(JsonNode source) {
-    return StreamSupport.stream(source.path("events").spliterator(), false)
-        .map(this::transformEvent)
+  protected Collection<Message<JsonNode>> extractEvents(Message<JsonNode> message) {
+    JsonNode jsonNode = message.getPayload();
+    return StreamSupport.stream(jsonNode.path("events").spliterator(), false)
+        .map(it -> MessageBuilder.withPayload(it).copyHeaders(message.getHeaders()).build())
         .collect(toList());
   }
 
-  private WebhookData transformEvent(JsonNode event) {
-    String eventType = event.path("type").asText();
-    Assert.hasText(eventType, "eventType cannot be null or empty");
+  @Override
+  protected String extractSubscriberEmail(Message<JsonNode> message) {
+    JsonNode jsonNode = message.getPayload();
+
+    String email = jsonNode.path("data").path("subscriber").path("email").asText();
+    if (!StringUtils.hasText(email)) {
+      throw new MessageTransformationException(message, "missing email");
+    }
+
+    return email;
+  }
+
+  @Override
+  protected SubscriberStatus extractSubscriberStatus(Message<JsonNode> message) {
+    JsonNode jsonNode = message.getPayload();
+
+    String eventType = jsonNode.path("type").asText();
+    if (!StringUtils.hasText(eventType)) {
+      throw new MessageTransformationException(message, "missing event type");
+    }
 
     SubscriberStatus status;
     switch (eventType) {
@@ -38,13 +56,10 @@ public class JsonNodeToWebhookDataList implements
         status = SUBSCRIBED;
         break;
       default:
-        throw new IllegalArgumentException("Unknown event type: " + eventType);
+        throw new MessageTransformationException(message, "invalid event type: " + eventType);
     }
 
-    String email = event.path("data").path("subscriber").path("email").asText();
-    Assert.hasText(email, "email address cannot be null or empty");
-
-    return new WebhookData("mailerlite", email, status);
+    return status;
   }
 
 }

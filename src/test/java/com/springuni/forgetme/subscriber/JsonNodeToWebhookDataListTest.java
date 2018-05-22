@@ -11,19 +11,22 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.springuni.forgetme.core.model.WebhookData;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.integration.transformer.GenericTransformer;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 
 @Slf4j
 public class JsonNodeToWebhookDataListTest {
 
-  private final GenericTransformer<JsonNode, List<WebhookData>> transformer =
-      new JsonNodeToWebhookDataList();
+  private final JsonNodeToWebhookDataList transformer = new JsonNodeToWebhookDataList();
 
-  private ObjectNode jsonNode;
+  private JsonNode jsonNode;
 
   @Before
   public void setUp() throws Exception {
@@ -46,7 +49,7 @@ public class JsonNodeToWebhookDataListTest {
   }
 
   private void populateJsonNode(String eventType, String email) {
-    ObjectNode eventsObject = jsonNode.putArray("events").addObject();
+    ObjectNode eventsObject = ((ObjectNode) jsonNode).putArray("events").addObject();
 
     eventsObject.put("type", eventType);
     eventsObject.putObject("data").putObject("subscriber").put("email", email);
@@ -57,7 +60,8 @@ public class JsonNodeToWebhookDataListTest {
 
     populateJsonNode(eventType, email);
 
-    List<WebhookData> webhookDataList = transformer.transform(jsonNode);
+    Message<JsonNode> message = MessageBuilder.withPayload(jsonNode).build();
+    List<WebhookData> webhookDataList = new ArrayList<>(transformer.transform(message).getPayload());
 
     assertEquals(1, webhookDataList.size());
 

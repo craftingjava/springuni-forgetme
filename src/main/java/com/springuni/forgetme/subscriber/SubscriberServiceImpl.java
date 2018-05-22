@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class SubscriberServiceImpl implements SubscriberService {
 
-  private final DataHandlerRepository dataHandlerRepository;
   private final SubscriberRepository subscriberRepository;
 
   @Override
@@ -30,15 +29,11 @@ public class SubscriberServiceImpl implements SubscriberService {
   @Transactional
   @ServiceActivator(inputChannel = "subscriberInboundChannel")
   public void updateSubscription(@NonNull WebhookData webhookData) {
-    String dataHandlerName = webhookData.getDataHandlerName();
-    DataHandler dataHandler = dataHandlerRepository.findByName(dataHandlerName)
-        .orElseThrow(() -> new EntityNotFoundException("dataHandlerName", dataHandlerName));
-
     Subscriber newSubscriber = new Subscriber(webhookData.getSubscriberEmail());
     Subscriber subscriber = subscriberRepository.findByEmailHash(newSubscriber.getEmailHash())
         .orElse(newSubscriber);
 
-    subscriber.updateSubscription(dataHandler, webhookData.getSubscriberStatus());
+    subscriber.updateSubscription(webhookData.getDataHandlerId(), webhookData.getSubscriberStatus());
 
     subscriberRepository.save(subscriber);
   }
