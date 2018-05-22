@@ -11,5 +11,14 @@
 
   <artifactId>forgetme-datahandler-adapters</artifactId>
 
+  <packaging>pom</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.springuni</groupId>
+      <artifactId>forgetme-datahandler</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
 
 </project>

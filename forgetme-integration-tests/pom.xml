@@ -11,5 +11,6 @@
 
   <artifactId>forgetme-integration-tests</artifactId>
 
+  <packaging>jar</packaging>
 
 </project>

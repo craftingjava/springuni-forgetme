@@ -11,5 +11,19 @@
 
   <artifactId>forgetme-tests</artifactId>
 
+  <packaging>jar</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.springuni</groupId>
+      <artifactId>forgetme-core</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+    </dependency>
+  </dependencies>
 
 </project>

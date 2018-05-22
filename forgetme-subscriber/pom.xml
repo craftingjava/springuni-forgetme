@@ -11,5 +11,19 @@
 
   <artifactId>forgetme-subscriber</artifactId>
 
+  <packaging>jar</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.springuni</groupId>
+      <artifactId>forgetme-core</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.integration</groupId>
+      <artifactId>spring-integration-amqp</artifactId>
+    </dependency>
+  </dependencies>
 
 </project>
