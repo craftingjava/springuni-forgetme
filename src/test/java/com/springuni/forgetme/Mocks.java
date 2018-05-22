@@ -1,7 +1,7 @@
 package com.springuni.forgetme;
 
-import com.springuni.forgetme.subscriber.Subscriber;
-import com.springuni.forgetme.subscriber.Subscription;
+import com.springuni.forgetme.subscriber.model.Subscriber;
+import com.springuni.forgetme.subscriber.model.Subscription;
 import java.util.UUID;
 import org.springframework.security.core.token.Sha512DigestUtils;
 

@@ -1,6 +1,6 @@
 package com.springuni.forgetme.core.model;
 
-import com.springuni.forgetme.subscriber.SubscriberStatus;
+import com.springuni.forgetme.subscriber.model.SubscriberStatus;
 import java.util.UUID;
 import lombok.Value;
 
