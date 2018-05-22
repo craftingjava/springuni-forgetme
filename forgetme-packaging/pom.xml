@@ -38,4 +38,8 @@
     </dependency>
   </dependencies>
 
+  <build>
+    <finalName>springuni-forgetme-${project.version}</finalName>
+  </build>
+
 </project>
