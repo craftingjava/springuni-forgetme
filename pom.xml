@@ -6,7 +6,7 @@
 
   <groupId>com.springuni</groupId>
   <artifactId>springuni-forgetme</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.1.0-SNAPSHOT</version>
   <modules>
     <module>forgetme-core</module>
     <module>forgetme-subscriber</module>
