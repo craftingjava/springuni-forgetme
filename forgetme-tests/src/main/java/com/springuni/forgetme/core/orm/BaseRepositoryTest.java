@@ -4,6 +4,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import com.springuni.forgetme.core.orm.BaseRepositoryTest.TestConfig;
 import java.util.Optional;
 import java.util.UUID;
 import javax.persistence.EntityManager;
@@ -12,10 +13,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.auditing.DateTimeProvider;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @DataJpaTest
 @RunWith(SpringRunner.class)
+@Import(TestConfig.class)
 public abstract class BaseRepositoryTest<E extends AbstractEntity, R extends BaseRepository<E, UUID>> {
 
   protected static final UUID ID = UUID.randomUUID();
@@ -80,6 +86,17 @@ public abstract class BaseRepositoryTest<E extends AbstractEntity, R extends Bas
   protected void saveEntity() {
     entity = repository.save(entity);
     entityManager.flush();
+  }
+
+  @TestConfiguration
+  @Import(JpaConfig.class)
+  static class TestConfig {
+
+    @Bean
+    DateTimeProvider utcLocalDateTimeProvider() {
+      return new UtcLocalDateTimeProvider();
+    }
+
   }
 
 }
