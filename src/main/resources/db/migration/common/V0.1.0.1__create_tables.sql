@@ -28,7 +28,7 @@ CREATE TABLE subscription (
   CONSTRAINT subscription_pk PRIMARY KEY (id),
   CONSTRAINT subscription_uk UNIQUE (data_handler_id, subscriber_id),
   CONSTRAINT subscription_data_handler_id_fk FOREIGN KEY (data_handler_id) REFERENCES data_handler(id),
-  CONSTRAINT subscription_subscriber_id_fk FOREIGN KEY (subscriber_id) REFERENCES subscriber(id),
+  CONSTRAINT subscription_subscriber_id_fk FOREIGN KEY (subscriber_id) REFERENCES subscriber(id)
 );
 
 CREATE TABLE subscription_status_change (
