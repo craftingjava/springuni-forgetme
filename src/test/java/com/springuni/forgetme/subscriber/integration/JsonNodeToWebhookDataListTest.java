@@ -13,7 +13,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.springuni.forgetme.core.model.WebhookData;
-import com.springuni.forgetme.subscriber.integration.JsonNodeToWebhookDataList;
 import com.springuni.forgetme.subscriber.model.SubscriberStatus;
 import java.util.ArrayList;
 import java.util.List;

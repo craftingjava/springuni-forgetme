@@ -9,8 +9,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.springuni.forgetme.core.model.EntityNotFoundException;
-import com.springuni.forgetme.datahandler.web.WebhookControllerTest.TestConfig;
 import com.springuni.forgetme.datahandler.service.WebhookService;
+import com.springuni.forgetme.datahandler.web.WebhookControllerTest.TestConfig;
 import java.util.UUID;
 import org.junit.After;
 import org.junit.Before;

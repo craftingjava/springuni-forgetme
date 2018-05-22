@@ -8,8 +8,6 @@ import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
 
 import com.springuni.forgetme.Mocks;
-import com.springuni.forgetme.subscriber.model.Subscriber;
-import com.springuni.forgetme.subscriber.model.Subscription;
 import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;

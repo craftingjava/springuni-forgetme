@@ -1,6 +1,7 @@
 package com.springuni.forgetme.core.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;

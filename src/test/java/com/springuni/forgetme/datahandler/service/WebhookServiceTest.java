@@ -7,9 +7,6 @@ import static org.mockito.BDDMockito.then;
 
 import com.springuni.forgetme.core.model.EntityNotFoundException;
 import com.springuni.forgetme.datahandler.model.DataHandler;
-import com.springuni.forgetme.datahandler.service.DataHandlerRepository;
-import com.springuni.forgetme.datahandler.service.WebhookService;
-import com.springuni.forgetme.datahandler.service.WebhookServiceImpl;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.Assert;

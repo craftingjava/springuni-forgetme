@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 
 import com.springuni.forgetme.core.orm.BaseRepositoryTest;
 import com.springuni.forgetme.subscriber.model.Subscription;
-import com.springuni.forgetme.subscriber.service.SubscriptionRepository;
 import org.junit.Test;
 
 public class SubscriptionRepositoryTest

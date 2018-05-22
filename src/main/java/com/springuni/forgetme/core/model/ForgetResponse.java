@@ -3,8 +3,6 @@ package com.springuni.forgetme.core.model;
 import java.beans.ConstructorProperties;
 import java.util.UUID;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Value;
 
 @Data
 public class ForgetResponse {

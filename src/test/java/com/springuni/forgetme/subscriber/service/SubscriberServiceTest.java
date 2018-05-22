@@ -16,8 +16,6 @@ import com.springuni.forgetme.core.model.WebhookData;
 import com.springuni.forgetme.subscriber.model.Subscriber;
 import com.springuni.forgetme.subscriber.model.SubscriberStatus;
 import com.springuni.forgetme.subscriber.model.Subscription;
-import com.springuni.forgetme.subscriber.service.SubscriberRepository;
-import com.springuni.forgetme.subscriber.service.SubscriberServiceImpl;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.Before;
