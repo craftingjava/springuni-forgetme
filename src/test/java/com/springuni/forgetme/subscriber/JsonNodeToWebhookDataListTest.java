@@ -13,11 +13,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.springuni.forgetme.core.model.WebhookData;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.integration.transformer.GenericTransformer;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 
@@ -61,7 +59,8 @@ public class JsonNodeToWebhookDataListTest {
     populateJsonNode(eventType, email);
 
     Message<JsonNode> message = MessageBuilder.withPayload(jsonNode).build();
-    List<WebhookData> webhookDataList = new ArrayList<>(transformer.transform(message).getPayload());
+    List<WebhookData> webhookDataList = new ArrayList<>(
+        transformer.transform(message).getPayload());
 
     assertEquals(1, webhookDataList.size());
 

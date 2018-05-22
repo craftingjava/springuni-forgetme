@@ -2,8 +2,6 @@ package com.springuni.forgetme.subscriber;
 
 import com.springuni.forgetme.core.model.EntityNotFoundException;
 import com.springuni.forgetme.core.model.WebhookData;
-import com.springuni.forgetme.datahandler.DataHandler;
-import com.springuni.forgetme.datahandler.DataHandlerRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.integration.annotation.ServiceActivator;
@@ -33,7 +31,8 @@ public class SubscriberServiceImpl implements SubscriberService {
     Subscriber subscriber = subscriberRepository.findByEmailHash(newSubscriber.getEmailHash())
         .orElse(newSubscriber);
 
-    subscriber.updateSubscription(webhookData.getDataHandlerId(), webhookData.getSubscriberStatus());
+    subscriber
+        .updateSubscription(webhookData.getDataHandlerId(), webhookData.getSubscriberStatus());
 
     subscriberRepository.save(subscriber);
   }
