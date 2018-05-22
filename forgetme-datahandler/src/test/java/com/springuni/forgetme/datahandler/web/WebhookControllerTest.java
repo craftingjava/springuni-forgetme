@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.springuni.forgetme.core.model.EntityNotFoundException;
+import com.springuni.forgetme.core.web.RestErrorHandler;
 import com.springuni.forgetme.datahandler.service.WebhookService;
 import com.springuni.forgetme.datahandler.web.WebhookControllerTest.TestConfig;
 import java.util.UUID;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -91,6 +93,11 @@ public class WebhookControllerTest {
 
   @TestConfiguration
   public static class TestConfig {
+
+    @Bean
+    RestErrorHandler restErrorHandler() {
+      return new RestErrorHandler();
+    }
 
   }
 
