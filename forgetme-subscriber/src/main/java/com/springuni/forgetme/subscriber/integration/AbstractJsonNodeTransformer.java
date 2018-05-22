@@ -5,7 +5,7 @@ import static java.util.stream.Collectors.toList;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.springuni.forgetme.core.model.WebhookData;
-import com.springuni.forgetme.subscriber.model.SubscriberStatus;
+import com.springuni.forgetme.core.model.SubscriberStatus;
 import java.util.Collection;
 import java.util.UUID;
 import org.springframework.integration.transformer.GenericTransformer;

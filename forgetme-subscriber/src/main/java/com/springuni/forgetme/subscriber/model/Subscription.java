@@ -1,9 +1,10 @@
 package com.springuni.forgetme.subscriber.model;
 
-import static com.springuni.forgetme.subscriber.model.SubscriberStatus.SUBSCRIBED;
+import static com.springuni.forgetme.core.model.SubscriberStatus.SUBSCRIBED;
 import static java.util.Collections.unmodifiableList;
 import static javax.persistence.EnumType.STRING;
 
+import com.springuni.forgetme.core.model.SubscriberStatus;
 import com.springuni.forgetme.core.orm.AbstractEntity;
 import java.util.ArrayList;
 import java.util.List;

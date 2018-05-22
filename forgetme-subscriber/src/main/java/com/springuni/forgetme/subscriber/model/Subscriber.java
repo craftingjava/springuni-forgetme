@@ -2,6 +2,7 @@ package com.springuni.forgetme.subscriber.model;
 
 import static java.util.Collections.unmodifiableList;
 
+import com.springuni.forgetme.core.model.SubscriberStatus;
 import com.springuni.forgetme.core.orm.AbstractEntity;
 import java.util.ArrayList;
 import java.util.List;

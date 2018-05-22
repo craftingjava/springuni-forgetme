@@ -3,6 +3,7 @@ package com.springuni.forgetme.subscriber.model;
 import static java.time.ZoneOffset.UTC;
 import static javax.persistence.EnumType.STRING;
 
+import com.springuni.forgetme.core.model.SubscriberStatus;
 import java.time.LocalDateTime;
 import javax.persistence.Embeddable;
 import javax.persistence.Enumerated;

@@ -5,15 +5,15 @@ import static com.springuni.forgetme.Mocks.EMAIL;
 import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_ID;
 import static com.springuni.forgetme.subscriber.integration.JsonNodeToWebhookDataList.EVENT_TYPE_SUBSCRIBED;
 import static com.springuni.forgetme.subscriber.integration.JsonNodeToWebhookDataList.EVENT_TYPE_UNSUBSCRIBED;
-import static com.springuni.forgetme.subscriber.model.SubscriberStatus.SUBSCRIBED;
-import static com.springuni.forgetme.subscriber.model.SubscriberStatus.UNSUBSCRIBED;
+import static com.springuni.forgetme.core.model.SubscriberStatus.SUBSCRIBED;
+import static com.springuni.forgetme.core.model.SubscriberStatus.UNSUBSCRIBED;
 import static org.junit.Assert.assertEquals;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.springuni.forgetme.core.model.WebhookData;
-import com.springuni.forgetme.subscriber.model.SubscriberStatus;
+import com.springuni.forgetme.core.model.SubscriberStatus;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;

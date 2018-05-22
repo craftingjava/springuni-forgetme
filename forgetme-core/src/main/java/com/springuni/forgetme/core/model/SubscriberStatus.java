@@ -1,4 +1,4 @@
-package com.springuni.forgetme.subscriber.model;
+package com.springuni.forgetme.core.model;
 
 public enum SubscriberStatus {
   SUBSCRIBED, UNSUBSCRIBED, FORGOTTEN, FORGET_PENDING;
