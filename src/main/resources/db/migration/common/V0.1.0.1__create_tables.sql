@@ -4,7 +4,8 @@ CREATE TABLE subscriber (
   created_date timestamp not NULL,
   last_modified_date timestamp not NULL,
   version_ integer not null,
-  CONSTRAINT subscriber_pk PRIMARY KEY (id)
+  CONSTRAINT subscriber_pk PRIMARY KEY (id),
+  CONSTRAINT subscriber_uk UNIQUE (email_hash)
 );
 
 CREATE TABLE data_handler (
@@ -14,7 +15,8 @@ CREATE TABLE data_handler (
   created_date timestamp not NULL,
   last_modified_date timestamp not NULL,
   version_ integer not null,
-  CONSTRAINT data_handler_pk PRIMARY KEY (id)
+  CONSTRAINT data_handler_pk PRIMARY KEY (id),
+  CONSTRAINT data_handler_uk UNIQUE (name)
 );
 
 CREATE TABLE subscription (
@@ -30,6 +32,8 @@ CREATE TABLE subscription (
   CONSTRAINT subscription_data_handler_id_fk FOREIGN KEY (data_handler_id) REFERENCES data_handler(id),
   CONSTRAINT subscription_subscriber_id_fk FOREIGN KEY (subscriber_id) REFERENCES subscriber(id)
 );
+
+CREATE INDEX subscription_subscriber_id_idx ON subscription(subscriber_id);
 
 CREATE TABLE subscription_status_change (
   subscription_id uuid NOT NULL,
