@@ -7,7 +7,17 @@
   <groupId>com.springuni</groupId>
   <artifactId>springuni-forgetme</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
+  <modules>
+    <module>forgetme-core</module>
+    <module>forgetme-subscriber</module>
+    <module>forgetme-datahandler</module>
+    <module>forgetme-datahandler-adapters</module>
+    <module>forgetme-tests</module>
+    <module>forgetme-integration-tests</module>
+    <module>forgetme-web</module>
+    <module>forgetme-packaging</module>
+  </modules>
+  <packaging>pom</packaging>
 
   <name>springuni-forgetme</name>
   <description>SpringUni Forget Me app</description>
