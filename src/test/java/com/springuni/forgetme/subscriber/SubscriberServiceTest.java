@@ -57,7 +57,8 @@ public class SubscriberServiceTest {
   public void givenKnownEmail_whenUpdateSubscription_thenSubscriptionUpdated() {
     given(subscriberRepository.findByEmailHash(EMAIL_HASH)).willReturn(Optional.of(subscriber));
 
-    subscriberService.updateSubscription(WebhookData.of(DATA_HANDLER_ID_VALUE, EMAIL, UNSUBSCRIBED));
+    subscriberService
+        .updateSubscription(WebhookData.of(DATA_HANDLER_ID_VALUE, EMAIL, UNSUBSCRIBED));
 
     assertSubscriptionStatus(UNSUBSCRIBED, DATA_HANDLER_ID_VALUE);
   }

@@ -1,12 +1,9 @@
 package com.springuni.forgetme.subscriber;
 
 import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_ID;
-import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_NAME;
 import static java.util.stream.Collectors.toList;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.springuni.forgetme.core.model.ApplicationMessage;
-import com.springuni.forgetme.core.model.MessageHeaderNames;
 import com.springuni.forgetme.core.model.WebhookData;
 import java.util.Collection;
 import java.util.UUID;
