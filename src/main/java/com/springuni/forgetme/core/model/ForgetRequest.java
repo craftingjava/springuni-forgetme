@@ -1,12 +1,19 @@
 package com.springuni.forgetme.core.model;
 
+import java.beans.ConstructorProperties;
 import java.util.UUID;
-import lombok.Value;
+import lombok.Data;
 
-@Value
+@Data
 public class ForgetRequest {
 
-  private UUID subscriptionId;
-  private String subscriberEmail;
+  private final UUID subscriptionId;
+  private final String subscriberEmail;
+
+  @ConstructorProperties({"subscriptionId", "subscriberEmail"})
+  public ForgetRequest(UUID subscriptionId, String subscriberEmail) {
+    this.subscriptionId = subscriptionId;
+    this.subscriberEmail = subscriberEmail;
+  }
 
 }
