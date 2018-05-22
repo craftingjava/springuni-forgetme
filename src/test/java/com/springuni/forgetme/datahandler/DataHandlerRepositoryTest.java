@@ -7,7 +7,7 @@ public class DataHandlerRepositoryTest
 
   @Override
   protected DataHandler createEntity() throws Exception {
-    return new DataHandler("mailerlite");
+    return new DataHandler("test");
   }
 
 }
