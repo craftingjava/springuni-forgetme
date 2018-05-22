@@ -24,11 +24,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Subscription extends AbstractEntity {
 
+  private UUID dataHandlerId;
+
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "subscriber_id")
   private Subscriber subscriber;
-
-  private UUID dataHandlerId;
 
   @Enumerated(STRING)
   private SubscriberStatus status;
@@ -40,12 +40,12 @@ public class Subscription extends AbstractEntity {
   )
   private List<SubscriptionStatusChange> statusChanges = new ArrayList<>();
 
-  public Subscription(Subscriber subscriber, UUID dataHandlerId) {
-    this(subscriber, dataHandlerId, SUBSCRIBED);
+  public Subscription(UUID dataHandlerId, Subscriber subscriber) {
+    this(dataHandlerId, subscriber, SUBSCRIBED);
   }
 
   public Subscription(
-      Subscriber subscriber, UUID dataHandlerId, SubscriberStatus status) {
+      UUID dataHandlerId, Subscriber subscriber, SubscriberStatus status) {
 
     this.subscriber = subscriber;
     this.dataHandlerId = dataHandlerId;

@@ -1,6 +1,8 @@
 package com.springuni.forgetme.subscriber;
 
+import static com.springuni.forgetme.Mocks.DATA_HANDLER_ID_VALUE;
 import static com.springuni.forgetme.Mocks.EMAIL;
+import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_ID;
 import static com.springuni.forgetme.subscriber.JsonNodeToWebhookDataList.EVENT_TYPE_SUBSCRIBED;
 import static com.springuni.forgetme.subscriber.JsonNodeToWebhookDataList.EVENT_TYPE_UNSUBSCRIBED;
 import static com.springuni.forgetme.subscriber.SubscriberStatus.SUBSCRIBED;
@@ -10,12 +12,14 @@ import static org.junit.Assert.assertEquals;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.springuni.forgetme.core.model.MessageHeaderNames;
 import com.springuni.forgetme.core.model.WebhookData;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.integration.transformer.MessageTransformationException;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 
@@ -41,7 +45,7 @@ public class JsonNodeToWebhookDataListTest {
     testTransform(EMAIL, SUBSCRIBED, EMAIL, EVENT_TYPE_SUBSCRIBED);
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test(expected = MessageTransformationException.class)
   public void givenUnknownEvent_whenTransform_thenTransformedToSubscriber() {
     testTransform(EMAIL, SUBSCRIBED, EMAIL, "unknown.event");
   }
@@ -58,7 +62,10 @@ public class JsonNodeToWebhookDataListTest {
 
     populateJsonNode(eventType, email);
 
-    Message<JsonNode> message = MessageBuilder.withPayload(jsonNode).build();
+    Message<JsonNode> message = MessageBuilder.withPayload(jsonNode)
+        .setHeader(DATA_HANDLER_ID, DATA_HANDLER_ID_VALUE)
+        .build();
+
     List<WebhookData> webhookDataList = new ArrayList<>(
         transformer.transform(message).getPayload());
 

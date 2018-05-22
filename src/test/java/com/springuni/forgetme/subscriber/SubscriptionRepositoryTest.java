@@ -5,6 +5,7 @@ import static com.springuni.forgetme.subscriber.SubscriberStatus.UNSUBSCRIBED;
 import static org.junit.Assert.assertTrue;
 
 import com.springuni.forgetme.core.orm.BaseRepositoryTest;
+import com.springuni.forgetme.datahandler.DataHandler;
 import org.junit.Test;
 
 public class SubscriptionRepositoryTest
@@ -20,7 +21,7 @@ public class SubscriptionRepositoryTest
   }
 
   @Override
-  protected Subscription createEntity() throws Exception {
+  protected Subscription createEntity() {
     return createSubscription();
   }
 

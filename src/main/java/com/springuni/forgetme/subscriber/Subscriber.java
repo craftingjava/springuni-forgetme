@@ -46,7 +46,7 @@ public class Subscriber extends AbstractEntity {
   }
 
   private Subscription createSubscription(UUID dataHandlerId) {
-    Subscription newSubscription = new Subscription(this, dataHandlerId);
+    Subscription newSubscription = new Subscription(dataHandlerId, this);
     subscriptions.add(newSubscription);
     return newSubscription;
   }

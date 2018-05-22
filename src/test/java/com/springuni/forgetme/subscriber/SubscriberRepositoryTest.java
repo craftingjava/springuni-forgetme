@@ -17,7 +17,7 @@ public class SubscriberRepositoryTest extends BaseRepositoryTest<Subscriber, Sub
   }
 
   @Override
-  protected Subscriber createEntity() throws Exception {
+  protected Subscriber createEntity() {
     return createSubscriber();
   }
 

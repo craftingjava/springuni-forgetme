@@ -1,5 +1,8 @@
 package com.springuni.forgetme.datahandler;
 
+import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_ID;
+import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_NAME;
+
 import com.springuni.forgetme.core.model.EntityNotFoundException;
 import java.util.Map;
 import java.util.UUID;
@@ -11,9 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class WebhookServiceImpl implements WebhookService {
-
-  static final String DATA_HANDLER_ID = "_data_handler_id";
-  static final String DATA_HANDLER_NAME = "_data_handler_name";
 
   private final DataHandlerRepository dataHandlerRepository;
   private final MessageChannel webhookOutboundChannel;

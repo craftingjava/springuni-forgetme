@@ -1,6 +1,6 @@
 package com.springuni.forgetme.subscriber;
 
-import static com.springuni.forgetme.Mocks.DATA_HANDLER_ID;
+import static com.springuni.forgetme.Mocks.DATA_HANDLER_ID_VALUE;
 import static com.springuni.forgetme.Mocks.EMAIL;
 import static com.springuni.forgetme.Mocks.EMAIL_HASH;
 import static com.springuni.forgetme.Mocks.createSubscriber;
@@ -37,6 +37,7 @@ public class SubscriberServiceTest {
   @Before
   public void setUp() {
     subscriber = createSubscriber();
+    subscriber.updateSubscription(DATA_HANDLER_ID_VALUE, SUBSCRIBED);
   }
 
   @Test
@@ -56,18 +57,18 @@ public class SubscriberServiceTest {
   public void givenKnownEmail_whenUpdateSubscription_thenSubscriptionUpdated() {
     given(subscriberRepository.findByEmailHash(EMAIL_HASH)).willReturn(Optional.of(subscriber));
 
-    subscriberService.updateSubscription(WebhookData.of(DATA_HANDLER_ID, EMAIL, UNSUBSCRIBED));
+    subscriberService.updateSubscription(WebhookData.of(DATA_HANDLER_ID_VALUE, EMAIL, UNSUBSCRIBED));
 
-    assertSubscriptionStatus(UNSUBSCRIBED, DATA_HANDLER_ID);
+    assertSubscriptionStatus(UNSUBSCRIBED, DATA_HANDLER_ID_VALUE);
   }
 
   @Test
   public void givenUnknownEmail_whenUpdateSubscriber_thenNewSubscriberSaved() {
     given(subscriberRepository.findByEmailHash(EMAIL_HASH)).willReturn(Optional.empty());
 
-    subscriberService.updateSubscription(WebhookData.of(DATA_HANDLER_ID, EMAIL, SUBSCRIBED));
+    subscriberService.updateSubscription(WebhookData.of(DATA_HANDLER_ID_VALUE, EMAIL, SUBSCRIBED));
 
-    assertSubscriptionStatus(SUBSCRIBED, DATA_HANDLER_ID);
+    assertSubscriptionStatus(SUBSCRIBED, DATA_HANDLER_ID_VALUE);
   }
 
   private void assertSubscriptionStatus(SubscriberStatus expectedStatus, UUID dataHandlerId) {
