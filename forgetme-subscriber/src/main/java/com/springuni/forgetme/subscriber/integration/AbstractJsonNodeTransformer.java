@@ -4,8 +4,8 @@ import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_
 import static java.util.stream.Collectors.toList;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.springuni.forgetme.core.model.WebhookData;
 import com.springuni.forgetme.core.model.SubscriberStatus;
+import com.springuni.forgetme.core.model.WebhookData;
 import java.util.Collection;
 import java.util.UUID;
 import org.springframework.integration.transformer.GenericTransformer;

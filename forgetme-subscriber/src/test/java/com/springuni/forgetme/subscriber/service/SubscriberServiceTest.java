@@ -12,9 +12,9 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
 import com.springuni.forgetme.core.model.EntityNotFoundException;
+import com.springuni.forgetme.core.model.SubscriberStatus;
 import com.springuni.forgetme.core.model.WebhookData;
 import com.springuni.forgetme.subscriber.model.Subscriber;
-import com.springuni.forgetme.core.model.SubscriberStatus;
 import com.springuni.forgetme.subscriber.model.Subscription;
 import java.util.Optional;
 import java.util.UUID;
