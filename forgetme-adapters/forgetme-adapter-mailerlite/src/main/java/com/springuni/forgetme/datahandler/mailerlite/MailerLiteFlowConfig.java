@@ -37,7 +37,8 @@ public class MailerLiteFlowConfig implements InitializingBean {
     applicationBeanRegistry
         .registerSingleton("mailerlite.webhookRouterOutboundChannel", webhookRouterOutboundChannel);
 
-    webhookInboundRouter.setChannelMapping("mailerliteInboundChannel", "mailerlite.webhookRouterOutboundChannel");
+    webhookInboundRouter
+        .setChannelMapping("mailerliteInboundChannel", "mailerlite.webhookRouterOutboundChannel");
 
     log.info("Context {} created.", adapterContext.getId());
   }

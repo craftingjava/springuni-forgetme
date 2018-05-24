@@ -19,7 +19,6 @@ import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.Transformers;
 import org.springframework.integration.router.HeaderValueRouter;
-import org.springframework.integration.router.MessageRouter;
 import org.springframework.messaging.MessageChannel;
 
 @Configuration
@@ -41,7 +40,8 @@ public class WebhookFlowConfig {
 
     return IntegrationFlows.from(webhookOutboundChannel)
         .transform(Transformers.toJson())
-        .handle(Amqp.outboundAdapter(amqpTemplate).exchangeName(FORGETME_WEBHOOK_EXCHANGE_NAME).routingKey(FORGETME_WEBHOOK_ROUTING_KEY_NAME))
+        .handle(Amqp.outboundAdapter(amqpTemplate).exchangeName(FORGETME_WEBHOOK_EXCHANGE_NAME)
+            .routingKey(FORGETME_WEBHOOK_ROUTING_KEY_NAME))
         .get();
   }
 
