@@ -4,7 +4,6 @@ import static com.springuni.forgetme.core.amqp.QueueConfig.FORGETME_WEBHOOK_EXCH
 import static com.springuni.forgetme.core.amqp.QueueConfig.FORGETME_WEBHOOK_QUEUE_NAME;
 import static com.springuni.forgetme.core.amqp.QueueConfig.FORGETME_WEBHOOK_ROUTING_KEY_NAME;
 import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_NAME;
-import static org.springframework.integration.handler.LoggingHandler.Level.ERROR;
 import static org.springframework.integration.handler.LoggingHandler.Level.INFO;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,11 +29,6 @@ public class WebhookFlowConfig {
   }
 
   @Bean
-  public MessageChannel webhookDeadLetterChannel() {
-    return new DirectChannel();
-  }
-
-  @Bean
   public IntegrationFlow webhookOutboundFlow(
       MessageChannel webhookOutboundChannel, AmqpTemplate amqpTemplate) {
 
@@ -46,10 +40,9 @@ public class WebhookFlowConfig {
   }
 
   @Bean
-  public HeaderValueRouter webhookInboundRouter(MessageChannel webhookDeadLetterChannel) {
+  public HeaderValueRouter webhookInboundRouter() {
     HeaderValueRouter router = new HeaderValueRouter(DATA_HANDLER_NAME);
     router.setSuffix(".webhookRouterOutboundChannel");
-    router.setDefaultOutputChannel(webhookDeadLetterChannel);
     return router;
   }
 
@@ -65,11 +58,6 @@ public class WebhookFlowConfig {
         .route(webhookInboundRouter)
         // .route("headers['" + DATA_HANDLER_NAME + "'].concat('InboundChannel')")
         .get();
-  }
-
-  @Bean
-  public IntegrationFlow webhookDeadLetterFlow(MessageChannel webhookDeadLetterChannel) {
-    return IntegrationFlows.from(webhookDeadLetterChannel).log(ERROR).get();
   }
 
 }
