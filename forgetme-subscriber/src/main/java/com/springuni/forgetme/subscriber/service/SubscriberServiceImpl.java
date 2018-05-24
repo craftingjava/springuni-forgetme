@@ -28,7 +28,7 @@ public class SubscriberServiceImpl implements SubscriberService {
 
   @Override
   @Transactional
-  @ServiceActivator(inputChannel = "subscriberInboundChannel")
+  @ServiceActivator(inputChannel = "webhookDataHandlerOutboundChannel")
   public void updateSubscription(@NonNull WebhookData webhookData) {
     Subscriber newSubscriber = new Subscriber(webhookData.getSubscriberEmail());
     Subscriber subscriber = subscriberRepository.findByEmailHash(newSubscriber.getEmailHash())

@@ -9,7 +9,7 @@
 
   <context:property-placeholder/>
 
-  <int:channel id="webhookRouterOutboundChannel"/>
+  <int:channel id="webhookDataHandlerInboundChannel"/>
 
   <bean
     class="com.springuni.forgetme.datahandler.mailerlite.MailerLiteWebhookDataTransformer"
@@ -17,8 +17,8 @@
   />
 
   <int:transformer
-    input-channel="webhookRouterOutboundChannel"
-    output-channel="subscriberInboundChannel"
+    input-channel="webhookDataHandlerInboundChannel"
+    output-channel="webhookDataHandlerOutboundChannel"
     ref="mailerLiteWebhookDataTransformer"
   />
 

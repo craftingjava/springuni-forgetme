@@ -41,9 +41,7 @@ public class WebhookFlowConfig {
 
   @Bean
   public HeaderValueRouter webhookInboundRouter() {
-    HeaderValueRouter router = new HeaderValueRouter(DATA_HANDLER_NAME);
-    router.setSuffix(".webhookRouterOutboundChannel");
-    return router;
+    return new HeaderValueRouter(DATA_HANDLER_NAME);
   }
 
   @Bean

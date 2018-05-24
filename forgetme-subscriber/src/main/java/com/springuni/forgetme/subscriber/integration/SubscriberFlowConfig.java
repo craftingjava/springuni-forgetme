@@ -11,7 +11,7 @@ import org.springframework.messaging.MessageChannel;
 public class SubscriberFlowConfig {
 
   @Bean
-  public MessageChannel subscriberInboundChannel() {
+  public MessageChannel webhookDataHandlerOutboundChannel() {
     return new DirectChannel();
   }
 
