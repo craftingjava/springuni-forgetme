@@ -1,4 +1,4 @@
-package com.springuni.forgetme.subscriber.integration;
+package com.springuni.forgetme.datahandler.mailerlite;
 
 import static com.springuni.forgetme.core.model.SubscriberStatus.SUBSCRIBED;
 import static com.springuni.forgetme.core.model.SubscriberStatus.UNSUBSCRIBED;
@@ -6,6 +6,7 @@ import static java.util.stream.Collectors.toList;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.springuni.forgetme.core.model.SubscriberStatus;
+import com.springuni.forgetme.datahandler.integration.AbstractJsonNodeTransformer;
 import java.util.Collection;
 import java.util.stream.StreamSupport;
 import org.springframework.integration.transformer.MessageTransformationException;
