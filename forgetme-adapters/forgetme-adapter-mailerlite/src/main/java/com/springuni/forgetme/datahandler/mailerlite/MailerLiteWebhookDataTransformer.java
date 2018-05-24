@@ -14,7 +14,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.StringUtils;
 
-public class JsonNodeToWebhookDataList extends AbstractJsonNodeTransformer {
+public class MailerLiteWebhookDataTransformer extends AbstractJsonNodeTransformer {
 
   // https://developers.mailerlite.com/docs/webhooks#section-available-events
   static final String EVENT_TYPE_UNSUBSCRIBED = "subscriber.unsubscribe";

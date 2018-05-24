@@ -3,8 +3,8 @@ package com.springuni.forgetme.datahandler.mailerlite;
 import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_ID;
 import static com.springuni.forgetme.core.model.SubscriberStatus.SUBSCRIBED;
 import static com.springuni.forgetme.core.model.SubscriberStatus.UNSUBSCRIBED;
-import static com.springuni.forgetme.datahandler.mailerlite.JsonNodeToWebhookDataList.EVENT_TYPE_SUBSCRIBED;
-import static com.springuni.forgetme.datahandler.mailerlite.JsonNodeToWebhookDataList.EVENT_TYPE_UNSUBSCRIBED;
+import static com.springuni.forgetme.datahandler.mailerlite.MailerLiteWebhookDataTransformer.EVENT_TYPE_SUBSCRIBED;
+import static com.springuni.forgetme.datahandler.mailerlite.MailerLiteWebhookDataTransformer.EVENT_TYPE_UNSUBSCRIBED;
 import static org.junit.Assert.assertEquals;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -24,7 +24,7 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.security.core.token.Sha512DigestUtils;
 
 @Slf4j
-public class JsonNodeToWebhookDataListTest {
+public class MailerLiteWebhookDataTransformerTest {
 
   public static final String EMAIL = "test@springuni.com";
   public static final String EMAIL_HASH = Sha512DigestUtils.shaHex(EMAIL);
@@ -32,7 +32,7 @@ public class JsonNodeToWebhookDataListTest {
   public static final UUID DATA_HANDLER_ID_VALUE =
       UUID.fromString("e408b7d4-49dc-427e-ad60-e5d8a0dc5925");
 
-  private final JsonNodeToWebhookDataList transformer = new JsonNodeToWebhookDataList();
+  private final MailerLiteWebhookDataTransformer transformer = new MailerLiteWebhookDataTransformer();
 
   private JsonNode jsonNode;
 

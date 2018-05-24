@@ -17,7 +17,7 @@ import org.springframework.integration.http.dsl.Http;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.web.client.RestTemplate;
 
-@Configuration
+//@Configuration
 public class MailerLiteChannelConfig {
 
   @Bean

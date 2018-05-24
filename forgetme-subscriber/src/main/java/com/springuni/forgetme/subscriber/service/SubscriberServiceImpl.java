@@ -5,11 +5,13 @@ import com.springuni.forgetme.core.model.WebhookData;
 import com.springuni.forgetme.subscriber.model.Subscriber;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.security.core.token.Sha512DigestUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SubscriberServiceImpl implements SubscriberService {
@@ -35,7 +37,9 @@ public class SubscriberServiceImpl implements SubscriberService {
     subscriber
         .updateSubscription(webhookData.getDataHandlerId(), webhookData.getSubscriberStatus());
 
-    subscriberRepository.save(subscriber);
+    subscriber = subscriberRepository.save(subscriber);
+
+    log.info("Updated subscriber {}.", subscriber.getId());
   }
 
 }
