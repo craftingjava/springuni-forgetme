@@ -1,4 +1,4 @@
-package com.springuni.forgetme.datahandler.integration;
+package com.springuni.forgetme.datahandler.adapter;
 
 import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_ID;
 import static java.util.stream.Collectors.toList;

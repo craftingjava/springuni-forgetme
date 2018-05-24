@@ -12,7 +12,7 @@
   <int:channel id="webhookDataHandlerInboundChannel"/>
 
   <bean
-    class="com.springuni.forgetme.datahandler.mailerlite.MailerLiteWebhookDataTransformer"
+    class="com.springuni.forgetme.datahandler.adapter.mailerlite.MailerLiteWebhookDataTransformer"
     id="mailerLiteWebhookDataTransformer"
   />
 

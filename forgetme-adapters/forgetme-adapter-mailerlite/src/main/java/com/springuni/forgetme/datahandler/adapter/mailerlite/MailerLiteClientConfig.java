@@ -1,4 +1,4 @@
-package com.springuni.forgetme.datahandler.mailerlite;
+package com.springuni.forgetme.datahandler.adapter.mailerlite;
 
 import static java.util.Collections.singletonList;
 

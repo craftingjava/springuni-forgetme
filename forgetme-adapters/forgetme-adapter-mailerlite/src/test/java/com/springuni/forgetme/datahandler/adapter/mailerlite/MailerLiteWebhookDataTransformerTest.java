@@ -1,10 +1,10 @@
-package com.springuni.forgetme.datahandler.mailerlite;
+package com.springuni.forgetme.datahandler.adapter.mailerlite;
 
 import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_ID;
 import static com.springuni.forgetme.core.model.SubscriberStatus.SUBSCRIBED;
 import static com.springuni.forgetme.core.model.SubscriberStatus.UNSUBSCRIBED;
-import static com.springuni.forgetme.datahandler.mailerlite.MailerLiteWebhookDataTransformer.EVENT_TYPE_SUBSCRIBED;
-import static com.springuni.forgetme.datahandler.mailerlite.MailerLiteWebhookDataTransformer.EVENT_TYPE_UNSUBSCRIBED;
+import static com.springuni.forgetme.datahandler.adapter.mailerlite.MailerLiteWebhookDataTransformer.EVENT_TYPE_SUBSCRIBED;
+import static com.springuni.forgetme.datahandler.adapter.mailerlite.MailerLiteWebhookDataTransformer.EVENT_TYPE_UNSUBSCRIBED;
 import static org.junit.Assert.assertEquals;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.springuni.forgetme.core.model.SubscriberStatus;
 import com.springuni.forgetme.core.model.WebhookData;
+import com.springuni.forgetme.datahandler.adapter.mailerlite.MailerLiteWebhookDataTransformer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package com.springuni.forgetme.datahandler.mailerlite;
+package com.springuni.forgetme.datahandler.adapter.mailerlite;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

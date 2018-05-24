@@ -1,4 +1,4 @@
-package com.springuni.forgetme.datahandler.mailerlite;
+package com.springuni.forgetme.datahandler.adapter.mailerlite;
 
 import static com.springuni.forgetme.core.amqp.QueueConfig.FORGETME_DATAHANDLER_EXCHANGE_NAME;
 import static com.springuni.forgetme.core.amqp.QueueConfig.FORGETME_DATAHANDLER_REQUEST_QUEUE_NAME;
