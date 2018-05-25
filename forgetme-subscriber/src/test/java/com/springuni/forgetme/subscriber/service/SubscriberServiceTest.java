@@ -56,6 +56,7 @@ public class SubscriberServiceTest {
   public void setUp() {
     subscriber = createSubscriber();
     subscriber.updateSubscription(DATA_HANDLER_ID_VALUE, SUBSCRIBED);
+    subscriber.setId(SUBSCRIPTION_ID_VALUE);
 
     when(subscriberRepository.save(any(Subscriber.class))).thenAnswer(returnsFirstArg());
   }
@@ -101,6 +102,8 @@ public class SubscriberServiceTest {
   @Test
   public void givenKnownEmail_whenRequestForget_thenSubscriptionsUpdated() {
     given(subscriberRepository.findByEmailHash(EMAIL_HASH)).willReturn(Optional.of(subscriber));
+    given(subscriptionRepository.findBySubscriberId(SUBSCRIPTION_ID_VALUE))
+        .willReturn(subscriber.getSubscriptions());
 
     subscriberService.requestForget(EMAIL);
 
