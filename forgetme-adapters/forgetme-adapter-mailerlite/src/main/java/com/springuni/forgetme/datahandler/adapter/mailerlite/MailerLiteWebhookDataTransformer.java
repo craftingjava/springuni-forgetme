@@ -1,11 +1,11 @@
 package com.springuni.forgetme.datahandler.adapter.mailerlite;
 
-import static com.springuni.forgetme.core.model.SubscriberStatus.SUBSCRIBED;
-import static com.springuni.forgetme.core.model.SubscriberStatus.UNSUBSCRIBED;
+import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIBED;
+import static com.springuni.forgetme.core.model.SubscriptionStatus.UNSUBSCRIBED;
 import static java.util.stream.Collectors.toList;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.springuni.forgetme.core.model.SubscriberStatus;
+import com.springuni.forgetme.core.model.SubscriptionStatus;
 import com.springuni.forgetme.datahandler.adapter.AbstractJsonNodeTransformer;
 import java.util.Collection;
 import java.util.stream.StreamSupport;
@@ -41,7 +41,7 @@ public class MailerLiteWebhookDataTransformer extends AbstractJsonNodeTransforme
   }
 
   @Override
-  protected SubscriberStatus extractSubscriberStatus(Message<JsonNode> message) {
+  protected SubscriptionStatus extractSubscriptionStatus(Message<JsonNode> message) {
     JsonNode jsonNode = message.getPayload();
 
     String eventType = jsonNode.path("type").asText();
@@ -49,7 +49,7 @@ public class MailerLiteWebhookDataTransformer extends AbstractJsonNodeTransforme
       throw new MessageTransformationException(message, "missing event type");
     }
 
-    SubscriberStatus status;
+    SubscriptionStatus status;
     switch (eventType) {
       case EVENT_TYPE_UNSUBSCRIBED:
         status = UNSUBSCRIBED;

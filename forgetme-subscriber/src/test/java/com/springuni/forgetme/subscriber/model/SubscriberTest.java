@@ -2,8 +2,8 @@ package com.springuni.forgetme.subscriber.model;
 
 import static com.springuni.forgetme.Mocks.DATA_HANDLER_ID_VALUE;
 import static com.springuni.forgetme.Mocks.createSubscription;
-import static com.springuni.forgetme.core.model.SubscriberStatus.SUBSCRIBED;
-import static com.springuni.forgetme.core.model.SubscriberStatus.UNSUBSCRIBED;
+import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIBED;
+import static com.springuni.forgetme.core.model.SubscriptionStatus.UNSUBSCRIBED;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
 

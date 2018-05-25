@@ -1,7 +1,7 @@
 package com.springuni.forgetme.subscriber.service;
 
 import static com.springuni.forgetme.Mocks.createSubscription;
-import static com.springuni.forgetme.core.model.SubscriberStatus.UNSUBSCRIBED;
+import static com.springuni.forgetme.core.model.SubscriptionStatus.UNSUBSCRIBED;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -14,7 +14,7 @@ public class SubscriptionRepositoryTest
     extends BaseRepositoryTest<Subscription, SubscriptionRepository> {
 
   @Test
-  public void givenSubscriberStatusChanged_whenFindById_thenChangePersisted() {
+  public void givenSubscriptionStatusChanged_whenFindById_thenChangePersisted() {
     entity.updateStatus(UNSUBSCRIBED);
     saveEntity();
     Subscription subscription = repository.findById(entity.getId()).get();

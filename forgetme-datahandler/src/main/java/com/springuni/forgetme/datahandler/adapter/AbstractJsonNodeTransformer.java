@@ -4,7 +4,7 @@ import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_
 import static java.util.stream.Collectors.toList;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.springuni.forgetme.core.model.SubscriberStatus;
+import com.springuni.forgetme.core.model.SubscriptionStatus;
 import com.springuni.forgetme.core.model.WebhookData;
 import java.util.Collection;
 import java.util.UUID;
@@ -38,9 +38,9 @@ public abstract class AbstractJsonNodeTransformer
 
   protected WebhookData doTransform(UUID dataHandlerId, Message<JsonNode> message) {
     String subscriberEmail = extractSubscriberEmail(message);
-    SubscriberStatus subscriberStatus = extractSubscriberStatus(message);
+    SubscriptionStatus subscriptionStatus = extractSubscriptionStatus(message);
 
-    return WebhookData.of(dataHandlerId, subscriberEmail, subscriberStatus);
+    return WebhookData.of(dataHandlerId, subscriberEmail, subscriptionStatus);
   }
 
   protected abstract Collection<Message<JsonNode>> extractEvents(Message<JsonNode> message);
@@ -61,6 +61,6 @@ public abstract class AbstractJsonNodeTransformer
 
   protected abstract String extractSubscriberEmail(Message<JsonNode> message);
 
-  protected abstract SubscriberStatus extractSubscriberStatus(Message<JsonNode> message);
+  protected abstract SubscriptionStatus extractSubscriptionStatus(Message<JsonNode> message);
 
 }

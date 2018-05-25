@@ -1,10 +1,10 @@
 package com.springuni.forgetme.subscriber.model;
 
-import static com.springuni.forgetme.core.model.SubscriberStatus.SUBSCRIBED;
+import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIBED;
 import static java.util.Collections.unmodifiableList;
 import static javax.persistence.EnumType.STRING;
 
-import com.springuni.forgetme.core.model.SubscriberStatus;
+import com.springuni.forgetme.core.model.SubscriptionStatus;
 import com.springuni.forgetme.core.orm.AbstractEntity;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ public class Subscription extends AbstractEntity {
   private Subscriber subscriber;
 
   @Enumerated(STRING)
-  private SubscriberStatus status;
+  private SubscriptionStatus status;
 
   @ElementCollection
   @CollectionTable(
@@ -46,7 +46,7 @@ public class Subscription extends AbstractEntity {
   }
 
   public Subscription(
-      UUID dataHandlerId, Subscriber subscriber, SubscriberStatus status) {
+      UUID dataHandlerId, Subscriber subscriber, SubscriptionStatus status) {
 
     this.subscriber = subscriber;
     this.dataHandlerId = dataHandlerId;
@@ -54,11 +54,11 @@ public class Subscription extends AbstractEntity {
     updateStatus(status);
   }
 
-  void setStatus(SubscriberStatus status) {
+  void setStatus(SubscriptionStatus status) {
     this.status = status;
   }
 
-  public void updateStatus(SubscriberStatus status) {
+  public void updateStatus(SubscriptionStatus status) {
     if (status.equals(this.status)) {
       return;
     }

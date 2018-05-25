@@ -2,7 +2,7 @@ package com.springuni.forgetme.subscriber.model;
 
 import static java.util.Collections.unmodifiableList;
 
-import com.springuni.forgetme.core.model.SubscriberStatus;
+import com.springuni.forgetme.core.model.SubscriptionStatus;
 import com.springuni.forgetme.core.orm.AbstractEntity;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ public class Subscriber extends AbstractEntity {
     this.subscriptions = subscriptions;
   }
 
-  public void updateSubscription(UUID dataHandlerId, SubscriberStatus status) {
+  public void updateSubscription(UUID dataHandlerId, SubscriptionStatus status) {
     Subscription subscription = subscriptions.stream()
         .filter(it -> dataHandlerId.equals(it.getDataHandlerId()))
         .findFirst()

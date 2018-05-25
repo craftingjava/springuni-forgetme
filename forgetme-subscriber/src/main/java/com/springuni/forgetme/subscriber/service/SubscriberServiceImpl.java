@@ -2,14 +2,14 @@ package com.springuni.forgetme.subscriber.service;
 
 import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_ID;
 import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_NAME;
-import static com.springuni.forgetme.core.model.SubscriberStatus.FORGET_FAILED;
-import static com.springuni.forgetme.core.model.SubscriberStatus.FORGET_PENDING;
-import static com.springuni.forgetme.core.model.SubscriberStatus.FORGOTTEN;
+import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGET_FAILED;
+import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGET_PENDING;
+import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGOTTEN;
 
 import com.springuni.forgetme.core.model.EntityNotFoundException;
 import com.springuni.forgetme.core.model.ForgetRequest;
 import com.springuni.forgetme.core.model.ForgetResponse;
-import com.springuni.forgetme.core.model.SubscriberStatus;
+import com.springuni.forgetme.core.model.SubscriptionStatus;
 import com.springuni.forgetme.core.model.WebhookData;
 import com.springuni.forgetme.subscriber.model.Subscriber;
 import com.springuni.forgetme.subscriber.model.Subscription;
@@ -52,7 +52,7 @@ public class SubscriberServiceImpl implements SubscriberService {
         .orElse(newSubscriber);
 
     subscriber
-        .updateSubscription(webhookData.getDataHandlerId(), webhookData.getSubscriberStatus());
+        .updateSubscription(webhookData.getDataHandlerId(), webhookData.getSubscriptionStatus());
 
     subscriber = subscriberRepository.save(subscriber);
 
@@ -92,7 +92,7 @@ public class SubscriberServiceImpl implements SubscriberService {
     Subscription subscription = subscriptionRepository.findById(id)
         .orElseThrow(() -> new EntityNotFoundException("id", id));
 
-    SubscriberStatus status = forgetResponse.isAcknowledged() ? FORGOTTEN : FORGET_FAILED;
+    SubscriptionStatus status = forgetResponse.isAcknowledged() ? FORGOTTEN : FORGET_FAILED;
 
     subscription.updateStatus(status);
 

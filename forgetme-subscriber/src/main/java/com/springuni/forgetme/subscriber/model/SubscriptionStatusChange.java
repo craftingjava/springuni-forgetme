@@ -3,7 +3,7 @@ package com.springuni.forgetme.subscriber.model;
 import static java.time.ZoneOffset.UTC;
 import static javax.persistence.EnumType.STRING;
 
-import com.springuni.forgetme.core.model.SubscriberStatus;
+import com.springuni.forgetme.core.model.SubscriptionStatus;
 import java.time.LocalDateTime;
 import javax.persistence.Embeddable;
 import javax.persistence.Enumerated;
@@ -16,11 +16,11 @@ import lombok.NoArgsConstructor;
 public class SubscriptionStatusChange {
 
   @Enumerated(STRING)
-  private SubscriberStatus status;
+  private SubscriptionStatus status;
 
   private LocalDateTime changedDate;
 
-  public SubscriptionStatusChange(SubscriberStatus status) {
+  public SubscriptionStatusChange(SubscriptionStatus status) {
     this.status = status;
     changedDate = LocalDateTime.now(UTC);
   }

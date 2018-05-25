@@ -8,6 +8,6 @@ public class WebhookData {
 
   private UUID dataHandlerId;
   private String subscriberEmail;
-  private SubscriberStatus subscriberStatus;
+  private SubscriptionStatus subscriptionStatus;
 
 }

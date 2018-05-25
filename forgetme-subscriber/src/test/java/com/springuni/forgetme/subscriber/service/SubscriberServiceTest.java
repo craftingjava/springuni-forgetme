@@ -5,11 +5,11 @@ import static com.springuni.forgetme.Mocks.EMAIL;
 import static com.springuni.forgetme.Mocks.EMAIL_HASH;
 import static com.springuni.forgetme.Mocks.SUBSCRIPTION_ID_VALUE;
 import static com.springuni.forgetme.Mocks.createSubscriber;
-import static com.springuni.forgetme.core.model.SubscriberStatus.FORGET_FAILED;
-import static com.springuni.forgetme.core.model.SubscriberStatus.FORGET_PENDING;
-import static com.springuni.forgetme.core.model.SubscriberStatus.FORGOTTEN;
-import static com.springuni.forgetme.core.model.SubscriberStatus.SUBSCRIBED;
-import static com.springuni.forgetme.core.model.SubscriberStatus.UNSUBSCRIBED;
+import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGET_FAILED;
+import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGET_PENDING;
+import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGOTTEN;
+import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIBED;
+import static com.springuni.forgetme.core.model.SubscriptionStatus.UNSUBSCRIBED;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 
 import com.springuni.forgetme.core.model.EntityNotFoundException;
 import com.springuni.forgetme.core.model.ForgetResponse;
-import com.springuni.forgetme.core.model.SubscriberStatus;
+import com.springuni.forgetme.core.model.SubscriptionStatus;
 import com.springuni.forgetme.core.model.WebhookData;
 import com.springuni.forgetme.subscriber.model.Subscriber;
 import com.springuni.forgetme.subscriber.model.Subscription;
@@ -149,7 +149,7 @@ public class SubscriberServiceTest {
   }
 
   private void assertSubscriptionStatusFromSavedSubscriber(
-      SubscriberStatus expectedStatus, UUID dataHandlerId) {
+      SubscriptionStatus expectedStatus, UUID dataHandlerId) {
 
     ArgumentCaptor<Subscriber> subscriberArgumentCaptor = ArgumentCaptor.forClass(Subscriber.class);
     then(subscriberRepository).should().save(subscriberArgumentCaptor.capture());
@@ -164,7 +164,7 @@ public class SubscriberServiceTest {
   }
 
   private void assertSubscriptionStatusFromSavedSubscription(
-      SubscriberStatus expectedStatus, UUID dataHandlerId) {
+      SubscriptionStatus expectedStatus, UUID dataHandlerId) {
 
     ArgumentCaptor<Subscription> subscriptionArgumentCaptor = ArgumentCaptor
         .forClass(Subscription.class);
