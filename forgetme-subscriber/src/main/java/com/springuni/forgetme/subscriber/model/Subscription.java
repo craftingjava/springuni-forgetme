@@ -1,6 +1,6 @@
 package com.springuni.forgetme.subscriber.model;
 
-import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIBED;
+import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIPTION_CREATED;
 import static java.util.Collections.unmodifiableList;
 import static javax.persistence.EnumType.STRING;
 
@@ -42,7 +42,7 @@ public class Subscription extends AbstractEntity {
   private List<SubscriptionStatusChange> statusChanges = new ArrayList<>();
 
   public Subscription(UUID dataHandlerId, Subscriber subscriber) {
-    this(dataHandlerId, subscriber, SUBSCRIBED);
+    this(dataHandlerId, subscriber, SUBSCRIPTION_CREATED);
   }
 
   public Subscription(

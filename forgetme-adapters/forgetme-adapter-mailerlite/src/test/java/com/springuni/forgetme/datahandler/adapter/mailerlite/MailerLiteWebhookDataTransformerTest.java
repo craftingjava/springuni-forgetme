@@ -1,10 +1,10 @@
 package com.springuni.forgetme.datahandler.adapter.mailerlite;
 
 import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_ID;
-import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIBED;
+import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIPTION_CREATED;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.UNSUBSCRIBED;
-import static com.springuni.forgetme.datahandler.adapter.mailerlite.MailerLiteWebhookDataTransformer.EVENT_TYPE_SUBSCRIBED;
-import static com.springuni.forgetme.datahandler.adapter.mailerlite.MailerLiteWebhookDataTransformer.EVENT_TYPE_UNSUBSCRIBED;
+import static com.springuni.forgetme.datahandler.adapter.mailerlite.MailerLiteWebhookDataTransformer.EVENT_TYPE_SUBSCRIBER_CREATE;
+import static com.springuni.forgetme.datahandler.adapter.mailerlite.MailerLiteWebhookDataTransformer.EVENT_TYPE_SUBSCRIBER_UNSUBSCRIBE;
 import static org.junit.Assert.assertEquals;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -43,17 +43,17 @@ public class MailerLiteWebhookDataTransformerTest {
 
   @Test
   public void givenUnsubscribedEvent_whenTransform_thenTransformedToSubscriber() {
-    testTransform(EMAIL, UNSUBSCRIBED, EMAIL, EVENT_TYPE_UNSUBSCRIBED);
+    testTransform(EMAIL, UNSUBSCRIBED, EMAIL, EVENT_TYPE_SUBSCRIBER_UNSUBSCRIBE);
   }
 
   @Test
   public void givenSubscribedEvent_whenTransform_thenTransformedToSubscriber() {
-    testTransform(EMAIL, SUBSCRIBED, EMAIL, EVENT_TYPE_SUBSCRIBED);
+    testTransform(EMAIL, SUBSCRIPTION_CREATED, EMAIL, EVENT_TYPE_SUBSCRIBER_CREATE);
   }
 
   @Test(expected = MessageTransformationException.class)
   public void givenUnknownEvent_whenTransform_thenTransformedToSubscriber() {
-    testTransform(EMAIL, SUBSCRIBED, EMAIL, "unknown.event");
+    testTransform(EMAIL, SUBSCRIPTION_CREATED, EMAIL, "unknown.event");
   }
 
   private void populateJsonNode(String eventType, String email) {

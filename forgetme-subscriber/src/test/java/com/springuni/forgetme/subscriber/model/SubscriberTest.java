@@ -2,7 +2,7 @@ package com.springuni.forgetme.subscriber.model;
 
 import static com.springuni.forgetme.Mocks.DATA_HANDLER_ID_VALUE;
 import static com.springuni.forgetme.Mocks.createSubscription;
-import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIBED;
+import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIPTION_CREATED;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.UNSUBSCRIBED;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
@@ -25,9 +25,9 @@ public class SubscriberTest {
   public void givenNoSubscriptions_whenUpdateSubscription_thenCreated() {
     subscriber.setSubscriptions(new ArrayList<>());
 
-    subscriber.updateSubscription(DATA_HANDLER_ID_VALUE, SUBSCRIBED);
+    subscriber.updateSubscription(DATA_HANDLER_ID_VALUE, SUBSCRIPTION_CREATED);
 
-    assertEquals(SUBSCRIBED, subscriber.getSubscriptions().get(0).getStatus());
+    assertEquals(SUBSCRIPTION_CREATED, subscriber.getSubscriptions().get(0).getStatus());
   }
 
   @Test
@@ -36,9 +36,9 @@ public class SubscriberTest {
     subscription.setStatus(UNSUBSCRIBED);
     subscriber.setSubscriptions(singletonList(subscription));
 
-    subscriber.updateSubscription(DATA_HANDLER_ID_VALUE, SUBSCRIBED);
+    subscriber.updateSubscription(DATA_HANDLER_ID_VALUE, SUBSCRIPTION_CREATED);
 
-    assertEquals(SUBSCRIBED, subscriber.getSubscriptions().get(0).getStatus());
+    assertEquals(SUBSCRIPTION_CREATED, subscriber.getSubscriptions().get(0).getStatus());
   }
 
 }

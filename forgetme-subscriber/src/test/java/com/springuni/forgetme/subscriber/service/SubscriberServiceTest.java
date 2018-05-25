@@ -8,7 +8,7 @@ import static com.springuni.forgetme.Mocks.createSubscriber;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGET_FAILED;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGET_PENDING;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGOTTEN;
-import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIBED;
+import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIPTION_CREATED;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.UNSUBSCRIBED;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -55,7 +55,7 @@ public class SubscriberServiceTest {
   @Before
   public void setUp() {
     subscriber = createSubscriber();
-    subscriber.updateSubscription(DATA_HANDLER_ID_VALUE, SUBSCRIBED);
+    subscriber.updateSubscription(DATA_HANDLER_ID_VALUE, SUBSCRIPTION_CREATED);
     subscriber.setId(SUBSCRIPTION_ID_VALUE);
 
     when(subscriberRepository.save(any(Subscriber.class))).thenAnswer(returnsFirstArg());
@@ -92,9 +92,10 @@ public class SubscriberServiceTest {
   public void givenUnknownEmail_whenUpdateSubscriber_thenNewSubscriberSaved() {
     given(subscriberRepository.findByEmailHash(EMAIL_HASH)).willReturn(Optional.empty());
 
-    subscriberService.updateSubscription(WebhookData.of(DATA_HANDLER_ID_VALUE, EMAIL, SUBSCRIBED));
+    subscriberService.updateSubscription(WebhookData.of(DATA_HANDLER_ID_VALUE, EMAIL,
+        SUBSCRIPTION_CREATED));
 
-    assertSubscriptionStatusFromSavedSubscriber(SUBSCRIBED, DATA_HANDLER_ID_VALUE);
+    assertSubscriptionStatusFromSavedSubscriber(SUBSCRIPTION_CREATED, DATA_HANDLER_ID_VALUE);
   }
 
   /// requestForget ///

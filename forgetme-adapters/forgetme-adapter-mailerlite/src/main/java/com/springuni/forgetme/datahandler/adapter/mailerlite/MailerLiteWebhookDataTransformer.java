@@ -1,6 +1,7 @@
 package com.springuni.forgetme.datahandler.adapter.mailerlite;
 
-import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIBED;
+import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIPTION_CREATED;
+import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIPTION_UPDATED;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.UNSUBSCRIBED;
 import static java.util.stream.Collectors.toList;
 
@@ -17,8 +18,9 @@ import org.springframework.util.StringUtils;
 public class MailerLiteWebhookDataTransformer extends AbstractJsonNodeTransformer {
 
   // https://developers.mailerlite.com/docs/webhooks#section-available-events
-  static final String EVENT_TYPE_UNSUBSCRIBED = "subscriber.unsubscribe";
-  static final String EVENT_TYPE_SUBSCRIBED = "subscriber.create";
+  static final String EVENT_TYPE_SUBSCRIBER_UNSUBSCRIBE = "subscriber.unsubscribe";
+  static final String EVENT_TYPE_SUBSCRIBER_CREATE = "subscriber.create";
+  static final String EVENT_TYPE_SUBSCRIBER_UPDATE = "subscriber.update";
 
   @Override
   protected Collection<Message<JsonNode>> extractEvents(Message<JsonNode> message) {
@@ -51,11 +53,14 @@ public class MailerLiteWebhookDataTransformer extends AbstractJsonNodeTransforme
 
     SubscriptionStatus status;
     switch (eventType) {
-      case EVENT_TYPE_UNSUBSCRIBED:
+      case EVENT_TYPE_SUBSCRIBER_UNSUBSCRIBE:
         status = UNSUBSCRIBED;
         break;
-      case EVENT_TYPE_SUBSCRIBED:
-        status = SUBSCRIBED;
+      case EVENT_TYPE_SUBSCRIBER_CREATE:
+        status = SUBSCRIPTION_CREATED;
+        break;
+      case EVENT_TYPE_SUBSCRIBER_UPDATE:
+        status = SUBSCRIPTION_UPDATED;
         break;
       default:
         throw new MessageTransformationException(message, "invalid event type: " + eventType);
