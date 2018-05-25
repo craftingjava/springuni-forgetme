@@ -85,7 +85,7 @@ public class SubscriberServiceImpl implements SubscriberService {
 
   @Override
   @Transactional
-  @ServiceActivator(inputChannel = "subscriberDataHandlerOutboundChannel")
+  @ServiceActivator(inputChannel = "subscriberForgetResponseInboundChannel")
   public void recordForgetResponse(@NonNull ForgetResponse forgetResponse) {
     UUID id = forgetResponse.getSubscriptionId();
     Subscription subscription = subscriptionRepository.findById(id)
