@@ -15,8 +15,13 @@ import org.springframework.messaging.MessageChannel;
 @Configuration
 public abstract class AbstractDataHandlerFlowConfig implements InitializingBean {
 
+  private static final String QUALIFIED_CHANNEL_NAME_DELIMITER = "#";
+
   private static final String WEBHOOK_DATA_HANDLER_INBOUND_CHANNEL_NAME =
       "webhookDataHandlerInboundChannel";
+
+  private static final String SUBSCRIBER_DATA_HANDLER_INBOUND_CHANNEL_NAME =
+      "subscriberDataHandlerInboundChannel";
 
   @Autowired
   private ApplicationContext applicationContext;
@@ -24,11 +29,17 @@ public abstract class AbstractDataHandlerFlowConfig implements InitializingBean 
   @Autowired
   private MappingMessageRouterManagement webhookInboundRouter;
 
+  @Autowired
+  private MappingMessageRouterManagement subscriberForgetRequestRouter;
+
+  private ConfigurableApplicationContext dataHandlerContext;
+  private SingletonBeanRegistry applicationBeanRegistry;
+
   @Override
   public void afterPropertiesSet() {
     String dataHandlerName = getDataHandlerName();
 
-    ConfigurableApplicationContext dataHandlerContext = new ClassPathXmlApplicationContext(
+    dataHandlerContext = new ClassPathXmlApplicationContext(
         new String[]{"/META-INF/spring/" + dataHandlerName + "-adapter-config.xml"},
         false,
         applicationContext);
@@ -36,25 +47,42 @@ public abstract class AbstractDataHandlerFlowConfig implements InitializingBean 
     dataHandlerContext.setId(dataHandlerName);
     dataHandlerContext.refresh();
 
-    MessageChannel webhookDataHandlerInboundChannel =
-        dataHandlerContext.getBean(WEBHOOK_DATA_HANDLER_INBOUND_CHANNEL_NAME, MessageChannel.class);
-
-    SingletonBeanRegistry applicationBeanRegistry =
+    applicationBeanRegistry =
         (SingletonBeanRegistry) applicationContext.getAutowireCapableBeanFactory();
 
-    String webhookDataHandlerInboundChannelName =
-        dataHandlerName + "." + WEBHOOK_DATA_HANDLER_INBOUND_CHANNEL_NAME;
+    // Register channel for webhook dynamically
 
-    applicationBeanRegistry.registerSingleton(
-        webhookDataHandlerInboundChannelName,
-        webhookDataHandlerInboundChannel
+    registerMessageChannel(WEBHOOK_DATA_HANDLER_INBOUND_CHANNEL_NAME, webhookInboundRouter);
+
+    // Register channel for forget response dynamically
+
+    registerMessageChannel(
+        SUBSCRIBER_DATA_HANDLER_INBOUND_CHANNEL_NAME, subscriberForgetRequestRouter
     );
-
-    webhookInboundRouter.setChannelMapping(dataHandlerName, webhookDataHandlerInboundChannelName);
 
     log.info("Data handler {} initialized.", dataHandlerContext.getId());
   }
 
   protected abstract String getDataHandlerName();
+
+  private void registerMessageChannel(
+      String channelName, MappingMessageRouterManagement routerManagement) {
+
+    String dataHandlerName = getDataHandlerName();
+
+    String qualifiedChannelName = dataHandlerName + QUALIFIED_CHANNEL_NAME_DELIMITER + channelName;
+
+    MessageChannel messageChannel = dataHandlerContext.getBean(channelName, MessageChannel.class);
+
+    applicationBeanRegistry.registerSingleton(
+        qualifiedChannelName,
+        messageChannel
+    );
+
+    routerManagement.setChannelMapping(
+        dataHandlerName,
+        qualifiedChannelName
+    );
+  }
 
 }

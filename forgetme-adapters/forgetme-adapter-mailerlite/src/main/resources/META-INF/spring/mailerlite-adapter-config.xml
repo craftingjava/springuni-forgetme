@@ -5,6 +5,7 @@
   xmlns="http://www.springframework.org/schema/beans"
   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
   <context:property-placeholder/>
@@ -21,5 +22,18 @@
     output-channel="webhookDataHandlerOutboundChannel"
     ref="mailerLiteWebhookDataTransformer"
   />
+
+  <int:channel id="subscriberDataHandlerInboundChannel"/>
+
+  <int:chain
+    input-channel="subscriberDataHandlerInboundChannel"
+    output-channel="subscriberDataHandlerOutboundChannel">
+
+    <int:service-activator ref="subscriberDataHandlerGateway" method="handleForget"/>
+  </int:chain>
+
+  <bean id="subscriberDataHandlerGateway"
+    class="com.springuni.forgetme.datahandler.adapter.mailerlite.MailerLiteGateway">
+  </bean>
 
 </beans>
