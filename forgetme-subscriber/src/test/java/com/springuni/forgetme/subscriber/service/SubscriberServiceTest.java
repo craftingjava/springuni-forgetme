@@ -60,7 +60,7 @@ public class SubscriberServiceTest {
     when(subscriberRepository.save(any(Subscriber.class))).thenAnswer(returnsFirstArg());
   }
 
-  /// getSubscriber
+  /// getSubscriber ///
 
   @Test
   public void givenKnownEmail_whenGetSubscriber_thenSubscriberReturned() {
@@ -75,7 +75,7 @@ public class SubscriberServiceTest {
     subscriberService.getSubscriber(EMAIL);
   }
 
-  /// updateSubscription
+  /// updateSubscription ///
 
   @Test
   public void givenKnownEmail_whenUpdateSubscription_thenSubscriptionUpdated() {
@@ -96,7 +96,7 @@ public class SubscriberServiceTest {
     assertSubscriptionStatusFromSavedSubscriber(SUBSCRIBED, DATA_HANDLER_ID_VALUE);
   }
 
-  /// requestForget
+  /// requestForget ///
 
   @Test
   public void givenKnownEmail_whenRequestForget_thenSubscriptionsUpdated() {
@@ -114,7 +114,7 @@ public class SubscriberServiceTest {
     subscriberService.requestForget(EMAIL);
   }
 
-  /// recordForgetResponse
+  /// recordForgetResponse ///
 
   @Test(expected = EntityNotFoundException.class)
   public void givenUnknownSubscriptionId_whenRecordForgetResponse_thenEntityNotFoundException() {
