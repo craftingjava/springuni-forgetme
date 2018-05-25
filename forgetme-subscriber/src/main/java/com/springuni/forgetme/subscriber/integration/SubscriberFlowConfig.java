@@ -7,6 +7,8 @@ import static com.springuni.forgetme.core.amqp.QueueConfig.FORGETME_DATAHANDLER_
 import static com.springuni.forgetme.core.amqp.QueueConfig.FORGETME_DATAHANDLER_RESPONSE_ROUTING_KEY_NAME;
 import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_NAME;
 
+import com.springuni.forgetme.core.model.ForgetRequest;
+import com.springuni.forgetme.core.model.ForgetResponse;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +18,7 @@ import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
+import org.springframework.integration.dsl.Transformers;
 import org.springframework.integration.router.HeaderValueRouter;
 import org.springframework.messaging.MessageChannel;
 
@@ -56,6 +59,7 @@ public class SubscriberFlowConfig {
       AmqpTemplate amqpTemplate) {
 
     return IntegrationFlows.from(subscriberForgetRequestOutboundChannel)
+        .transform(Transformers.toJson())
         .handle(
             Amqp.outboundAdapter(amqpTemplate)
                 .exchangeName(FORGETME_DATAHANDLER_EXCHANGE_NAME)
@@ -75,6 +79,7 @@ public class SubscriberFlowConfig {
 
     return IntegrationFlows
         .from(Amqp.inboundAdapter(connectionFactory, FORGETME_DATAHANDLER_REQUEST_QUEUE_NAME))
+        .transform(Transformers.fromJson(ForgetRequest.class))
         .route(subscriberForgetRequestRouter)
         .get();
   }
@@ -85,6 +90,7 @@ public class SubscriberFlowConfig {
 
     return IntegrationFlows
         .from(subscriberDataHandlerOutboundChannel)
+        .transform(Transformers.toJson())
         .handle(Amqp.outboundAdapter(amqpTemplate).exchangeName(FORGETME_DATAHANDLER_EXCHANGE_NAME)
             .routingKey(FORGETME_DATAHANDLER_RESPONSE_ROUTING_KEY_NAME))
         .get();
@@ -96,6 +102,7 @@ public class SubscriberFlowConfig {
 
     return IntegrationFlows
         .from(Amqp.inboundAdapter(connectionFactory, FORGETME_DATAHANDLER_RESPONSE_QUEUE_NAME))
+        .transform(Transformers.fromJson(ForgetResponse.class))
         .channel(subscriberForgetResponseInboundChannel)
         .get();
   }
