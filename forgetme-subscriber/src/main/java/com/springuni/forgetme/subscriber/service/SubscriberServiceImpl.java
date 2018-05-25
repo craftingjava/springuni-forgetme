@@ -64,7 +64,8 @@ public class SubscriberServiceImpl implements SubscriberService {
   public void requestForget(@NonNull String email) {
     Subscriber subscriber = getSubscriber(email);
 
-    List<Subscription> subscriptions = subscriber.getSubscriptions();
+    List<Subscription> subscriptions =
+        subscriptionRepository.findBySubscriberId(subscriber.getId());
 
     subscriptions.forEach(it -> {
       it.updateStatus(FORGET_PENDING);
