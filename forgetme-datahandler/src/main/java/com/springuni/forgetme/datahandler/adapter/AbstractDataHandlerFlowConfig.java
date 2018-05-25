@@ -1,5 +1,7 @@
 package com.springuni.forgetme.datahandler.adapter;
 
+import com.springuni.forgetme.datahandler.service.DataHandlerRepository;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +34,18 @@ public abstract class AbstractDataHandlerFlowConfig implements InitializingBean 
   @Autowired
   private MappingMessageRouterManagement subscriberForgetRequestRouter;
 
+  @Autowired
+  private DataHandlerRepository dataHandlerRepository;
+
+  private String dataHandlerName;
   private ConfigurableApplicationContext dataHandlerContext;
   private SingletonBeanRegistry applicationBeanRegistry;
 
   @Override
   public void afterPropertiesSet() {
-    String dataHandlerName = getDataHandlerName();
+    dataHandlerName = getDataHandlerName();
+
+    initDataHandler();
 
     dataHandlerContext = new ClassPathXmlApplicationContext(
         new String[]{"/META-INF/spring/" + dataHandlerName + "-adapter-config.xml"},
@@ -60,15 +68,18 @@ public abstract class AbstractDataHandlerFlowConfig implements InitializingBean 
         SUBSCRIBER_DATA_HANDLER_INBOUND_CHANNEL_NAME, subscriberForgetRequestRouter
     );
 
-    log.info("Data handler {} initialized.", dataHandlerContext.getId());
+    log.info("Data handler context {} initialized.", dataHandlerContext.getId());
   }
 
   protected abstract String getDataHandlerName();
 
+  private void initDataHandler() {
+    UUID dataHandlerId = dataHandlerRepository.initDataHandler(dataHandlerName);
+    log.info("Data handler UUID is {} for {}.", dataHandlerId, dataHandlerName);
+  }
+
   private void registerMessageChannel(
       String channelName, MappingMessageRouterManagement routerManagement) {
-
-    String dataHandlerName = getDataHandlerName();
 
     String qualifiedChannelName = dataHandlerName + QUALIFIED_CHANNEL_NAME_DELIMITER + channelName;
 

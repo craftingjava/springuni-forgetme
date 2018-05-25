@@ -20,4 +20,8 @@ public interface DataHandlerRepository extends BaseRepository<DataHandler, UUID>
   @RestResource
   DataHandler save(DataHandler dataHandler);
 
+  default UUID initDataHandler(String name) {
+    return findByName(name).orElseGet(() -> save(new DataHandler(name))).getId();
+  }
+
 }
