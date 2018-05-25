@@ -29,11 +29,11 @@
     input-channel="subscriberDataHandlerInboundChannel"
     output-channel="subscriberDataHandlerOutboundChannel">
 
-    <int:service-activator ref="subscriberDataHandlerGateway" method="handleForget"/>
+    <int:service-activator method="handleForget" ref="subscriberDataHandlerGateway"/>
   </int:chain>
 
-  <bean id="subscriberDataHandlerGateway"
-    class="com.springuni.forgetme.datahandler.adapter.mailerlite.MailerLiteGateway">
+  <bean class="com.springuni.forgetme.datahandler.adapter.mailerlite.MailerLiteGateway"
+    id="subscriberDataHandlerGateway">
   </bean>
 
 </beans>
