@@ -13,6 +13,9 @@ public class Mocks {
   public static final UUID DATA_HANDLER_ID_VALUE =
       UUID.fromString("e408b7d4-49dc-427e-ad60-e5d8a0dc5925");
 
+  public static final UUID SUBSCRIPTION_ID_VALUE =
+      UUID.fromString("f408b7d4-49dc-427e-ad60-e5d8a0dc5925");
+
   public static Subscriber createSubscriber() {
     Subscriber subscriber = new Subscriber(EMAIL);
     return subscriber;

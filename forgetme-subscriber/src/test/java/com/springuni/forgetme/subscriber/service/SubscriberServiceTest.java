@@ -3,15 +3,23 @@ package com.springuni.forgetme.subscriber.service;
 import static com.springuni.forgetme.Mocks.DATA_HANDLER_ID_VALUE;
 import static com.springuni.forgetme.Mocks.EMAIL;
 import static com.springuni.forgetme.Mocks.EMAIL_HASH;
+import static com.springuni.forgetme.Mocks.SUBSCRIPTION_ID_VALUE;
 import static com.springuni.forgetme.Mocks.createSubscriber;
+import static com.springuni.forgetme.core.model.SubscriberStatus.FORGET_FAILED;
+import static com.springuni.forgetme.core.model.SubscriberStatus.FORGET_PENDING;
+import static com.springuni.forgetme.core.model.SubscriberStatus.FORGOTTEN;
 import static com.springuni.forgetme.core.model.SubscriberStatus.SUBSCRIBED;
 import static com.springuni.forgetme.core.model.SubscriberStatus.UNSUBSCRIBED;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.when;
 
 import com.springuni.forgetme.core.model.EntityNotFoundException;
+import com.springuni.forgetme.core.model.ForgetResponse;
 import com.springuni.forgetme.core.model.SubscriberStatus;
 import com.springuni.forgetme.core.model.WebhookData;
 import com.springuni.forgetme.subscriber.model.Subscriber;
@@ -25,12 +33,19 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.messaging.MessageChannel;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SubscriberServiceTest {
 
   @Mock
   private SubscriberRepository subscriberRepository;
+
+  @Mock
+  private SubscriptionRepository subscriptionRepository;
+
+  @Mock
+  private MessageChannel subscriberForgetRequestOutboundChannel;
 
   @InjectMocks
   private SubscriberServiceImpl subscriberService;
@@ -41,7 +56,11 @@ public class SubscriberServiceTest {
   public void setUp() {
     subscriber = createSubscriber();
     subscriber.updateSubscription(DATA_HANDLER_ID_VALUE, SUBSCRIBED);
+
+    when(subscriberRepository.save(any(Subscriber.class))).thenAnswer(returnsFirstArg());
   }
+
+  /// getSubscriber
 
   @Test
   public void givenKnownEmail_whenGetSubscriber_thenSubscriberReturned() {
@@ -56,6 +75,8 @@ public class SubscriberServiceTest {
     subscriberService.getSubscriber(EMAIL);
   }
 
+  /// updateSubscription
+
   @Test
   public void givenKnownEmail_whenUpdateSubscription_thenSubscriptionUpdated() {
     given(subscriberRepository.findByEmailHash(EMAIL_HASH)).willReturn(Optional.of(subscriber));
@@ -63,7 +84,7 @@ public class SubscriberServiceTest {
     subscriberService
         .updateSubscription(WebhookData.of(DATA_HANDLER_ID_VALUE, EMAIL, UNSUBSCRIBED));
 
-    assertSubscriptionStatus(UNSUBSCRIBED, DATA_HANDLER_ID_VALUE);
+    assertSubscriptionStatusFromSavedSubscriber(UNSUBSCRIBED, DATA_HANDLER_ID_VALUE);
   }
 
   @Test
@@ -72,10 +93,61 @@ public class SubscriberServiceTest {
 
     subscriberService.updateSubscription(WebhookData.of(DATA_HANDLER_ID_VALUE, EMAIL, SUBSCRIBED));
 
-    assertSubscriptionStatus(SUBSCRIBED, DATA_HANDLER_ID_VALUE);
+    assertSubscriptionStatusFromSavedSubscriber(SUBSCRIBED, DATA_HANDLER_ID_VALUE);
   }
 
-  private void assertSubscriptionStatus(SubscriberStatus expectedStatus, UUID dataHandlerId) {
+  /// requestForget
+
+  @Test
+  public void givenKnownEmail_whenRequestForget_thenSubscriptionsUpdated() {
+    given(subscriberRepository.findByEmailHash(EMAIL_HASH)).willReturn(Optional.of(subscriber));
+
+    subscriberService.requestForget(EMAIL);
+
+    assertSubscriptionStatusFromSavedSubscription(FORGET_PENDING, DATA_HANDLER_ID_VALUE);
+  }
+
+  @Test(expected = EntityNotFoundException.class)
+  public void givenUnknownEmail_whenRequestForget_thenEntityNotFoundException() {
+    given(subscriberRepository.findByEmailHash(EMAIL_HASH)).willReturn(Optional.empty());
+
+    subscriberService.requestForget(EMAIL);
+  }
+
+  /// recordForgetResponse
+
+  @Test(expected = EntityNotFoundException.class)
+  public void givenUnknownSubscriptionId_whenRecordForgetResponse_thenEntityNotFoundException() {
+    given(subscriptionRepository.findById(SUBSCRIPTION_ID_VALUE)).willReturn(Optional.empty());
+
+    subscriberService.recordForgetResponse(new ForgetResponse(SUBSCRIPTION_ID_VALUE, true));
+  }
+
+  @Test
+  public void givenKnownSubscriptionId_withACK_whenRecordForgetResponse_thenSubscriptionsUpdated() {
+    Subscription subscription = subscriber.getSubscriptions().get(0);
+    given(subscriptionRepository.findById(SUBSCRIPTION_ID_VALUE))
+        .willReturn(Optional.of(subscription));
+
+    subscriberService.recordForgetResponse(new ForgetResponse(SUBSCRIPTION_ID_VALUE, true));
+
+    assertSubscriptionStatusFromSavedSubscription(FORGOTTEN, DATA_HANDLER_ID_VALUE);
+  }
+
+  @Test
+  public void givenKnownSubscriptionId_withNAK_whenRecordForgetResponse_thenSubscriptionsUpdated() {
+    Subscription subscription = subscriber.getSubscriptions().get(0);
+    given(subscriptionRepository.findById(SUBSCRIPTION_ID_VALUE))
+        .willReturn(Optional.of(subscription));
+
+    subscriberService.recordForgetResponse(new ForgetResponse(SUBSCRIPTION_ID_VALUE, false));
+
+    assertSubscriptionStatusFromSavedSubscription(FORGET_FAILED, DATA_HANDLER_ID_VALUE);
+  }
+
+  private void assertSubscriptionStatusFromSavedSubscriber(
+      SubscriberStatus expectedStatus, UUID dataHandlerId) {
+
     ArgumentCaptor<Subscriber> subscriberArgumentCaptor = ArgumentCaptor.forClass(Subscriber.class);
     then(subscriberRepository).should().save(subscriberArgumentCaptor.capture());
 
@@ -86,6 +158,16 @@ public class SubscriberServiceTest {
         .get();
 
     assertEquals(expectedStatus, subscription.getStatus());
+  }
+
+  private void assertSubscriptionStatusFromSavedSubscription(
+      SubscriberStatus expectedStatus, UUID dataHandlerId) {
+
+    ArgumentCaptor<Subscription> subscriptionArgumentCaptor = ArgumentCaptor
+        .forClass(Subscription.class);
+    then(subscriptionRepository).should().save(subscriptionArgumentCaptor.capture());
+
+    assertEquals(expectedStatus, subscriptionArgumentCaptor.getValue().getStatus());
   }
 
 }
