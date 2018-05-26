@@ -1,39 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:context="http://www.springframework.org/schema/context"
-  xmlns:int="http://www.springframework.org/schema/integration"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns="http://www.springframework.org/schema/beans"
   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
-
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+  http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
   <context:property-placeholder/>
 
-  <int:channel id="webhookDataHandlerInboundChannel"/>
+  <bean
+    id="webhookDataTransformer"
+    class="com.springuni.forgetme.datahandler.adapter.mailerlite.MailerLiteWebhookDataTransformer"
+  />
 
   <bean
-    class="com.springuni.forgetme.datahandler.adapter.mailerlite.MailerLiteWebhookDataTransformer"
-    id="mailerLiteWebhookDataTransformer"
+    id="subscriberDataHandlerGateway"
+    class="com.springuni.forgetme.datahandler.adapter.mailerlite.MailerLiteGateway"
   />
 
-  <int:transformer
-    input-channel="webhookDataHandlerInboundChannel"
-    output-channel="webhookDataHandlerOutboundChannel"
-    ref="mailerLiteWebhookDataTransformer"
-  />
-
-  <int:channel id="subscriberDataHandlerInboundChannel"/>
-
-  <int:chain
-    input-channel="subscriberDataHandlerInboundChannel"
-    output-channel="subscriberDataHandlerOutboundChannel">
-
-    <int:service-activator method="handleForget" ref="subscriberDataHandlerGateway"/>
-  </int:chain>
-
-  <bean class="com.springuni.forgetme.datahandler.adapter.mailerlite.MailerLiteGateway"
-    id="subscriberDataHandlerGateway">
-  </bean>
+  <import resource="classpath:META-INF/spring/base-adapter-config.xml"/>
 
 </beans>
