@@ -1,10 +1,14 @@
 package com.springuni.forgetme.subscriber.service;
 
 import static com.springuni.forgetme.Mocks.DATA_HANDLER_ID_VALUE;
+import static com.springuni.forgetme.Mocks.DATA_HANDLER_NAME_VALUE;
 import static com.springuni.forgetme.Mocks.EMAIL;
 import static com.springuni.forgetme.Mocks.EMAIL_HASH;
+import static com.springuni.forgetme.Mocks.SUBSCRIBER_ID_VALUE;
 import static com.springuni.forgetme.Mocks.SUBSCRIPTION_ID_VALUE;
 import static com.springuni.forgetme.Mocks.createSubscriber;
+import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_ID;
+import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_NAME;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGET_FAILED;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGET_PENDING;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGOTTEN;
@@ -18,7 +22,9 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.when;
 
+import com.springuni.forgetme.core.model.DataHandlerRegistry;
 import com.springuni.forgetme.core.model.EntityNotFoundException;
+import com.springuni.forgetme.core.model.ForgetRequest;
 import com.springuni.forgetme.core.model.ForgetResponse;
 import com.springuni.forgetme.core.model.SubscriptionStatus;
 import com.springuni.forgetme.core.model.WebhookData;
@@ -33,10 +39,14 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SubscriberServiceTest {
+
+  @Mock
+  private DataHandlerRegistry dataHandlerRegistry;
 
   @Mock
   private SubscriberRepository subscriberRepository;
@@ -56,8 +66,10 @@ public class SubscriberServiceTest {
   public void setUp() {
     subscriber = createSubscriber();
     subscriber.updateSubscription(DATA_HANDLER_ID_VALUE, SUBSCRIPTION_CREATED);
-    subscriber.setId(SUBSCRIPTION_ID_VALUE);
+    subscriber.setId(SUBSCRIBER_ID_VALUE);
+    subscriber.getSubscriptions().get(0).setId(SUBSCRIPTION_ID_VALUE);
 
+    when(dataHandlerRegistry.lookup(DATA_HANDLER_ID_VALUE)).thenReturn(DATA_HANDLER_NAME_VALUE);
     when(subscriberRepository.save(any(Subscriber.class))).thenAnswer(returnsFirstArg());
   }
 
@@ -103,12 +115,18 @@ public class SubscriberServiceTest {
   @Test
   public void givenKnownEmail_whenRequestForget_thenSubscriptionsUpdated() {
     given(subscriberRepository.findByEmailHash(EMAIL_HASH)).willReturn(Optional.of(subscriber));
-    given(subscriptionRepository.findBySubscriberId(SUBSCRIPTION_ID_VALUE))
+    given(subscriptionRepository.findBySubscriberId(SUBSCRIBER_ID_VALUE))
         .willReturn(subscriber.getSubscriptions());
 
     subscriberService.requestForget(EMAIL);
 
+    then(subscriberForgetRequestOutboundChannel).should().send(any(Message.class));
+
     assertSubscriptionStatusFromSavedSubscription(FORGET_PENDING, DATA_HANDLER_ID_VALUE);
+
+    assertForgetRequestMessage(
+        DATA_HANDLER_ID_VALUE, DATA_HANDLER_NAME_VALUE, SUBSCRIPTION_ID_VALUE, EMAIL
+    );
   }
 
   @Test(expected = EntityNotFoundException.class)
@@ -122,18 +140,18 @@ public class SubscriberServiceTest {
 
   @Test(expected = EntityNotFoundException.class)
   public void givenUnknownSubscriptionId_whenRecordForgetResponse_thenEntityNotFoundException() {
-    given(subscriptionRepository.findById(SUBSCRIPTION_ID_VALUE)).willReturn(Optional.empty());
+    given(subscriptionRepository.findById(SUBSCRIBER_ID_VALUE)).willReturn(Optional.empty());
 
-    subscriberService.recordForgetResponse(new ForgetResponse(SUBSCRIPTION_ID_VALUE, true));
+    subscriberService.recordForgetResponse(new ForgetResponse(SUBSCRIBER_ID_VALUE, true));
   }
 
   @Test
   public void givenKnownSubscriptionId_withACK_whenRecordForgetResponse_thenSubscriptionsUpdated() {
     Subscription subscription = subscriber.getSubscriptions().get(0);
-    given(subscriptionRepository.findById(SUBSCRIPTION_ID_VALUE))
+    given(subscriptionRepository.findById(SUBSCRIBER_ID_VALUE))
         .willReturn(Optional.of(subscription));
 
-    subscriberService.recordForgetResponse(new ForgetResponse(SUBSCRIPTION_ID_VALUE, true));
+    subscriberService.recordForgetResponse(new ForgetResponse(SUBSCRIBER_ID_VALUE, true));
 
     assertSubscriptionStatusFromSavedSubscription(FORGOTTEN, DATA_HANDLER_ID_VALUE);
   }
@@ -141,12 +159,29 @@ public class SubscriberServiceTest {
   @Test
   public void givenKnownSubscriptionId_withNAK_whenRecordForgetResponse_thenSubscriptionsUpdated() {
     Subscription subscription = subscriber.getSubscriptions().get(0);
-    given(subscriptionRepository.findById(SUBSCRIPTION_ID_VALUE))
+    given(subscriptionRepository.findById(SUBSCRIBER_ID_VALUE))
         .willReturn(Optional.of(subscription));
 
-    subscriberService.recordForgetResponse(new ForgetResponse(SUBSCRIPTION_ID_VALUE, false));
+    subscriberService.recordForgetResponse(new ForgetResponse(SUBSCRIBER_ID_VALUE, false));
 
     assertSubscriptionStatusFromSavedSubscription(FORGET_FAILED, DATA_HANDLER_ID_VALUE);
+  }
+
+  private void assertForgetRequestMessage(
+      UUID expectedDataHandlerId, String expectedDataHandlerName, UUID expectedSubscriptionId,
+      String expectedEmail) {
+
+    ArgumentCaptor<Message<ForgetRequest>> messageArgumentCaptor =
+        ArgumentCaptor.forClass(Message.class);
+
+    then(subscriberForgetRequestOutboundChannel).should().send(messageArgumentCaptor.capture());
+
+    Message<ForgetRequest> forgetRequestMessage = messageArgumentCaptor.getValue();
+    assertEquals(expectedDataHandlerId, forgetRequestMessage.getHeaders().get(DATA_HANDLER_ID));
+    assertEquals(expectedDataHandlerName, forgetRequestMessage.getHeaders().get(
+        DATA_HANDLER_NAME));
+    assertEquals(expectedSubscriptionId, forgetRequestMessage.getPayload().getSubscriptionId());
+    assertEquals(expectedEmail, forgetRequestMessage.getPayload().getSubscriberEmail());
   }
 
   private void assertSubscriptionStatusFromSavedSubscriber(

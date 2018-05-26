@@ -1,6 +1,6 @@
 package com.springuni.forgetme.datahandler.adapter;
 
-import com.springuni.forgetme.datahandler.service.DataHandlerRepository;
+import com.springuni.forgetme.core.model.DataHandlerRegistry;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
@@ -35,7 +35,7 @@ public abstract class AbstractDataHandlerFlowConfig implements InitializingBean 
   private MappingMessageRouterManagement subscriberForgetRequestRouter;
 
   @Autowired
-  private DataHandlerRepository dataHandlerRepository;
+  private DataHandlerRegistry dataHandlerRegistry;
 
   private String dataHandlerName;
   private ConfigurableApplicationContext dataHandlerContext;
@@ -74,7 +74,7 @@ public abstract class AbstractDataHandlerFlowConfig implements InitializingBean 
   protected abstract String getDataHandlerName();
 
   private void initDataHandler() {
-    UUID dataHandlerId = dataHandlerRepository.initDataHandler(dataHandlerName);
+    UUID dataHandlerId = dataHandlerRegistry.register(dataHandlerName);
     log.info("Data handler UUID is {} for {}.", dataHandlerId, dataHandlerName);
   }
 

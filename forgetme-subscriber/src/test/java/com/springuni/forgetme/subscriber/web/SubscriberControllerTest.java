@@ -1,7 +1,7 @@
 package com.springuni.forgetme.subscriber.web;
 
 import static com.springuni.forgetme.Mocks.EMAIL;
-import static com.springuni.forgetme.Mocks.SUBSCRIPTION_ID_VALUE;
+import static com.springuni.forgetme.Mocks.SUBSCRIBER_ID_VALUE;
 import static com.springuni.forgetme.Mocks.createSubscriber;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -48,7 +48,7 @@ public class SubscriberControllerTest {
   @Before
   public void setUp() {
     subscriber = createSubscriber();
-    subscriber.setId(SUBSCRIPTION_ID_VALUE);
+    subscriber.setId(SUBSCRIBER_ID_VALUE);
   }
 
   /// GET /api/subscribers/{email} ///

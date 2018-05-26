@@ -6,6 +6,7 @@ import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGET_FAILED
 import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGET_PENDING;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGOTTEN;
 
+import com.springuni.forgetme.core.model.DataHandlerRegistry;
 import com.springuni.forgetme.core.model.EntityNotFoundException;
 import com.springuni.forgetme.core.model.ForgetRequest;
 import com.springuni.forgetme.core.model.ForgetResponse;
@@ -31,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class SubscriberServiceImpl implements SubscriberService {
 
+  private final DataHandlerRegistry dataHandlerRegistry;
   private final SubscriberRepository subscriberRepository;
   private final SubscriptionRepository subscriptionRepository;
   private final MessageChannel subscriberForgetRequestOutboundChannel;
@@ -70,10 +72,13 @@ public class SubscriberServiceImpl implements SubscriberService {
     subscriptions.forEach(it -> {
       it.updateStatus(FORGET_PENDING);
 
+      UUID dataHandlerId = it.getDataHandlerId();
+      String dataHandlerName = dataHandlerRegistry.lookup(dataHandlerId);
+
       Message<ForgetRequest> forgetRequestMessage = MessageBuilder
           .withPayload(new ForgetRequest(it.getId(), email))
-          .setHeader(DATA_HANDLER_NAME, "mailerlite") // TODO get DH name
           .setHeader(DATA_HANDLER_ID, it.getDataHandlerId())
+          .setHeader(DATA_HANDLER_NAME, dataHandlerName)
           .build();
 
       subscriberForgetRequestOutboundChannel.send(forgetRequestMessage);
