@@ -78,7 +78,9 @@ public class SubscriberFlowConfig {
       ConnectionFactory connectionFactory, HeaderValueRouter subscriberForgetRequestRouter) {
 
     return IntegrationFlows
-        .from(Amqp.inboundAdapter(connectionFactory, FORGETME_DATAHANDLER_REQUEST_QUEUE_NAME))
+        .from(Amqp.inboundAdapter(connectionFactory, FORGETME_DATAHANDLER_REQUEST_QUEUE_NAME)
+            .configureContainer(s -> s.defaultRequeueRejected(false))
+        )
         .transform(Transformers.fromJson(ForgetRequest.class))
         .route(subscriberForgetRequestRouter)
         .get();
@@ -101,7 +103,9 @@ public class SubscriberFlowConfig {
       ConnectionFactory connectionFactory, MessageChannel subscriberForgetResponseInboundChannel) {
 
     return IntegrationFlows
-        .from(Amqp.inboundAdapter(connectionFactory, FORGETME_DATAHANDLER_RESPONSE_QUEUE_NAME))
+        .from(Amqp.inboundAdapter(connectionFactory, FORGETME_DATAHANDLER_RESPONSE_QUEUE_NAME)
+            .configureContainer(s -> s.defaultRequeueRejected(false))
+        )
         .transform(Transformers.fromJson(ForgetResponse.class))
         .channel(subscriberForgetResponseInboundChannel)
         .get();

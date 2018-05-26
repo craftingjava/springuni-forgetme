@@ -50,11 +50,12 @@ public class WebhookFlowConfig {
       HeaderValueRouter webhookInboundRouter) {
 
     return IntegrationFlows
-        .from(Amqp.inboundAdapter(connectionFactory, FORGETME_WEBHOOK_QUEUE_NAME))
+        .from(Amqp.inboundAdapter(connectionFactory, FORGETME_WEBHOOK_QUEUE_NAME)
+            .configureContainer(s -> s.defaultRequeueRejected(false))
+        )
         .log(INFO)
         .transform(new ObjectToJsonNodeTransformer(objectMapper))
         .route(webhookInboundRouter)
-        // .route("headers['" + DATA_HANDLER_NAME + "'].concat('InboundChannel')")
         .get();
   }
 
