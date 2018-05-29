@@ -9,7 +9,7 @@ public interface SubscriberService {
 
   Subscriber getSubscriber(String email);
 
-  void updateSubscription(WebhookData webhookData);
+  void updateSubscription(WebhookData webhookData, LocalDateTime eventTimestamp);
 
   void requestForget(String email);
 

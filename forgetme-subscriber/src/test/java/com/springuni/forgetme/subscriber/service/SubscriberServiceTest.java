@@ -66,7 +66,13 @@ public class SubscriberServiceTest {
   @Before
   public void setUp() {
     subscriber = createSubscriber();
-    subscriber.updateSubscription(DATA_HANDLER_ID_VALUE, SUBSCRIPTION_CREATED);
+
+    subscriber.updateSubscription(
+        DATA_HANDLER_ID_VALUE,
+        SUBSCRIPTION_CREATED,
+        EVENT_TIMESTAMP_VALUE
+    );
+
     subscriber.setId(SUBSCRIBER_ID_VALUE);
     subscriber.getSubscriptions().get(0).setId(SUBSCRIPTION_ID_VALUE);
 
@@ -95,8 +101,10 @@ public class SubscriberServiceTest {
   public void givenKnownEmail_whenUpdateSubscription_thenSubscriptionUpdated() {
     given(subscriberRepository.findByEmailHash(EMAIL_HASH)).willReturn(Optional.of(subscriber));
 
-    subscriberService
-        .updateSubscription(WebhookData.of(DATA_HANDLER_ID_VALUE, EMAIL, UNSUBSCRIBED));
+    subscriberService.updateSubscription(
+        WebhookData.of(DATA_HANDLER_ID_VALUE, EMAIL, UNSUBSCRIBED),
+        EVENT_TIMESTAMP_VALUE
+    );
 
     assertSubscriptionStatusFromSavedSubscriber(UNSUBSCRIBED, DATA_HANDLER_ID_VALUE);
   }
@@ -105,8 +113,10 @@ public class SubscriberServiceTest {
   public void givenUnknownEmail_whenUpdateSubscriber_thenNewSubscriberSaved() {
     given(subscriberRepository.findByEmailHash(EMAIL_HASH)).willReturn(Optional.empty());
 
-    subscriberService.updateSubscription(WebhookData.of(DATA_HANDLER_ID_VALUE, EMAIL,
-        SUBSCRIPTION_CREATED));
+    subscriberService.updateSubscription(
+        WebhookData.of(DATA_HANDLER_ID_VALUE, EMAIL, SUBSCRIPTION_CREATED),
+        EVENT_TIMESTAMP_VALUE
+    );
 
     assertSubscriptionStatusFromSavedSubscriber(SUBSCRIPTION_CREATED, DATA_HANDLER_ID_VALUE);
   }

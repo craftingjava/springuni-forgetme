@@ -1,6 +1,7 @@
 package com.springuni.forgetme.subscriber.model;
 
 import static com.springuni.forgetme.Mocks.DATA_HANDLER_ID_VALUE;
+import static com.springuni.forgetme.Mocks.EVENT_TIMESTAMP_VALUE;
 import static com.springuni.forgetme.Mocks.createSubscription;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIPTION_CREATED;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIPTION_UPDATED;
@@ -17,7 +18,7 @@ public class SubscriberTest {
   private Subscriber subscriber;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     subscriber = Mocks.createSubscriber();
   }
 
@@ -25,7 +26,11 @@ public class SubscriberTest {
   public void givenNoSubscriptions_whenUpdateSubscription_thenCreated() {
     subscriber.setSubscriptions(new ArrayList<>());
 
-    subscriber.updateSubscription(DATA_HANDLER_ID_VALUE, SUBSCRIPTION_CREATED);
+    subscriber.updateSubscription(
+        DATA_HANDLER_ID_VALUE,
+        SUBSCRIPTION_CREATED,
+        EVENT_TIMESTAMP_VALUE
+    );
 
     assertEquals(SUBSCRIPTION_CREATED, subscriber.getSubscriptions().get(0).getStatus());
   }
@@ -35,7 +40,11 @@ public class SubscriberTest {
     Subscription subscription = createSubscription();
     subscriber.setSubscriptions(singletonList(subscription));
 
-    subscriber.updateSubscription(DATA_HANDLER_ID_VALUE, SUBSCRIPTION_UPDATED);
+    subscriber.updateSubscription(
+        DATA_HANDLER_ID_VALUE,
+        SUBSCRIPTION_UPDATED,
+        EVENT_TIMESTAMP_VALUE
+    );
 
     assertEquals(SUBSCRIPTION_UPDATED, subscriber.getSubscriptions().get(0).getStatus());
   }

@@ -52,13 +52,19 @@ public class SubscriberServiceImpl implements SubscriberService {
   @Override
   @Transactional
   @ServiceActivator(inputChannel = "webhookDataHandlerOutboundChannel")
-  public void updateSubscription(@NonNull WebhookData webhookData) {
+  public void updateSubscription(
+      @NonNull @Payload WebhookData webhookData,
+      @NonNull @Header(EVENT_TIMESTAMP) LocalDateTime eventTimestamp) {
+
     Subscriber newSubscriber = new Subscriber(webhookData.getSubscriberEmail());
     Subscriber subscriber = subscriberRepository.findByEmailHash(newSubscriber.getEmailHash())
         .orElse(newSubscriber);
 
-    subscriber
-        .updateSubscription(webhookData.getDataHandlerId(), webhookData.getSubscriptionStatus());
+    subscriber.updateSubscription(
+        webhookData.getDataHandlerId(),
+        webhookData.getSubscriptionStatus(),
+        eventTimestamp
+    );
 
     subscriber = subscriberRepository.save(subscriber);
 
