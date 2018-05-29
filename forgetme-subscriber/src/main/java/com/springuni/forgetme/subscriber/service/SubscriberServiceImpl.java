@@ -2,6 +2,7 @@ package com.springuni.forgetme.subscriber.service;
 
 import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_ID;
 import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_NAME;
+import static com.springuni.forgetme.core.model.MessageHeaderNames.EVENT_TIMESTAMP;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGET_FAILED;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGET_PENDING;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGOTTEN;
@@ -14,6 +15,7 @@ import com.springuni.forgetme.core.model.SubscriptionStatus;
 import com.springuni.forgetme.core.model.WebhookData;
 import com.springuni.forgetme.subscriber.model.Subscriber;
 import com.springuni.forgetme.subscriber.model.Subscription;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import lombok.NonNull;
@@ -22,6 +24,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.security.core.token.Sha512DigestUtils;
 import org.springframework.stereotype.Service;
@@ -92,14 +96,17 @@ public class SubscriberServiceImpl implements SubscriberService {
   @Override
   @Transactional
   @ServiceActivator(inputChannel = "subscriberForgetResponseInboundChannel")
-  public void recordForgetResponse(@NonNull ForgetResponse forgetResponse) {
+  public void recordForgetResponse(
+      @NonNull @Payload ForgetResponse forgetResponse,
+      @NonNull @Header(EVENT_TIMESTAMP) LocalDateTime eventTimestamp) {
+
     UUID id = forgetResponse.getSubscriptionId();
     Subscription subscription = subscriptionRepository.findById(id)
         .orElseThrow(() -> new EntityNotFoundException("id", id));
 
     SubscriptionStatus status = forgetResponse.isAcknowledged() ? FORGOTTEN : FORGET_FAILED;
 
-    subscription.updateStatus(status);
+    subscription.updateStatus(status, eventTimestamp);
 
     subscriptionRepository.save(subscription);
 

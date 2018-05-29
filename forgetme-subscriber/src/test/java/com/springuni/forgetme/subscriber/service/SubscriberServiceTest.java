@@ -4,6 +4,7 @@ import static com.springuni.forgetme.Mocks.DATA_HANDLER_ID_VALUE;
 import static com.springuni.forgetme.Mocks.DATA_HANDLER_NAME_VALUE;
 import static com.springuni.forgetme.Mocks.EMAIL;
 import static com.springuni.forgetme.Mocks.EMAIL_HASH;
+import static com.springuni.forgetme.Mocks.EVENT_TIMESTAMP_VALUE;
 import static com.springuni.forgetme.Mocks.SUBSCRIBER_ID_VALUE;
 import static com.springuni.forgetme.Mocks.SUBSCRIPTION_ID_VALUE;
 import static com.springuni.forgetme.Mocks.createSubscriber;
@@ -142,7 +143,9 @@ public class SubscriberServiceTest {
   public void givenUnknownSubscriptionId_whenRecordForgetResponse_thenEntityNotFoundException() {
     given(subscriptionRepository.findById(SUBSCRIBER_ID_VALUE)).willReturn(Optional.empty());
 
-    subscriberService.recordForgetResponse(new ForgetResponse(SUBSCRIBER_ID_VALUE, true));
+    subscriberService.recordForgetResponse(
+        new ForgetResponse(SUBSCRIBER_ID_VALUE, true), EVENT_TIMESTAMP_VALUE
+    );
   }
 
   @Test
@@ -151,7 +154,9 @@ public class SubscriberServiceTest {
     given(subscriptionRepository.findById(SUBSCRIBER_ID_VALUE))
         .willReturn(Optional.of(subscription));
 
-    subscriberService.recordForgetResponse(new ForgetResponse(SUBSCRIBER_ID_VALUE, true));
+    subscriberService.recordForgetResponse(
+        new ForgetResponse(SUBSCRIBER_ID_VALUE, true), EVENT_TIMESTAMP_VALUE
+    );
 
     assertSubscriptionStatusFromSavedSubscription(FORGOTTEN, DATA_HANDLER_ID_VALUE);
   }
@@ -162,7 +167,9 @@ public class SubscriberServiceTest {
     given(subscriptionRepository.findById(SUBSCRIBER_ID_VALUE))
         .willReturn(Optional.of(subscription));
 
-    subscriberService.recordForgetResponse(new ForgetResponse(SUBSCRIBER_ID_VALUE, false));
+    subscriberService.recordForgetResponse(
+        new ForgetResponse(SUBSCRIBER_ID_VALUE, false), EVENT_TIMESTAMP_VALUE
+    );
 
     assertSubscriptionStatusFromSavedSubscription(FORGET_FAILED, DATA_HANDLER_ID_VALUE);
   }

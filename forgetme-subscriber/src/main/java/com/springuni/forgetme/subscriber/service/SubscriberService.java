@@ -3,6 +3,7 @@ package com.springuni.forgetme.subscriber.service;
 import com.springuni.forgetme.core.model.ForgetResponse;
 import com.springuni.forgetme.core.model.WebhookData;
 import com.springuni.forgetme.subscriber.model.Subscriber;
+import java.time.LocalDateTime;
 
 public interface SubscriberService {
 
@@ -12,6 +13,6 @@ public interface SubscriberService {
 
   void requestForget(String email);
 
-  void recordForgetResponse(ForgetResponse forgetResponse);
+  void recordForgetResponse(ForgetResponse forgetResponse, LocalDateTime eventTimestamp);
 
 }

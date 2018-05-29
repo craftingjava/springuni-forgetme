@@ -2,6 +2,7 @@ package com.springuni.forgetme;
 
 import com.springuni.forgetme.subscriber.model.Subscriber;
 import com.springuni.forgetme.subscriber.model.Subscription;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import org.springframework.security.core.token.Sha512DigestUtils;
 
@@ -20,6 +21,8 @@ public class Mocks {
 
   public static final UUID SUBSCRIPTION_ID_VALUE =
       UUID.fromString("a408b7d4-49dc-427e-ad60-e5d8a0dc5925");
+
+  public static final LocalDateTime EVENT_TIMESTAMP_VALUE = LocalDateTime.MIN;
 
   public static Subscriber createSubscriber() {
     Subscriber subscriber = new Subscriber(EMAIL);
