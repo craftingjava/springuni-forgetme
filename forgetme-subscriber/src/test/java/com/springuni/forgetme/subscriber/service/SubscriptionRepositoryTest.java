@@ -38,7 +38,7 @@ public class SubscriptionRepositoryTest
     entity.updateStatus(UNSUBSCRIBED);
     saveEntity();
     Subscription subscription = repository.findById(entity.getId()).get();
-    assertTrue(subscription.getStatusChanges().stream()
+    assertTrue(subscription.getSubscriptionChanges().stream()
         .anyMatch(it -> it.getStatus().equals(UNSUBSCRIBED)));
   }
 

@@ -36,10 +36,10 @@ public class Subscription extends AbstractEntity {
 
   @ElementCollection
   @CollectionTable(
-      name = "subscription_status_change",
+      name = "subscription_change",
       joinColumns = @JoinColumn(name = "subscription_id")
   )
-  private List<SubscriptionStatusChange> statusChanges = new ArrayList<>();
+  private List<SubscriptionDetail> subscriptionChanges = new ArrayList<>();
 
   public Subscription(UUID dataHandlerId, Subscriber subscriber) {
     this(dataHandlerId, subscriber, SUBSCRIPTION_CREATED);
@@ -64,11 +64,11 @@ public class Subscription extends AbstractEntity {
     }
 
     this.status = status;
-    statusChanges.add(new SubscriptionStatusChange(status));
+    subscriptionChanges.add(new SubscriptionDetail(status));
   }
 
-  public List<SubscriptionStatusChange> getStatusChanges() {
-    return unmodifiableList(statusChanges);
+  public List<SubscriptionDetail> getSubscriptionChanges() {
+    return unmodifiableList(subscriptionChanges);
   }
 
 }

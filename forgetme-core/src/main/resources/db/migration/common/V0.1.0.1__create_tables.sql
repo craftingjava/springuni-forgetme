@@ -35,10 +35,10 @@ CREATE TABLE subscription (
 
 CREATE INDEX subscription_subscriber_id_idx ON subscription(subscriber_id);
 
-CREATE TABLE subscription_status_change (
+CREATE TABLE subscription_change (
   subscription_id uuid NOT NULL,
   status varchar(25) not null,
-  changed_date timestamp not NULL default CURRENT_TIMESTAMP,
+  event_timestamp timestamp not NULL default CURRENT_TIMESTAMP,
   CONSTRAINT subscription_status_change_subscription_id_fk FOREIGN KEY (subscription_id) REFERENCES subscription(id)
 );
 

@@ -9,20 +9,27 @@ import javax.persistence.Embeddable;
 import javax.persistence.Enumerated;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Data
 @Embeddable
 @NoArgsConstructor
-public class SubscriptionStatusChange {
+public class SubscriptionDetail {
 
   @Enumerated(STRING)
   private SubscriptionStatus status;
 
-  private LocalDateTime changedDate;
+  private LocalDateTime eventTimestamp;
 
-  public SubscriptionStatusChange(SubscriptionStatus status) {
+  public SubscriptionDetail(
+      @NonNull SubscriptionStatus status, @NonNull LocalDateTime eventTimestamp) {
+
     this.status = status;
-    changedDate = LocalDateTime.now(UTC);
+    this.eventTimestamp = eventTimestamp;
+  }
+
+  public SubscriptionDetail(@NonNull SubscriptionStatus status) {
+    this(status, LocalDateTime.now(UTC));
   }
 
 }
