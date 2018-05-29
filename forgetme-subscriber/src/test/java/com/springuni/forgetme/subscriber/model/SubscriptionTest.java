@@ -5,9 +5,12 @@ import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIPTION_
 import static com.springuni.forgetme.core.model.SubscriptionStatus.UNSUBSCRIBED;
 import static org.junit.Assert.assertEquals;
 
+import java.time.LocalDateTime;
 import org.junit.Test;
 
 public class SubscriptionTest {
+
+  private static final LocalDateTime EVENT_TIMESTAMP = LocalDateTime.MIN;
 
   @Test
   public void givenNewSubscription_whenGetStatusChanges_thenThereIsOneChange() {
@@ -19,18 +22,15 @@ public class SubscriptionTest {
   @Test
   public void givenNewStatus_whenUpdateStatus_thenChangeRecorded() {
     Subscription subscription = createSubscription();
-    subscription.updateStatus(UNSUBSCRIBED);
+
+    subscription.updateStatus(UNSUBSCRIBED, EVENT_TIMESTAMP);
+    assertEquals(UNSUBSCRIBED, subscription.getStatus());
+    assertEquals(EVENT_TIMESTAMP, subscription.getEventTimestamp());
+
     assertEquals(2, subscription.getSubscriptionChanges().size());
     assertEquals(SUBSCRIPTION_CREATED, subscription.getSubscriptionChanges().get(0).getStatus());
     assertEquals(UNSUBSCRIBED, subscription.getSubscriptionChanges().get(1).getStatus());
-  }
-
-  @Test
-  public void givenOldStatus_whenUpdateStatus_thenNoChangeRecorded() {
-    Subscription subscription = createSubscription();
-    subscription.updateStatus(SUBSCRIPTION_CREATED);
-    assertEquals(1, subscription.getSubscriptionChanges().size());
-    assertEquals(SUBSCRIPTION_CREATED, subscription.getSubscriptionChanges().get(0).getStatus());
+    assertEquals(EVENT_TIMESTAMP, subscription.getSubscriptionChanges().get(1).getEventTimestamp());
   }
 
 }

@@ -24,6 +24,7 @@ CREATE TABLE subscription (
   data_handler_id uuid NOT NULL,
   subscriber_id uuid NOT NULL,
   status varchar(25) not null,
+  event_timestamp timestamp not NULL default CURRENT_TIMESTAMP,
   created_date timestamp not NULL default CURRENT_TIMESTAMP,
   last_modified_date timestamp not NULL default CURRENT_TIMESTAMP,
   version_ integer not null,
@@ -42,4 +43,4 @@ CREATE TABLE subscription_change (
   CONSTRAINT subscription_status_change_subscription_id_fk FOREIGN KEY (subscription_id) REFERENCES subscription(id)
 );
 
-CREATE INDEX subscription_status_change_subscription_id_idx ON subscription_status_change(subscription_id);
+CREATE INDEX subscription_change_subscription_id_idx ON subscription_change(subscription_id);

@@ -3,7 +3,7 @@ package com.springuni.forgetme.subscriber.model;
 import static com.springuni.forgetme.Mocks.DATA_HANDLER_ID_VALUE;
 import static com.springuni.forgetme.Mocks.createSubscription;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIPTION_CREATED;
-import static com.springuni.forgetme.core.model.SubscriptionStatus.UNSUBSCRIBED;
+import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIPTION_UPDATED;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
 
@@ -33,12 +33,11 @@ public class SubscriberTest {
   @Test
   public void givenExistingSubscription_whenUpdateSubscription_thenUpdated() {
     Subscription subscription = createSubscription();
-    subscription.setStatus(UNSUBSCRIBED);
     subscriber.setSubscriptions(singletonList(subscription));
 
-    subscriber.updateSubscription(DATA_HANDLER_ID_VALUE, SUBSCRIPTION_CREATED);
+    subscriber.updateSubscription(DATA_HANDLER_ID_VALUE, SUBSCRIPTION_UPDATED);
 
-    assertEquals(SUBSCRIPTION_CREATED, subscriber.getSubscriptions().get(0).getStatus());
+    assertEquals(SUBSCRIPTION_UPDATED, subscriber.getSubscriptions().get(0).getStatus());
   }
 
 }
