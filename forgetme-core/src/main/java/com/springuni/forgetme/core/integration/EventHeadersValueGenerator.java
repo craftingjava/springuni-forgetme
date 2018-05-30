@@ -1,10 +1,8 @@
 package com.springuni.forgetme.core.integration;
 
-import static java.time.ZoneOffset.UTC;
-
-import java.time.LocalDateTime;
+import java.time.Clock;
+import java.time.Instant;
 import java.util.UUID;
-import java.util.function.Supplier;
 import lombok.NonNull;
 import org.springframework.messaging.Message;
 import org.springframework.util.AlternativeJdkIdGenerator;
@@ -13,25 +11,24 @@ import org.springframework.util.IdGenerator;
 public class EventHeadersValueGenerator {
 
   private static final IdGenerator DEFAULT_ID_GENERATOR = new AlternativeJdkIdGenerator();
-  private static final Supplier<LocalDateTime> DEFAULT_TIMESTAMP_GENERATOR =
-      () -> LocalDateTime.now(UTC);
+  private static final Clock DEFAULT_CLOCK = Clock.systemUTC();
 
   private final IdGenerator idGenerator;
-  private final Supplier<LocalDateTime> timestampSupplier;
+  private final Clock clock;
 
   public EventHeadersValueGenerator() {
     this(DEFAULT_ID_GENERATOR);
   }
 
   public EventHeadersValueGenerator(IdGenerator idGenerator) {
-    this(idGenerator, DEFAULT_TIMESTAMP_GENERATOR);
+    this(idGenerator, DEFAULT_CLOCK);
   }
 
   EventHeadersValueGenerator(
-      @NonNull IdGenerator idGenerator, @NonNull Supplier<LocalDateTime> timestampSupplier) {
+      @NonNull IdGenerator idGenerator, @NonNull Clock clock) {
 
     this.idGenerator = idGenerator;
-    this.timestampSupplier = timestampSupplier;
+    this.clock = clock;
   }
 
   /**
@@ -44,8 +41,8 @@ public class EventHeadersValueGenerator {
   /**
    * @param message isn't used; it was added for making this method usable with the Java DSL.
    */
-  public LocalDateTime createEventTimestamp(Message<?> message) {
-    return timestampSupplier.get();
+  public Instant createEventTimestamp(Message<?> message) {
+    return Instant.now(clock);
   }
 
 }
