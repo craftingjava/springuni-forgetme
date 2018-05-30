@@ -8,11 +8,13 @@
 
   <int:channel id="webhookDataHandlerInboundChannel"/>
 
-  <int:transformer
+  <int:chain
     input-channel="webhookDataHandlerInboundChannel"
-    output-channel="webhookDataHandlerOutboundChannel"
-    ref="webhookDataTransformer"
-  />
+    output-channel="webhookDataHandlerOutboundChannel">
+
+    <int:transformer ref="webhookDataTransformer"/>
+    <int:splitter/>
+  </int:chain>
 
   <int:channel id="subscriberDataHandlerInboundChannel"/>
 
