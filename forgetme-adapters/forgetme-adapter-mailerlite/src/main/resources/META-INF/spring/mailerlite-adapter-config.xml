@@ -8,13 +8,13 @@
   <context:property-placeholder/>
 
   <bean
-    id="webhookDataTransformer"
     class="com.springuni.forgetme.datahandler.adapter.mailerlite.MailerLiteWebhookDataTransformer"
+    id="webhookDataTransformer"
   />
 
   <bean
-    id="subscriberDataHandlerGateway"
     class="com.springuni.forgetme.datahandler.adapter.mailerlite.MailerLiteGateway"
+    id="subscriberDataHandlerGateway"
   />
 
   <import resource="classpath:META-INF/spring/base-adapter-config.xml"/>

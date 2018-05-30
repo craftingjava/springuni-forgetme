@@ -28,7 +28,8 @@ public class SubscriptionTest {
     assertEquals(2, subscription.getSubscriptionChanges().size());
     assertEquals(SUBSCRIPTION_CREATED, subscription.getSubscriptionChanges().get(0).getStatus());
     assertEquals(UNSUBSCRIBED, subscription.getSubscriptionChanges().get(1).getStatus());
-    assertEquals(EVENT_TIMESTAMP_VALUE, subscription.getSubscriptionChanges().get(1).getEventTimestamp());
+    assertEquals(EVENT_TIMESTAMP_VALUE,
+        subscription.getSubscriptionChanges().get(1).getEventTimestamp());
   }
 
 }
