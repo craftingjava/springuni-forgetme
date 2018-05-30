@@ -1,0 +1,13 @@
+#logging.level.org.hibernate=trace
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost/forgetme
+    username: lcsontos
+    password: qwer1234
+  flyway:
+    locations:
+      - classpath:db/migration/common
+      - classpath:db/migration/{vendor}
+
+mailerlite:
+  apiKey: ${MAILERLITE_API_KEY}
