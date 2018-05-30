@@ -1,6 +1,6 @@
 package com.springuni.forgetme.core.integration;
 
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.BeanFactory;
@@ -44,7 +44,10 @@ public class IntegrationConfig implements InitializingBean {
   }
 
   private Set<Converter<?, ?>> createConverters() {
-    return Collections.singleton(new StringToLocalDateTimeConverter());
+    Set<Converter<?, ?>> converters = new HashSet<>();
+    converters.add(new StringToLocalDateTimeConverter());
+    converters.add(new InstantToLocalDateTimeConverter());
+    return converters;
   }
 
 }
