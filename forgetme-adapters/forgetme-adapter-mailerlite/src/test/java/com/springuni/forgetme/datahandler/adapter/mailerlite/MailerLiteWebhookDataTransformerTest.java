@@ -28,7 +28,7 @@ public class MailerLiteWebhookDataTransformerTest {
 
   private static final String EMAIL = "test@springuni.com";
 
-  private static final Instant EVENT_TIMESTAMP_VALUE = Instant.ofEpochMilli(1495551003);
+  private static final Instant EVENT_TIMESTAMP_VALUE = Instant.ofEpochSecond(1495551003);
 
   private static final UUID DATA_HANDLER_ID_VALUE =
       UUID.fromString("e408b7d4-49dc-427e-ad60-e5d8a0dc5925");
@@ -61,7 +61,7 @@ public class MailerLiteWebhookDataTransformerTest {
     ObjectNode eventsObject = ((ObjectNode) jsonNode).putArray("events").addObject();
 
     eventsObject.put("type", eventType);
-    eventsObject.put("timestamp", EVENT_TIMESTAMP_VALUE.toEpochMilli());
+    eventsObject.put("timestamp", EVENT_TIMESTAMP_VALUE.getEpochSecond());
     eventsObject.putObject("data").putObject("subscriber").put("email", email);
   }
 

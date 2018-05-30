@@ -76,7 +76,7 @@ public class MailerLiteWebhookDataTransformer extends AbstractJsonNodeTransforme
     JsonNode jsonNode = event.getPayload();
     return Optional.of(jsonNode.path("timestamp").asLong())
         .filter(it -> it > 0)
-        .map(Instant::ofEpochMilli)
+        .map(Instant::ofEpochSecond)
         .orElseGet(Instant::now);
   }
 
