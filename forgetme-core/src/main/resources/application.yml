@@ -15,9 +15,11 @@ spring:
           google:
             client-id: ${OAUTH2_GOOGLE_CLIENT_ID}
             client-secret: ${OAUTH2_GOOGLE_CLIENT_SECRET}
+            scope: email
           facebook:
             client-id: ${OAUTH2_FACEBOOK_CLIENT_ID}
             client-secret: ${OAUTH2_FACEBOOK_CLIENT_SECRET}
+            scope: email
         provider:
           google:
             userNameAttribute: email
