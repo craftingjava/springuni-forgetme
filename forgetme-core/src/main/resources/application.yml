@@ -8,6 +8,22 @@ spring:
     locations:
       - classpath:db/migration/common
       - classpath:db/migration/{vendor}
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${OAUTH2_GOOGLE_CLIENT_ID}
+            client-secret: ${OAUTH2_GOOGLE_CLIENT_SECRET}
+          facebook:
+            client-id: ${OAUTH2_FACEBOOK_CLIENT_ID}
+            client-secret: ${OAUTH2_FACEBOOK_CLIENT_SECRET}
+        provider:
+          google:
+            userNameAttribute: email
+          facebook:
+            userNameAttribute: email
+            user-info-uri: https://graph.facebook.com/me?fields=email
 
 mailerlite:
   apiKey: ${MAILERLITE_API_KEY}
