@@ -8,7 +8,9 @@ import static java.util.stream.Collectors.toList;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.springuni.forgetme.core.model.SubscriptionStatus;
 import com.springuni.forgetme.datahandler.adapter.AbstractJsonNodeTransformer;
+import java.time.Instant;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.StreamSupport;
 import org.springframework.integration.transformer.MessageTransformationException;
 import org.springframework.messaging.Message;
@@ -31,24 +33,24 @@ public class MailerLiteWebhookDataTransformer extends AbstractJsonNodeTransforme
   }
 
   @Override
-  protected String extractSubscriberEmail(Message<JsonNode> message) {
-    JsonNode jsonNode = message.getPayload();
+  protected String extractSubscriberEmail(Message<JsonNode> event) {
+    JsonNode jsonNode = event.getPayload();
 
     String email = jsonNode.path("data").path("subscriber").path("email").asText();
     if (!StringUtils.hasText(email)) {
-      throw new MessageTransformationException(message, "missing email");
+      throw new MessageTransformationException(event, "missing email");
     }
 
     return email;
   }
 
   @Override
-  protected SubscriptionStatus extractSubscriptionStatus(Message<JsonNode> message) {
-    JsonNode jsonNode = message.getPayload();
+  protected SubscriptionStatus extractSubscriptionStatus(Message<JsonNode> event) {
+    JsonNode jsonNode = event.getPayload();
 
     String eventType = jsonNode.path("type").asText();
     if (!StringUtils.hasText(eventType)) {
-      throw new MessageTransformationException(message, "missing event type");
+      throw new MessageTransformationException(event, "missing event type");
     }
 
     SubscriptionStatus status;
@@ -63,10 +65,19 @@ public class MailerLiteWebhookDataTransformer extends AbstractJsonNodeTransforme
         status = SUBSCRIPTION_UPDATED;
         break;
       default:
-        throw new MessageTransformationException(message, "invalid event type: " + eventType);
+        throw new MessageTransformationException(event, "invalid event type: " + eventType);
     }
 
     return status;
+  }
+
+  @Override
+  protected Instant extractEventTimestamp(Message<JsonNode> event) {
+    JsonNode jsonNode = event.getPayload();
+    return Optional.of(jsonNode.path("timestamp").asLong())
+        .filter(it -> it > 0)
+        .map(Instant::ofEpochMilli)
+        .orElseGet(Instant::now);
   }
 
 }
