@@ -17,6 +17,7 @@ import com.springuni.forgetme.subscriber.model.Subscriber;
 import com.springuni.forgetme.subscriber.model.Subscription;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -41,10 +42,16 @@ public class SubscriberServiceImpl implements SubscriberService {
   private final SubscriptionRepository subscriptionRepository;
   private final MessageChannel subscriberForgetRequestOutboundChannel;
 
+
+  @Override
+  public Optional<Subscriber> findSubscriber(String email) {
+    String emailHash = Sha512DigestUtils.shaHex(email);
+    return subscriberRepository.findByEmailHash(emailHash);
+  }
+
   @Override
   public Subscriber getSubscriber(@NonNull String email) {
     String emailHash = Sha512DigestUtils.shaHex(email);
-
     return subscriberRepository.findByEmailHash(emailHash)
         .orElseThrow(() -> new EntityNotFoundException("emailHash", emailHash));
   }

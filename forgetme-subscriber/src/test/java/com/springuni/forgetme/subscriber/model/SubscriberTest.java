@@ -1,14 +1,14 @@
 package com.springuni.forgetme.subscriber.model;
 
-import static com.springuni.forgetme.Mocks.DATA_HANDLER_ID_VALUE;
-import static com.springuni.forgetme.Mocks.EVENT_TIMESTAMP_VALUE;
-import static com.springuni.forgetme.Mocks.createSubscription;
+import static com.springuni.forgetme.subscriber.Mocks.DATA_HANDLER_ID_VALUE;
+import static com.springuni.forgetme.subscriber.Mocks.EVENT_TIMESTAMP_VALUE;
+import static com.springuni.forgetme.subscriber.Mocks.createSubscription;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIPTION_CREATED;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIPTION_UPDATED;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
 
-import com.springuni.forgetme.Mocks;
+import com.springuni.forgetme.subscriber.Mocks;
 import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,7 +1,7 @@
 package com.springuni.forgetme.subscriber.model;
 
-import static com.springuni.forgetme.Mocks.EVENT_TIMESTAMP_VALUE;
-import static com.springuni.forgetme.Mocks.createSubscription;
+import static com.springuni.forgetme.subscriber.Mocks.EVENT_TIMESTAMP_VALUE;
+import static com.springuni.forgetme.subscriber.Mocks.createSubscription;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIPTION_CREATED;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.UNSUBSCRIBED;
 import static org.junit.Assert.assertEquals;

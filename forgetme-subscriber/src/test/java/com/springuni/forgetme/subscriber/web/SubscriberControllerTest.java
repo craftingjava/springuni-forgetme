@@ -1,8 +1,8 @@
 package com.springuni.forgetme.subscriber.web;
 
-import static com.springuni.forgetme.Mocks.EMAIL;
-import static com.springuni.forgetme.Mocks.SUBSCRIBER_ID_VALUE;
-import static com.springuni.forgetme.Mocks.createSubscriber;
+import static com.springuni.forgetme.subscriber.Mocks.EMAIL;
+import static com.springuni.forgetme.subscriber.Mocks.SUBSCRIBER_ID_VALUE;
+import static com.springuni.forgetme.subscriber.Mocks.createSubscriber;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.BDDMockito.willThrow;

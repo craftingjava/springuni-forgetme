@@ -1,6 +1,7 @@
 package com.springuni.forgetme.core.security.authn;
 
 import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 import org.springframework.context.annotation.Bean;
@@ -84,6 +85,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers(GET, LOGIN_URL).permitAll()
         .antMatchers(GET, STATIC_URL_PATTERN).permitAll()
         .antMatchers(GET, PAGES_URL_PATTERN).hasAuthority("ROLE_USER")
+        .antMatchers(POST, PAGES_URL_PATTERN).hasAuthority("ROLE_USER")
         .antMatchers(API_URL_PATTERN).hasAuthority("ROLE_USER")
         .anyRequest().denyAll()
         .and();

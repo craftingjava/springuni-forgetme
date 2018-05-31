@@ -1,4 +1,4 @@
-package com.springuni.forgetme;
+package com.springuni.forgetme.subscriber;
 
 import com.springuni.forgetme.subscriber.model.Subscriber;
 import com.springuni.forgetme.subscriber.model.Subscription;
