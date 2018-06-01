@@ -22,4 +22,16 @@
     </plugins>
   </build>
 
+  <!--
+    Typically this sub-module is used to bootstrap the app from an IDE, hence
+    spring-boot-devtools is included here
+  -->
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <optional>true</optional>
+    </dependency>
+  </dependencies>
+
 </project>
