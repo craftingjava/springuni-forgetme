@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>SB Admin 2 - Bootstrap Admin Theme</title>
+
+  <!-- Bootstrap Core CSS -->
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- MetisMenu CSS -->
+  <link href="../assets/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link href="../assets/vendor/sb-admin/css/sb-admin-2.css" rel="stylesheet">
+
+  <!-- Custom Fonts -->
+  <link href="../assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+
+<body>
+
+<div id="wrapper">
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse"
+              data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="dashboard.html" th:text="#{general.application.title.forget-me}">Forget Me</a>
+    </div>
+    <!-- /.navbar-header -->
+
+    <ul class="nav navbar-top-links navbar-right">
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+          <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-user">
+          <li><a href="/logout"><i class="fa fa-sign-out fa-fw">&nbsp;</i><span th:text="#{login.labels.logout}">Logout</span></a>
+          </li>
+        </ul>
+        <!-- /.dropdown-user -->
+      </li>
+      <!-- /.dropdown -->
+    </ul>
+    <!-- /.navbar-top-links -->
+
+    <div class="navbar-default sidebar" role="navigation">
+      <div class="sidebar-nav navbar-collapse">
+        <ul class="nav" id="side-menu">
+          <li>
+            <a href="/pages/subscriber">
+              <i class="fa fa-user fa-fw"></i>
+              <span th:text="#{subscriber.page.title.subscriber-status}">Subscriber Status</span></a>
+          </li>
+          <li>
+            <a href="/pages/history">
+              <i class="fa fa-history fa-fw"></i>
+              <span th:text="#{subscriptions.page.title.subscription-history}">Subscription History</span></a>
+          </li>
+        </ul>
+      </div>
+      <!-- /.sidebar-collapse -->
+    </div>
+    <!-- /.navbar-static-side -->
+  </nav>
+
+  <!-- Page Content -->
+  <div id="page-wrapper">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Page title -->
+        <div class="col-lg-12">
+          <h1 class="page-header" th:text="#{subscriber.page.title.subscriber-status}">Subscriber Status</h1>
+        </div>
+      </div>
+
+      <div th:if="${subscriber != null}">
+
+        <!-- Subscriber -->
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="panel panel-default">
+              <div class="panel-heading" th:text="#{subscriber.panels.title.subscriber}">
+                Subscriber
+              </div>
+
+              <div class="panel-body">
+                <form role="form" lpformnum="2">
+                  <fieldset disabled="">
+                    <div class="form-group">
+                      <label for="email-hash" th:text="#{subscriber.labels.email-hash}">Email
+                        Hash</label>
+                      <input class="form-control" id="email-hash" type="text" disabled=""
+                             th:value="${subscriber?.emailHash}"/>
+                    </div>
+                    <div class="form-group">
+                      <label for="created-date" th:text="#{general.labels.created-at}">Created
+                        At</label>
+                      <p id="created-date" class="form-control"
+                         th:text="${subscriber?.createdDate}"></p>
+                    </div>
+                    <div class="form-group">
+                      <label for="last-modified-date" th:text="#{general.labels.last-modified-at}">Last
+                        Modified At</label>
+                      <p id="last-modified-date" class="form-control"
+                         th:text="${subscriber?.lastModifiedDate}"></p>
+                    </div>
+                    <button type="submit" class="btn btn-primary"
+                            th:text="#{subscriber.buttons.forget-me}">Forget Me
+                    </button>
+                  </fieldset>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Subscriptions -->
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="panel panel-default">
+              <div class="panel-heading" th:text="#{subscriptions.panels.title.status-of-subscriptions}">Status of Subscriptions
+              </div>
+              <div class="panel-body">
+                <div class="table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                    <tr>
+                      <th>#</th>
+                      <th th:text="#{subscriptions.labels.data-handler}">Data Handler</th>
+                      <th th:text="#{subscriptions.labels.subscription-status}">Subscription
+                        Status
+                      </th>
+                      <th th:text="#{subscriptions.labels.initiated-at}">Initiated At</th>
+                      <th th:text="#{subscriptions.labels.processed-at}">Processed At</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="subscription, iterStat : ${subscriber.subscriptions}">
+                      <td th:text="${iterStat.count}">1</td>
+                      <td th:text="${subscription.dataHandlerId}">MailerLite</td>
+                      <td th:text="${subscription.detail.status}">SUBSCRIPTION_CREATED</td>
+                      <td th:text="${subscription.detail.eventTimestamp}">2018-05-30T05:42:45.524
+                      </td>
+                      <td th:text="${subscription.lastModifiedDate}">2018-05-30T05:42:45.524</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- /.table-responsive -->
+              </div>
+              <!-- /.panel-body -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" th:if="${subscriber == null}">
+    <div class="col-lg-12">
+      <div class="alert alert-warning">
+        <p th:text="#{subscriber.labels.not-subscribed}">
+          We haven't yet contracted with each other, which means that we store no personal data
+          about you. Your email address is currently being stored for the lifetime of this
+          session.
+          Once you log out, it's going to be erased automatically.
+        </p>
+      </div>
+    </div>
+  </div>
+  <!-- /.row -->
+</div>
+<!-- /.container-fluid -->
+</div>
+<!-- /#page-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+
+<!-- Footer -->
+<footer th:fragment="footer" class="footer panel-footer">
+  <!--/*  Multiple fragments may be defined in one file */-->
+  <div th:align="center">&copy; <span
+      th:text="${#temporals.format(#temporals.createNow(), 'yyyy')}">2018</span>
+    <span>My Awesome App</span>
+  </div>
+</footer>
+
+<!-- jQuery -->
+<script src="../assets/vendor/jquery/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="../assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Metis Menu Plugin JavaScript -->
+<script src="../assets/vendor/metisMenu/metisMenu.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="../assets/vendor/sb-admin/js/sb-admin-2.js"></script>
+
+</body>
+
+</html>
