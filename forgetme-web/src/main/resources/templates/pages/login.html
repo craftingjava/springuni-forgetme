@@ -42,16 +42,16 @@
     <div class="col-md-4 col-md-offset-4">
       <div class="login-panel panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Please Sign In</h3>
+          <h3 class="panel-title" th:text="#{login.labels.please-sign-in}">Please Sign In</h3>
         </div>
         <div class="panel-body">
           <a href="/oauth2/authorization/google" class="btn btn-block btn-social btn-google-plus">
             <i class="fa fa-google"></i>
-            <span>Sign in with Google</span>
+            <span th:text="#{login.labels.sign-in-with-x('Google')}">Sign in with Google</span>
           </a>
           <a href="/oauth2/authorization/facebook" class="btn btn-block btn-social btn-facebook">
             <i class="fa fa-facebook"></i>
-            <span>Sign in with Facebook</span>
+            <span th:text="#{login.labels.sign-in-with-x('Facebook')}">Sign in with Facebook</span>
           </a>
           <div class="btn-block alert alert-danger" th:if="${!#strings.isEmpty(errorMsg)}">
             <span th:text="${'Login unsuccessful; reason: ' + errorMsg}">Login unsuccessful; reason: error.</span>
