@@ -92,57 +92,16 @@
       <div class="row">
         <!-- Page title -->
         <div class="col-lg-12">
-          <h1 class="page-header" th:text="#{subscriber.page.title.subscriber-status}">Subscriber Status</h1>
+          <h1 class="page-header" th:text="#{subscriptions.page.title.subscription-history}">Subscription History</h1>
         </div>
       </div>
 
-      <div th:if="${subscriber != null}">
-
-        <!-- Subscriber -->
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="panel panel-default">
-              <div class="panel-heading" th:text="#{subscriber.panels.title.subscriber}">
-                Subscriber
-              </div>
-
-              <div class="panel-body">
-                <form role="form" lpformnum="2">
-                  <fieldset disabled="">
-                    <div class="form-group">
-                      <label for="email-hash" th:text="#{subscriber.labels.email-hash}">Email
-                        Hash</label>
-                      <input class="form-control" id="email-hash" type="text" disabled=""
-                             th:value="${subscriber?.emailHash}"/>
-                    </div>
-                    <div class="form-group">
-                      <label for="created-date" th:text="#{general.labels.created-at}">Created
-                        At</label>
-                      <p id="created-date" class="form-control"
-                         th:text="${subscriber?.createdDate}"></p>
-                    </div>
-                    <div class="form-group">
-                      <label for="last-modified-date" th:text="#{general.labels.last-modified-at}">Last
-                        Modified At</label>
-                      <p id="last-modified-date" class="form-control"
-                         th:text="${subscriber?.lastModifiedDate}"></p>
-                    </div>
-                    <button type="submit" class="btn btn-primary"
-                            th:text="#{subscriber.buttons.forget-me}">Forget Me
-                    </button>
-                  </fieldset>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-
+      <div th:if="${not #lists.isEmpty(subscriptions)}">
         <!-- Subscriptions -->
         <div class="row">
           <div class="col-lg-12">
             <div class="panel panel-default">
-              <div class="panel-heading" th:text="#{subscriptions.panels.title.status-of-subscriptions}">Status of Subscriptions
-              </div>
+              <div class="panel-heading" th:text="#{subscriptions.labels.subscription-status-history}">Subscription Status History</div>
               <div class="panel-body">
                 <div class="table-responsive">
                   <table class="table table-striped">
@@ -150,21 +109,16 @@
                     <tr>
                       <th>#</th>
                       <th th:text="#{subscriptions.labels.data-handler}">Data Handler</th>
-                      <th th:text="#{subscriptions.labels.subscription-status}">Subscription
-                        Status
-                      </th>
+                      <th th:text="#{subscriptions.labels.subscription-status}">Subscription Status</th>
                       <th th:text="#{subscriptions.labels.initiated-at}">Initiated At</th>
-                      <th th:text="#{subscriptions.labels.processed-at}">Processed At</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="subscription, iterStat : ${subscriber.subscriptions}">
+                    <tr th:each="subscription, iterStat : ${subscriptions}">
                       <td th:text="${iterStat.count}">1</td>
                       <td th:text="${subscription.dataHandlerId}">MailerLite</td>
-                      <td th:text="${subscription.detail.status}">SUBSCRIPTION_CREATED</td>
-                      <td th:text="${subscription.detail.eventTimestamp}">2018-05-30T05:42:45.524
-                      </td>
-                      <td th:text="${subscription.lastModifiedDate}">2018-05-30T05:42:45.524</td>
+                      <td th:text="${subscription.status}">SUBSCRIPTION_CREATED</td>
+                      <td th:text="${subscription.eventTimestamp}">2018-05-30T05:42:45.524</td>
                     </tr>
                     </tbody>
                   </table>
@@ -179,15 +133,10 @@
     </div>
   </div>
 
-  <div class="row" th:if="${subscriber == null}">
+  <div class="row" th:if="${#lists.isEmpty(subscriptions)}">
     <div class="col-lg-12">
       <div class="alert alert-warning">
-        <p th:text="#{subscriber.labels.not-subscribed}">
-          We haven't yet contracted with each other, which means that we store no personal data
-          about you. Your email address is currently being stored for the lifetime of this
-          session.
-          Once you log out, it's going to be erased automatically.
-        </p>
+        <p th:text="#{subscriber.labels.no-subscriptions}">No subscriptions found.</p>
       </div>
     </div>
   </div>
