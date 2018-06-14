@@ -41,14 +41,14 @@ public class HistoryViewController extends AbstractViewController {
     subscriberService.findSubscriber(email)
         .map(Subscriber::getSubscriptions)
         .map(subscriptions -> subscriptions.stream()
-            .map(this::toHistoryEntries)
+            .map(this::toSubscriptionViewModel)
             .flatMap(Collection::stream)
             .collect(toList())
         )
         .ifPresent(it -> modelAndView.addObject(MODEL_NAME, it));
   }
 
-  private List<SubscriptionViewModel> toHistoryEntries(Subscription subscription) {
+  private List<SubscriptionViewModel> toSubscriptionViewModel(Subscription subscription) {
     String dataHandlerName = dataHandlerRegistry.lookup(subscription.getDataHandlerId());
     return subscription.getSubscriptionChanges()
         .stream()
