@@ -20,7 +20,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.springuni.forgetme.core.model.EntityNotFoundException;
 import com.springuni.forgetme.subscriber.model.Subscriber;
 import com.springuni.forgetme.subscriber.service.SubscriberService;
-import com.springuni.forgetme.ui.subscriber.SubscriberViewControllerTest.TestConfig;
 import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,15 +27,12 @@ import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = TestConfig.class)
 @WebMvcTest(controllers = SubscriberViewController.class)
 public class SubscriberViewControllerTest {
 
@@ -128,11 +124,6 @@ public class SubscriberViewControllerTest {
     mockMvc.perform(post("/pages/subscriber").with(csrf()))
         .andExpect(status().isUnauthorized())
         .andDo(print());
-  }
-
-  @TestConfiguration
-  static class TestConfig {
-
   }
 
 }

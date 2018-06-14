@@ -122,9 +122,9 @@
                     <tbody>
                     <tr th:each="subscription, iterStat : ${subscriptions}">
                       <td th:text="${iterStat.count}">1</td>
-                      <td th:text="${subscription.dataHandlerId}">MailerLite</td>
+                      <td th:text="${subscription.dataHandlerName}">MailerLite</td>
                       <td th:text="${subscription.status}">SUBSCRIPTION_CREATED</td>
-                      <td th:text="${subscription.eventTimestamp}">2018-05-30T05:42:45.524</td>
+                      <td th:text="${subscription.occurredAt}">2018-05-30T05:42:45.524</td>
                     </tr>
                     </tbody>
                   </table>

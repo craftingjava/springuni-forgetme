@@ -2,16 +2,13 @@ package com.springuni.forgetme.ui.subscriber;
 
 import static java.util.stream.Collectors.toList;
 
-import com.springuni.forgetme.core.model.SubscriptionStatus;
+import com.springuni.forgetme.core.model.DataHandlerRegistry;
 import com.springuni.forgetme.subscriber.model.Subscriber;
 import com.springuni.forgetme.subscriber.model.Subscription;
 import com.springuni.forgetme.subscriber.service.SubscriberService;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +23,7 @@ public class HistoryViewController extends AbstractViewController {
   static final String MODEL_NAME = "subscriptions";
   static final String VIEW_NAME = "pages/history";
 
+  private final DataHandlerRegistry dataHandlerRegistry;
   private final SubscriberService subscriberService;
 
   @Override
@@ -50,21 +48,16 @@ public class HistoryViewController extends AbstractViewController {
         .ifPresent(it -> modelAndView.addObject(MODEL_NAME, it));
   }
 
-  private List<HistoryEntry> toHistoryEntries(Subscription subscription) {
-    UUID dataHandlerId = subscription.getDataHandlerId();
+  private List<SubscriptionViewModel> toHistoryEntries(Subscription subscription) {
+    String dataHandlerName = dataHandlerRegistry.lookup(subscription.getDataHandlerId());
     return subscription.getSubscriptionChanges()
         .stream()
-        .map(it -> new HistoryEntry(dataHandlerId, it.getStatus(), it.getEventTimestamp()))
+        .map(
+            it -> new SubscriptionViewModel(
+                dataHandlerName, it.getStatus(), it.getEventTimestamp(), null
+            )
+        )
         .collect(toList());
-  }
-
-  @Value
-  public static class HistoryEntry {
-
-    private UUID dataHandlerId;
-    private SubscriptionStatus status;
-    private LocalDateTime eventTimestamp;
-
   }
 
 }
