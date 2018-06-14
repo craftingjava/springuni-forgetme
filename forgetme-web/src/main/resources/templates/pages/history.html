@@ -108,9 +108,15 @@
                     <thead>
                     <tr>
                       <th>#</th>
-                      <th th:text="#{subscriptions.labels.data-handler}">Data Handler</th>
-                      <th th:text="#{subscriptions.labels.subscription-status}">Subscription Status</th>
-                      <th th:text="#{subscriptions.labels.initiated-at}">Initiated At</th>
+                      <th>
+                        <span th:text="#{subscriptions.labels.data-handler}">Data Handler</span>
+                        <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top" th:title="#{subscriptions.labels.data-handler-is-a-3rd-party-system}"></span>
+                      </th>
+                      <th>
+                        <span th:text="#{subscriptions.labels.subscription-status}">Subscription Status</span>
+                        <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top" th:title="#{subscriptions.labels.subscription-status-indicates}"></span>
+                      </th>
+                      <th th:text="#{subscriptions.labels.occurred-at}">Occurred At</th>
                     </tr>
                     </thead>
                     <tbody>

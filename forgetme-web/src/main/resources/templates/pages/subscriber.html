@@ -110,10 +110,9 @@
                 <form role="form" lpformnum="2">
                   <fieldset disabled="">
                     <div class="form-group">
-                      <label for="email-hash" th:text="#{subscriber.labels.email-hash}">Email
-                        Hash</label>
-                      <input class="form-control" id="email-hash" type="text" disabled=""
-                             th:value="${subscriber?.emailHash}"/>
+                      <label for="email-hash" th:text="#{subscriber.labels.email-hash}">Email Hash</label>
+                      <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top" th:title="#{subscriber.labels.your-email-address-is-hashed}"></span>
+                      <input class="form-control" id="email-hash" type="text" disabled="" th:value="${subscriber?.emailHash}"/>
                     </div>
                     <div class="form-group">
                       <label for="created-date" th:text="#{general.labels.created-at}">Created
@@ -149,11 +148,15 @@
                     <thead>
                     <tr>
                       <th>#</th>
-                      <th th:text="#{subscriptions.labels.data-handler}">Data Handler</th>
-                      <th th:text="#{subscriptions.labels.subscription-status}">Subscription
-                        Status
+                      <th>
+                        <span th:text="#{subscriptions.labels.data-handler}">Data Handler</span>
+                        <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top" th:title="#{subscriptions.labels.data-handler-is-a-3rd-party-system}"></span>
                       </th>
-                      <th th:text="#{subscriptions.labels.initiated-at}">Initiated At</th>
+                      <th>
+                        <span th:text="#{subscriptions.labels.subscription-status}">Subscription Status</span>
+                        <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top" th:title="#{subscriptions.labels.subscription-status-indicates}"></span>
+                      </th>
+                      <th th:text="#{subscriptions.labels.occurred-at}">Occurred At</th>
                       <th th:text="#{subscriptions.labels.processed-at}">Processed At</th>
                     </tr>
                     </thead>
@@ -220,6 +223,12 @@
 
 <!-- Custom Theme JavaScript -->
 <script src="../assets/vendor/sb-admin/js/sb-admin-2.js"></script>
+
+<script>
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
+</script>
 
 </body>
 
