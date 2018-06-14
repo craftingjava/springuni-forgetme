@@ -21,6 +21,7 @@ import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
 
 import com.springuni.forgetme.core.model.DataHandlerRegistry;
@@ -138,6 +139,20 @@ public class SubscriberServiceTest {
     assertForgetRequestMessage(
         DATA_HANDLER_ID_VALUE, DATA_HANDLER_NAME_VALUE, SUBSCRIPTION_ID_VALUE, EMAIL
     );
+  }
+
+  @Test
+  public void givenKnownEmail_andForgotten_whenRequestForget_thenSubscriptionsUpdated() {
+    subscriber.getSubscriptions().forEach(it -> it.updateStatus(FORGOTTEN));
+
+    given(subscriberRepository.findByEmailHash(EMAIL_HASH)).willReturn(Optional.of(subscriber));
+    given(subscriptionRepository.findBySubscriberId(SUBSCRIBER_ID_VALUE))
+        .willReturn(subscriber.getSubscriptions());
+
+    subscriberService.requestForget(EMAIL);
+
+    then(subscriberForgetRequestOutboundChannel).should(never()).send(any(Message.class));
+    then(subscriptionRepository).should(never()).save(any(Subscription.class));
   }
 
   @Test(expected = EntityNotFoundException.class)

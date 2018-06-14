@@ -86,24 +86,33 @@ public class SubscriberServiceImpl implements SubscriberService {
     List<Subscription> subscriptions =
         subscriptionRepository.findBySubscriberId(subscriber.getId());
 
-    subscriptions.forEach(it -> {
-      it.updateStatus(FORGET_PENDING);
+    for (Subscription subscription : subscriptions) {
+      SubscriptionStatus status = subscription.getStatus();
+      if (FORGOTTEN.equals(status) || FORGET_PENDING.equals(status)) {
+        log.warn(
+            "Subscription {} has already been forgotten or it's being forgotten",
+            subscription.getId()
+        );
+        continue;
+      }
 
-      UUID dataHandlerId = it.getDataHandlerId();
+      subscription.updateStatus(FORGET_PENDING);
+
+      UUID dataHandlerId = subscription.getDataHandlerId();
       String dataHandlerName = dataHandlerRegistry.lookup(dataHandlerId);
 
       Message<ForgetRequest> forgetRequestMessage = MessageBuilder
-          .withPayload(new ForgetRequest(it.getId(), email))
-          .setHeader(DATA_HANDLER_ID, it.getDataHandlerId())
+          .withPayload(new ForgetRequest(subscription.getId(), email))
+          .setHeader(DATA_HANDLER_ID, subscription.getDataHandlerId())
           .setHeader(DATA_HANDLER_NAME, dataHandlerName)
           .build();
 
       subscriberForgetRequestOutboundChannel.send(forgetRequestMessage);
 
-      subscriptionRepository.save(it);
+      subscriptionRepository.save(subscription);
 
-      log.info("Forget requested for subscription {}.", it.getId());
-    });
+      log.info("Forget requested for subscription {}.", subscription.getId());
+    }
   }
 
   @Override
