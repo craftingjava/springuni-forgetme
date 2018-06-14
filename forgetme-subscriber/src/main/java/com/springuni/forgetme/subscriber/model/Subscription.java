@@ -1,5 +1,6 @@
 package com.springuni.forgetme.subscriber.model;
 
+import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGOTTEN;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIPTION_CREATED;
 import static java.time.ZoneOffset.UTC;
 import static java.util.Collections.unmodifiableList;
@@ -53,8 +54,6 @@ public class Subscription extends AbstractEntity {
 
     this.subscriber = subscriber;
     this.dataHandlerId = dataHandlerId;
-
-    updateStatus(status);
   }
 
   void setDetail(SubscriptionDetail detail) {
@@ -80,6 +79,10 @@ public class Subscription extends AbstractEntity {
 
   public List<SubscriptionDetail> getSubscriptionChanges() {
     return unmodifiableList(subscriptionChanges);
+  }
+
+  public boolean isActive() {
+    return !FORGOTTEN.equals(detail.getStatus());
   }
 
 }

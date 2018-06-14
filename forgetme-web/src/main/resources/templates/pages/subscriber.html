@@ -105,7 +105,7 @@
               <div class="panel-heading" th:text="#{subscriber.panels.title.subscriber}">Subscriber</div>
 
               <div class="panel-body">
-                <form role="form" lpformnum="2">
+                <form role="form" lpformnum="2" action="#" th:action="@{/pages/subscriber}" method="post">
                   <fieldset disabled="">
                     <div class="form-group">
                       <label for="email-hash" th:text="#{subscriber.labels.email-hash}">Email Hash</label>
@@ -124,10 +124,9 @@
                       <p id="last-modified-date" class="form-control"
                          th:text="${subscriber?.lastModifiedDate}"></p>
                     </div>
-                    <button type="submit" class="btn btn-primary"
-                            th:text="#{subscriber.buttons.forget-me}">Forget Me
-                    </button>
                   </fieldset>
+                  <button th:if="${forgetMeEnabled}" type="submit" class="btn btn-primary" th:text="#{subscriber.buttons.forget-me}">Forget Me</button>
+                  <button th:unless="${forgetMeEnabled}" type="submit" class="btn btn-primary" th:text="#{subscriber.buttons.forget-me}" disabled>Forget Me</button>
                 </form>
               </div>
             </div>

@@ -1,7 +1,8 @@
 package com.springuni.forgetme.ui.subscriber;
 
 import static com.springuni.forgetme.subscriber.Mocks.EMAIL;
-import static com.springuni.forgetme.subscriber.Mocks.createSubscriber;
+import static com.springuni.forgetme.subscriber.Mocks.createSubscription;
+import static com.springuni.forgetme.ui.subscriber.SubscriberViewController.FORGETME_ENABLED_MODEL_NAME;
 import static com.springuni.forgetme.ui.subscriber.SubscriberViewController.SUBSCRIBER_MODEL_NAME;
 import static com.springuni.forgetme.ui.subscriber.SubscriberViewController.SUBSCRIPTIONS_MODEL_NAME;
 import static com.springuni.forgetme.ui.subscriber.SubscriberViewController.VIEW_NAME;
@@ -21,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.springuni.forgetme.core.model.DataHandlerRegistry;
 import com.springuni.forgetme.core.model.EntityNotFoundException;
 import com.springuni.forgetme.subscriber.model.Subscriber;
+import com.springuni.forgetme.subscriber.model.Subscription;
 import com.springuni.forgetme.subscriber.service.SubscriberService;
 import java.util.Optional;
 import org.junit.Before;
@@ -51,7 +53,8 @@ public class SubscriberViewControllerTest {
 
   @Before
   public void setUp() {
-    subscriber = createSubscriber();
+    Subscription subscription = createSubscription();
+    subscriber = subscription.getSubscriber();
   }
 
   @Test
@@ -64,6 +67,7 @@ public class SubscriberViewControllerTest {
         .andExpect(view().name(VIEW_NAME))
         .andExpect(model().attributeExists(SUBSCRIBER_MODEL_NAME))
         .andExpect(model().attributeExists(SUBSCRIPTIONS_MODEL_NAME))
+        .andExpect(model().attribute(FORGETME_ENABLED_MODEL_NAME, true))
         .andDo(print());
   }
 
@@ -79,6 +83,7 @@ public class SubscriberViewControllerTest {
         .andExpect(view().name(VIEW_NAME))
         .andExpect(model().attributeDoesNotExist(SUBSCRIBER_MODEL_NAME))
         .andExpect(model().attributeDoesNotExist(SUBSCRIPTIONS_MODEL_NAME))
+        .andExpect(model().attributeDoesNotExist(FORGETME_ENABLED_MODEL_NAME))
         .andDo(print());
   }
 
@@ -103,6 +108,7 @@ public class SubscriberViewControllerTest {
         .andExpect(view().name(VIEW_NAME))
         .andExpect(model().attributeExists(SUBSCRIBER_MODEL_NAME))
         .andExpect(model().attributeExists(SUBSCRIPTIONS_MODEL_NAME))
+        .andExpect(model().attribute(FORGETME_ENABLED_MODEL_NAME, true))
         .andDo(print());
 
     then(subscriberService).should(inOrder).requestForget(EMAIL);
@@ -121,6 +127,7 @@ public class SubscriberViewControllerTest {
         .andExpect(view().name(VIEW_NAME))
         .andExpect(model().attributeDoesNotExist(SUBSCRIBER_MODEL_NAME))
         .andExpect(model().attributeDoesNotExist(SUBSCRIPTIONS_MODEL_NAME))
+        .andExpect(model().attributeDoesNotExist(FORGETME_ENABLED_MODEL_NAME))
         .andDo(print());
 
     then(subscriberService).should(never()).findSubscriber(EMAIL);

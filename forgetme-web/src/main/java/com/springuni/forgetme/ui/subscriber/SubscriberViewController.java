@@ -4,8 +4,10 @@ import static java.util.stream.Collectors.toList;
 
 import com.springuni.forgetme.core.model.DataHandlerRegistry;
 import com.springuni.forgetme.core.model.EntityNotFoundException;
+import com.springuni.forgetme.subscriber.model.Subscriber;
 import com.springuni.forgetme.subscriber.model.Subscription;
 import com.springuni.forgetme.subscriber.service.SubscriberService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,8 @@ public class SubscriberViewController extends AbstractViewController {
 
   static final String SUBSCRIBER_MODEL_NAME = "subscriber";
   static final String SUBSCRIPTIONS_MODEL_NAME = "subscriptions";
+  static final String FORGETME_ENABLED_MODEL_NAME = "forgetMeEnabled";
+
   static final String VIEW_NAME = "pages/subscriber";
 
   private final DataHandlerRegistry dataHandlerRegistry;
@@ -56,25 +60,29 @@ public class SubscriberViewController extends AbstractViewController {
 
   @Override
   protected void populateModel(String email, ModelAndView modelAndView) {
-    subscriberService.findSubscriber(email)
-        .ifPresent(subscriber -> {
-          modelAndView.addObject(
-              SUBSCRIBER_MODEL_NAME,
-              new SubscriberViewModel(
-                  subscriber.getEmailHash(),
-                  subscriber.getCreatedDate(),
-                  subscriber.getLastModifiedDate()
-              )
-          );
+    subscriberService.findSubscriber(email).ifPresent(it -> doPopulateModel(it, modelAndView));
+  }
 
-          modelAndView.addObject(
-              SUBSCRIPTIONS_MODEL_NAME,
-              subscriber.getSubscriptions()
-                  .stream()
-                  .map(this::toSubscriptionViewModel)
-                  .collect(toList())
-          );
-        });
+  private void doPopulateModel(Subscriber subscriber, ModelAndView modelAndView) {
+    SubscriberViewModel subscriberViewModel = new SubscriberViewModel(
+        subscriber.getEmailHash(),
+        subscriber.getCreatedDate(),
+        subscriber.getLastModifiedDate()
+    );
+
+    modelAndView.addObject(SUBSCRIBER_MODEL_NAME, subscriberViewModel);
+
+    List<SubscriptionViewModel> subscriptionViewModels = subscriber.getSubscriptions().stream()
+        .map(this::toSubscriptionViewModel)
+        .collect(toList());
+
+    modelAndView.addObject(SUBSCRIPTIONS_MODEL_NAME, subscriptionViewModels);
+
+    boolean forgetMeEnabled = subscriber.getSubscriptions()
+        .stream()
+        .anyMatch(Subscription::isActive);
+
+    modelAndView.addObject(FORGETME_ENABLED_MODEL_NAME, forgetMeEnabled);
   }
 
   private SubscriptionViewModel toSubscriptionViewModel(Subscription subscription) {

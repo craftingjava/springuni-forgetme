@@ -1,5 +1,7 @@
 package com.springuni.forgetme.subscriber;
 
+import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIPTION_CREATED;
+
 import com.springuni.forgetme.subscriber.model.Subscriber;
 import com.springuni.forgetme.subscriber.model.Subscription;
 import java.time.LocalDateTime;
@@ -31,7 +33,8 @@ public class Mocks {
 
   public static Subscription createSubscription() {
     Subscriber subscriber = createSubscriber();
-    return new Subscription(DATA_HANDLER_ID_VALUE, subscriber);
+    subscriber.updateSubscription(DATA_HANDLER_ID_VALUE, SUBSCRIPTION_CREATED, LocalDateTime.now());
+    return subscriber.getSubscriptions().get(0);
   }
 
 }
