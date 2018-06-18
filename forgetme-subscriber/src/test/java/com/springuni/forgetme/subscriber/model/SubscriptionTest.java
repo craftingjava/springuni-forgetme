@@ -1,10 +1,10 @@
 package com.springuni.forgetme.subscriber.model;
 
 import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGOTTEN;
-import static com.springuni.forgetme.subscriber.Mocks.EVENT_TIMESTAMP_VALUE;
-import static com.springuni.forgetme.subscriber.Mocks.createSubscription;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIPTION_CREATED;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.UNSUBSCRIBED;
+import static com.springuni.forgetme.subscriber.Mocks.EVENT_TIMESTAMP_VALUE;
+import static com.springuni.forgetme.subscriber.Mocks.createSubscription;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

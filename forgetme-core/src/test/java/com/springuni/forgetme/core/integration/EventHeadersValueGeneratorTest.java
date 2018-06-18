@@ -6,7 +6,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.time.Clock;
-import java.time.Instant;
 import java.util.UUID;
 import org.junit.Test;
 

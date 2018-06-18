@@ -1,5 +1,12 @@
 package com.springuni.forgetme.subscriber.service;
 
+import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_ID;
+import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_NAME;
+import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGET_FAILED;
+import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGET_PENDING;
+import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGOTTEN;
+import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIPTION_CREATED;
+import static com.springuni.forgetme.core.model.SubscriptionStatus.UNSUBSCRIBED;
 import static com.springuni.forgetme.subscriber.Mocks.DATA_HANDLER_ID_VALUE;
 import static com.springuni.forgetme.subscriber.Mocks.DATA_HANDLER_NAME_VALUE;
 import static com.springuni.forgetme.subscriber.Mocks.EMAIL;
@@ -8,13 +15,6 @@ import static com.springuni.forgetme.subscriber.Mocks.EVENT_TIMESTAMP_VALUE;
 import static com.springuni.forgetme.subscriber.Mocks.SUBSCRIBER_ID_VALUE;
 import static com.springuni.forgetme.subscriber.Mocks.SUBSCRIPTION_ID_VALUE;
 import static com.springuni.forgetme.subscriber.Mocks.createSubscriber;
-import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_ID;
-import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_NAME;
-import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGET_FAILED;
-import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGET_PENDING;
-import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGOTTEN;
-import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIPTION_CREATED;
-import static com.springuni.forgetme.core.model.SubscriptionStatus.UNSUBSCRIBED;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;

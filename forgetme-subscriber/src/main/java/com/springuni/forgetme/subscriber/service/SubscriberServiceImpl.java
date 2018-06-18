@@ -7,7 +7,6 @@ import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGET_FAILED
 import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGET_PENDING;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGOTTEN;
 
-import com.springuni.forgetme.core.model.ApplicationException;
 import com.springuni.forgetme.core.model.DataHandlerRegistry;
 import com.springuni.forgetme.core.model.EntityNotFoundException;
 import com.springuni.forgetme.core.model.ForgetRequest;

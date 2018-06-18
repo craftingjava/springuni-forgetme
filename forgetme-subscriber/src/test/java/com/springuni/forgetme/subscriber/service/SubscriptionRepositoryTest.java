@@ -1,8 +1,8 @@
 package com.springuni.forgetme.subscriber.service;
 
+import static com.springuni.forgetme.core.model.SubscriptionStatus.UNSUBSCRIBED;
 import static com.springuni.forgetme.subscriber.Mocks.DATA_HANDLER_ID_VALUE;
 import static com.springuni.forgetme.subscriber.Mocks.createSubscription;
-import static com.springuni.forgetme.core.model.SubscriptionStatus.UNSUBSCRIBED;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 

@@ -7,7 +7,6 @@ import static com.springuni.forgetme.subscriber.Mocks.EMAIL_HASH;
 import static com.springuni.forgetme.subscriber.Mocks.SUBSCRIBER_ID_VALUE;
 import static com.springuni.forgetme.subscriber.Mocks.SUBSCRIPTION_ID_VALUE;
 import static com.springuni.forgetme.subscriber.Mocks.createSubscription;
-import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -21,7 +20,6 @@ import com.springuni.forgetme.core.integration.RetryConfig;
 import com.springuni.forgetme.core.model.DataHandlerRegistry;
 import com.springuni.forgetme.core.model.ForgetResponse;
 import com.springuni.forgetme.core.model.WebhookData;
-import com.springuni.forgetme.subscriber.Mocks;
 import com.springuni.forgetme.subscriber.model.Subscriber;
 import com.springuni.forgetme.subscriber.model.Subscription;
 import com.springuni.forgetme.subscriber.service.SubscriberServiceRetryTest.TestConfig;
@@ -38,7 +36,6 @@ import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.junit.runners.model.Statement;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -187,33 +184,6 @@ public class SubscriberServiceRetryTest {
     );
   }
 
-  private class ExpectedRetry implements TestRule {
-
-    private int times = 1;
-
-    void times(int times) {
-      this.times = times;
-    }
-
-    @Override
-    public Statement apply(Statement base, Description description) {
-      return new Statement() {
-
-        @Override
-        public void evaluate() throws Throwable {
-          try {
-            base.evaluate();
-          } finally {
-            verify(retryListener, Mockito.times(times))
-                .onError(any(RetryContext.class), any(RetryCallback.class), any(Throwable.class));
-          }
-        }
-
-      };
-    }
-
-  }
-
   @Configuration
   @Import(RetryConfig.class)
   public static class TestConfig {
@@ -240,6 +210,33 @@ public class SubscriberServiceRetryTest {
           subscriptionRepository,
           subscriberForgetRequestOutboundChannel
       );
+    }
+
+  }
+
+  private class ExpectedRetry implements TestRule {
+
+    private int times = 1;
+
+    void times(int times) {
+      this.times = times;
+    }
+
+    @Override
+    public Statement apply(Statement base, Description description) {
+      return new Statement() {
+
+        @Override
+        public void evaluate() throws Throwable {
+          try {
+            base.evaluate();
+          } finally {
+            verify(retryListener, Mockito.times(times))
+                .onError(any(RetryContext.class), any(RetryCallback.class), any(Throwable.class));
+          }
+        }
+
+      };
     }
 
   }
