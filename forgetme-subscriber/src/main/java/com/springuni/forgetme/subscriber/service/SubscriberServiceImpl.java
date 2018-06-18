@@ -87,10 +87,7 @@ public class SubscriberServiceImpl implements SubscriberService {
   public void requestForget(@NonNull String email) {
     Subscriber subscriber = getSubscriber(email);
 
-    List<Subscription> subscriptions =
-        subscriptionRepository.findBySubscriberId(subscriber.getId());
-
-    for (Subscription subscription : subscriptions) {
+    for (Subscription subscription : subscriber.getSubscriptions()) {
       SubscriptionStatus status = subscription.getStatus();
       if (FORGOTTEN.equals(status) || FORGET_PENDING.equals(status)) {
         log.warn(
@@ -127,9 +124,15 @@ public class SubscriberServiceImpl implements SubscriberService {
       @NonNull @Payload ForgetResponse forgetResponse,
       @NonNull @Header(EVENT_TIMESTAMP) LocalDateTime eventTimestamp) {
 
-    UUID id = forgetResponse.getSubscriptionId();
-    Subscription subscription = subscriptionRepository.findById(id)
-        .orElseThrow(() -> new EntityNotFoundException("id", id));
+    UUID subscriptionId = forgetResponse.getSubscriptionId();
+    Subscriber subscriber = subscriberRepository.findBySubscriptionId(subscriptionId)
+        .orElseThrow(() -> new EntityNotFoundException("subscriptionId", subscriptionId));
+
+    Subscription subscription = subscriber.getSubscriptions()
+        .stream()
+        .filter(it -> subscriptionId.equals(it.getId()))
+        .findFirst()
+        .orElseThrow(() -> new EntityNotFoundException("subscriptionId", subscriptionId));
 
     SubscriptionStatus status = forgetResponse.isAcknowledged() ? FORGOTTEN : FORGET_FAILED;
 

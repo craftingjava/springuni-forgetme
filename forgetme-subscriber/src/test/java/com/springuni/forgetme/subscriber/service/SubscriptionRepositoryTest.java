@@ -3,12 +3,10 @@ package com.springuni.forgetme.subscriber.service;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.UNSUBSCRIBED;
 import static com.springuni.forgetme.subscriber.Mocks.DATA_HANDLER_ID_VALUE;
 import static com.springuni.forgetme.subscriber.Mocks.createSubscription;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import com.springuni.forgetme.core.orm.BaseRepositoryTest;
 import com.springuni.forgetme.subscriber.model.Subscription;
-import java.util.List;
 import java.util.UUID;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -40,14 +38,6 @@ public class SubscriptionRepositoryTest
     Subscription subscription = repository.findById(entity.getId()).get();
     assertTrue(subscription.getSubscriptionChanges().stream()
         .anyMatch(it -> it.getStatus().equals(UNSUBSCRIBED)));
-  }
-
-  @Test
-  public void givenSubscriber_whenFindBySubscriber_thenSubscriptionsReturned() {
-    saveEntity();
-    List<Subscription> subscriptions = repository
-        .findBySubscriberId(entity.getSubscriber().getId());
-    assertFalse(subscriptions.isEmpty());
   }
 
   @Override

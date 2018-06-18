@@ -127,8 +127,6 @@ public class SubscriberServiceTest {
   @Test
   public void givenKnownEmail_whenRequestForget_thenSubscriptionsUpdated() {
     given(subscriberRepository.findByEmailHash(EMAIL_HASH)).willReturn(Optional.of(subscriber));
-    given(subscriptionRepository.findBySubscriberId(SUBSCRIBER_ID_VALUE))
-        .willReturn(subscriber.getSubscriptions());
 
     subscriberService.requestForget(EMAIL);
 
@@ -146,8 +144,6 @@ public class SubscriberServiceTest {
     subscriber.getSubscriptions().forEach(it -> it.updateStatus(FORGOTTEN));
 
     given(subscriberRepository.findByEmailHash(EMAIL_HASH)).willReturn(Optional.of(subscriber));
-    given(subscriptionRepository.findBySubscriberId(SUBSCRIBER_ID_VALUE))
-        .willReturn(subscriber.getSubscriptions());
 
     subscriberService.requestForget(EMAIL);
 
@@ -166,21 +162,21 @@ public class SubscriberServiceTest {
 
   @Test(expected = EntityNotFoundException.class)
   public void givenUnknownSubscriptionId_whenRecordForgetResponse_thenEntityNotFoundException() {
-    given(subscriptionRepository.findById(SUBSCRIBER_ID_VALUE)).willReturn(Optional.empty());
+    given(subscriberRepository.findBySubscriptionId(SUBSCRIPTION_ID_VALUE))
+        .willReturn(Optional.empty());
 
     subscriberService.recordForgetResponse(
-        new ForgetResponse(SUBSCRIBER_ID_VALUE, true), EVENT_TIMESTAMP_VALUE
+        new ForgetResponse(SUBSCRIPTION_ID_VALUE, true), EVENT_TIMESTAMP_VALUE
     );
   }
 
   @Test
   public void givenKnownSubscriptionId_withACK_whenRecordForgetResponse_thenSubscriptionsUpdated() {
-    Subscription subscription = subscriber.getSubscriptions().get(0);
-    given(subscriptionRepository.findById(SUBSCRIBER_ID_VALUE))
-        .willReturn(Optional.of(subscription));
+    given(subscriberRepository.findBySubscriptionId(SUBSCRIPTION_ID_VALUE))
+        .willReturn(Optional.of(subscriber));
 
     subscriberService.recordForgetResponse(
-        new ForgetResponse(SUBSCRIBER_ID_VALUE, true), EVENT_TIMESTAMP_VALUE
+        new ForgetResponse(SUBSCRIPTION_ID_VALUE, true), EVENT_TIMESTAMP_VALUE
     );
 
     assertSubscriptionStatusFromSavedSubscription(FORGOTTEN, DATA_HANDLER_ID_VALUE);
@@ -188,12 +184,11 @@ public class SubscriberServiceTest {
 
   @Test
   public void givenKnownSubscriptionId_withNAK_whenRecordForgetResponse_thenSubscriptionsUpdated() {
-    Subscription subscription = subscriber.getSubscriptions().get(0);
-    given(subscriptionRepository.findById(SUBSCRIBER_ID_VALUE))
-        .willReturn(Optional.of(subscription));
+    given(subscriberRepository.findBySubscriptionId(SUBSCRIPTION_ID_VALUE))
+        .willReturn(Optional.of(subscriber));
 
     subscriberService.recordForgetResponse(
-        new ForgetResponse(SUBSCRIBER_ID_VALUE, false), EVENT_TIMESTAMP_VALUE
+        new ForgetResponse(SUBSCRIPTION_ID_VALUE, false), EVENT_TIMESTAMP_VALUE
     );
 
     assertSubscriptionStatusFromSavedSubscription(FORGET_FAILED, DATA_HANDLER_ID_VALUE);

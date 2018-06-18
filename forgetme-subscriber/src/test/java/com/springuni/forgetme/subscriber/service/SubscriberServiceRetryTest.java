@@ -88,24 +88,16 @@ public class SubscriberServiceRetryTest {
   @Autowired
   private SubscriberService subscriberService;
 
-  private Subscriber subscriber;
-
   @Before
   public void setUp() {
     reset(retryListener);
     when(retryListener.open(any(RetryContext.class), any(RetryCallback.class))).thenReturn(true);
 
-    Subscription subscription = createSubscription();
-    subscriber = subscription.getSubscriber();
-    subscriber.setId(SUBSCRIBER_ID_VALUE);
+    when(subscriberRepository.findByEmailHash(EMAIL_HASH))
+        .then((Answer<Optional<Subscriber>>) invocation -> Optional.of(createSubscriber()));
 
-    when(subscriberRepository.findByEmailHash(EMAIL_HASH)).thenReturn(Optional.of(subscriber));
-
-    when(subscriptionRepository.findBySubscriberId(SUBSCRIBER_ID_VALUE))
-        .then((Answer<List<Subscription>>) invocation -> singletonList(createSubscription()));
-
-    when(subscriptionRepository.findById(SUBSCRIPTION_ID_VALUE))
-        .thenReturn(Optional.of(subscription));
+    when(subscriberRepository.findBySubscriptionId(SUBSCRIPTION_ID_VALUE))
+        .then((Answer<Optional<Subscriber>>) invocation -> Optional.of(createSubscriber()));
   }
 
   @Test
@@ -182,6 +174,14 @@ public class SubscriberServiceRetryTest {
     subscriberService.recordForgetResponse(
         new ForgetResponse(SUBSCRIPTION_ID_VALUE, true), LocalDateTime.MIN
     );
+  }
+
+  private Subscriber createSubscriber() {
+    Subscription subscription = createSubscription();
+    subscription.setId(SUBSCRIPTION_ID_VALUE);
+    Subscriber subscriber = subscription.getSubscriber();
+    subscriber.setId(SUBSCRIBER_ID_VALUE);
+    return subscriber;
   }
 
   @Configuration
