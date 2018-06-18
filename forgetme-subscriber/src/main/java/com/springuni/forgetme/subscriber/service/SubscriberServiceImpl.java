@@ -7,6 +7,7 @@ import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGET_FAILED
 import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGET_PENDING;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGOTTEN;
 
+import com.springuni.forgetme.core.model.ApplicationException;
 import com.springuni.forgetme.core.model.DataHandlerRegistry;
 import com.springuni.forgetme.core.model.EntityNotFoundException;
 import com.springuni.forgetme.core.model.ForgetRequest;
@@ -22,12 +23,14 @@ import java.util.UUID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.TransientDataAccessException;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.security.core.token.Sha512DigestUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,6 +61,7 @@ public class SubscriberServiceImpl implements SubscriberService {
 
   @Override
   @Transactional
+  @Retryable(include = TransientDataAccessException.class)
   @ServiceActivator(inputChannel = "webhookDataHandlerOutboundChannel")
   public void updateSubscription(
       @NonNull @Payload WebhookData webhookData,
@@ -80,6 +84,7 @@ public class SubscriberServiceImpl implements SubscriberService {
 
   @Override
   @Transactional
+  @Retryable(include = TransientDataAccessException.class)
   public void requestForget(@NonNull String email) {
     Subscriber subscriber = getSubscriber(email);
 
@@ -117,6 +122,7 @@ public class SubscriberServiceImpl implements SubscriberService {
 
   @Override
   @Transactional
+  @Retryable(include = TransientDataAccessException.class)
   @ServiceActivator(inputChannel = "subscriberForgetResponseInboundChannel")
   public void recordForgetResponse(
       @NonNull @Payload ForgetResponse forgetResponse,

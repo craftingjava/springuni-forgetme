@@ -1,5 +1,6 @@
 package com.springuni.forgetme.core.integration;
 
+import static java.time.Instant.EPOCH;
 import static java.time.ZoneOffset.UTC;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -22,13 +23,12 @@ public class EventHeadersValueGeneratorTest {
   @Test
   public void shouldHaveGivenIdAndTimestampSet() {
     UUID eventId = new UUID(0, 0);
-    Instant eventTimestamp = Instant.ofEpochSecond(0);
 
     EventHeadersValueGenerator eventHeadersValueGenerator =
-        new EventHeadersValueGenerator(() -> eventId, Clock.fixed(eventTimestamp, UTC));
+        new EventHeadersValueGenerator(() -> eventId, Clock.fixed(EPOCH, UTC));
 
     assertEquals(eventId, eventHeadersValueGenerator.createEventId(null));
-    assertEquals(eventTimestamp, eventHeadersValueGenerator.createEventTimestamp(null));
+    assertEquals(EPOCH, eventHeadersValueGenerator.createEventTimestamp(null));
   }
 
 }
