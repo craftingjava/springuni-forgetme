@@ -36,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class SubscriberServiceImpl implements SubscriberService {
 
@@ -59,7 +60,6 @@ public class SubscriberServiceImpl implements SubscriberService {
   }
 
   @Override
-  @Transactional
   @Retryable(include = TransientDataAccessException.class)
   @ServiceActivator(inputChannel = "webhookDataHandlerOutboundChannel")
   public void updateSubscription(
@@ -82,7 +82,6 @@ public class SubscriberServiceImpl implements SubscriberService {
   }
 
   @Override
-  @Transactional
   @Retryable(include = TransientDataAccessException.class)
   public void requestForget(@NonNull String email) {
     Subscriber subscriber = getSubscriber(email);
@@ -117,7 +116,6 @@ public class SubscriberServiceImpl implements SubscriberService {
   }
 
   @Override
-  @Transactional
   @Retryable(include = TransientDataAccessException.class)
   @ServiceActivator(inputChannel = "subscriberForgetResponseInboundChannel")
   public void recordForgetResponse(
