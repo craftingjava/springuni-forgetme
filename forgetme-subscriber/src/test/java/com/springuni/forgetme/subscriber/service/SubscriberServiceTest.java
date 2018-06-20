@@ -34,6 +34,7 @@ import com.springuni.forgetme.subscriber.model.Subscriber;
 import com.springuni.forgetme.subscriber.model.Subscription;
 import java.util.Optional;
 import java.util.UUID;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,6 +44,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
+import org.springframework.transaction.support.TransactionSynchronizationUtils;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SubscriberServiceTest {
@@ -79,6 +82,13 @@ public class SubscriberServiceTest {
 
     when(dataHandlerRegistry.lookup(DATA_HANDLER_ID_VALUE)).thenReturn(DATA_HANDLER_NAME_VALUE);
     when(subscriberRepository.save(any(Subscriber.class))).thenAnswer(returnsFirstArg());
+
+    TransactionSynchronizationManager.initSynchronization();
+  }
+
+  @After
+  public void tearDown() {
+    TransactionSynchronizationManager.clearSynchronization();
   }
 
   /// getSubscriber ///
@@ -129,6 +139,7 @@ public class SubscriberServiceTest {
     given(subscriberRepository.findByEmailHash(EMAIL_HASH)).willReturn(Optional.of(subscriber));
 
     subscriberService.requestForget(EMAIL);
+    TransactionSynchronizationUtils.triggerAfterCommit();
 
     then(subscriberForgetRequestOutboundChannel).should().send(any(Message.class));
 

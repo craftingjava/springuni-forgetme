@@ -16,6 +16,7 @@ import com.springuni.forgetme.core.model.WebhookData;
 import com.springuni.forgetme.subscriber.model.Subscriber;
 import com.springuni.forgetme.subscriber.model.Subscription;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -33,6 +34,8 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.security.core.token.Sha512DigestUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 @Slf4j
 @Service
@@ -86,6 +89,8 @@ public class SubscriberServiceImpl implements SubscriberService {
   public void requestForget(@NonNull String email) {
     Subscriber subscriber = getSubscriber(email);
 
+    List<Message<ForgetRequest>> forgetRequestMessages = new ArrayList<>();
+
     for (Subscription subscription : subscriber.getSubscriptions()) {
       SubscriptionStatus status = subscription.getStatus();
       if (FORGOTTEN.equals(status) || FORGET_PENDING.equals(status)) {
@@ -107,12 +112,21 @@ public class SubscriberServiceImpl implements SubscriberService {
           .setHeader(DATA_HANDLER_NAME, dataHandlerName)
           .build();
 
-      subscriberForgetRequestOutboundChannel.send(forgetRequestMessage);
+      forgetRequestMessages.add(forgetRequestMessage);
 
       subscriptionRepository.save(subscription);
 
       log.info("Forget requested for subscription {}.", subscription.getId());
     }
+
+    TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+
+      @Override
+      public void afterCommit() {
+        forgetRequestMessages.forEach(subscriberForgetRequestOutboundChannel::send);
+      }
+
+    });
   }
 
   @Override
