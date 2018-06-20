@@ -37,15 +37,13 @@ public abstract class AbstractDataHandlerFlowConfig implements InitializingBean 
   @Autowired
   private DataHandlerRegistry dataHandlerRegistry;
 
-  private String dataHandlerName;
   private ConfigurableApplicationContext dataHandlerContext;
-  private SingletonBeanRegistry applicationBeanRegistry;
 
   @Override
   public void afterPropertiesSet() {
-    dataHandlerName = getDataHandlerName();
+    String dataHandlerName = getDataHandlerName();
 
-    initDataHandler();
+    initDataHandler(dataHandlerName);
 
     dataHandlerContext = new ClassPathXmlApplicationContext(
         new String[]{"/META-INF/spring/" + dataHandlerName + "-adapter-config.xml"},
@@ -55,17 +53,25 @@ public abstract class AbstractDataHandlerFlowConfig implements InitializingBean 
     dataHandlerContext.setId(dataHandlerName);
     dataHandlerContext.refresh();
 
-    applicationBeanRegistry =
+    SingletonBeanRegistry applicationBeanRegistry =
         (SingletonBeanRegistry) applicationContext.getAutowireCapableBeanFactory();
 
     // Register channel for webhook dynamically
 
-    registerMessageChannel(WEBHOOK_DATA_HANDLER_INBOUND_CHANNEL_NAME, webhookInboundRouter);
+    registerMessageChannel(
+        dataHandlerName,
+        WEBHOOK_DATA_HANDLER_INBOUND_CHANNEL_NAME,
+        webhookInboundRouter,
+        applicationBeanRegistry
+    );
 
     // Register channel for forget response dynamically
 
     registerMessageChannel(
-        SUBSCRIBER_DATA_HANDLER_INBOUND_CHANNEL_NAME, subscriberForgetRequestRouter
+        dataHandlerName,
+        SUBSCRIBER_DATA_HANDLER_INBOUND_CHANNEL_NAME,
+        subscriberForgetRequestRouter,
+        applicationBeanRegistry
     );
 
     log.info("Data handler context {} initialized.", dataHandlerContext.getId());
@@ -73,13 +79,14 @@ public abstract class AbstractDataHandlerFlowConfig implements InitializingBean 
 
   protected abstract String getDataHandlerName();
 
-  private void initDataHandler() {
+  private void initDataHandler(String dataHandlerName) {
     UUID dataHandlerId = dataHandlerRegistry.register(dataHandlerName);
     log.info("Data handler UUID is {} for {}.", dataHandlerId, dataHandlerName);
   }
 
   private void registerMessageChannel(
-      String channelName, MappingMessageRouterManagement routerManagement) {
+      String dataHandlerName, String channelName, MappingMessageRouterManagement routerManagement,
+      SingletonBeanRegistry applicationBeanRegistry) {
 
     String qualifiedChannelName = dataHandlerName + QUALIFIED_CHANNEL_NAME_DELIMITER + channelName;
 
