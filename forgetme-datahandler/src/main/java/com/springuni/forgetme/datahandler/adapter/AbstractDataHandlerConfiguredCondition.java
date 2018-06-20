@@ -1,20 +1,19 @@
 package com.springuni.forgetme.datahandler.adapter;
 
+import static com.springuni.forgetme.datahandler.adapter.DataHandlerRegistration.DATA_HANDLER_PROVIDER_BINDABLE;
+import static com.springuni.forgetme.datahandler.adapter.DataHandlerRegistration.DATA_HANDLER_PROVIDER_PREFIX;
+
 import java.util.Collections;
 import java.util.Map;
 import org.springframework.boot.autoconfigure.condition.ConditionMessage;
 import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
 import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
-import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 
 public abstract class AbstractDataHandlerConfiguredCondition extends SpringBootCondition {
-
-  private static final Bindable<Map<String, String>> BINDABLE_HANDLER_PROPERTIES =
-      Bindable.mapOf(String.class, String.class);
 
   private final String dataHandlerName;
 
@@ -40,8 +39,9 @@ public abstract class AbstractDataHandlerConfiguredCondition extends SpringBootC
   protected abstract boolean isDataHandlerConfigured(Map<String, String> dataHandlerProperties);
 
   private Map<String, String> getDataHandlerProperties(Environment environment) {
+    String propertyName = DATA_HANDLER_PROVIDER_PREFIX + "." + dataHandlerName;
     return Binder.get(environment)
-        .bind("forgetme.data-handler.provider." + dataHandlerName, BINDABLE_HANDLER_PROPERTIES)
+        .bind(propertyName, DATA_HANDLER_PROVIDER_BINDABLE)
         .orElse(Collections.emptyMap());
   }
 

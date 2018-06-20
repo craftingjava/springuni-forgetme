@@ -38,12 +38,12 @@ public class AbstractDataHandlerConfiguredConditionTest {
       extends AbstractDataHandlerConfiguredCondition {
 
     public MatchingDataHandlerConfiguredCondition() {
-      super("matching");
+      super("mailerlite");
     }
 
     @Override
     protected boolean isDataHandlerConfigured(Map<String, String> dataHandlerProperties) {
-      return dataHandlerProperties.containsKey("key");
+      return dataHandlerProperties.containsKey("apiKey");
     }
 
   }

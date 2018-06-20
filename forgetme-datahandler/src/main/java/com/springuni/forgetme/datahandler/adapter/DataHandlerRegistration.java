@@ -1,51 +1,30 @@
 package com.springuni.forgetme.datahandler.adapter;
 
-import java.util.HashMap;
+import java.net.URI;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
-import javax.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
+import org.springframework.boot.context.properties.bind.Bindable;
+import org.springframework.util.Assert;
 
+/**
+ * A single client registration.
+ */
 @Getter
-@ConfigurationProperties(prefix = "forgetme.data-handler")
-public class DataHandlerProperties {
+@Setter
+public class DataHandlerRegistration {
 
-  /**
-   * OAuth provider details.
-   */
-  private final Map<String, Map<String, String>> provider = new HashMap<>();
+  static final Bindable<Map<String, String>> DATA_HANDLER_PROVIDER_BINDABLE =
+      Bindable.mapOf(String.class, String.class);
 
-  /**
-   * OAuth client registrations.
-   */
-  private final Map<String, Registration> registration = new HashMap<>();
+  static final String DATA_HANDLER_PROVIDER_PREFIX = "forgetme.data-handler.provider";
 
-  @PostConstruct
-  public void validate() {
-    this.getRegistration().values().forEach(this::validateRegistration);
-  }
+  static final Bindable<Map<String, DataHandlerRegistration>> DATA_HANDLER_REGISTRATION_BINDABLE =
+      Bindable.mapOf(String.class, DataHandlerRegistration.class);
 
-  private void validateRegistration(Registration registration) {
-    if (!StringUtils.hasText(registration.getName())) {
-      throw new IllegalStateException("Data handler name must not be empty.");
-    }
-    if (!StringUtils.hasText(registration.getDisplayName())) {
-      throw new IllegalStateException("Data handler display-name must not be empty.");
-    }
-    if (!StringUtils.hasText(registration.getDescription())) {
-      throw new IllegalStateException("Data handler description must not be empty.");
-    }
-    if (!StringUtils.hasText(registration.getUrl())) {
-      throw new IllegalStateException("Data handler url must not be empty.");
-    }
-    if (!CollectionUtils.isEmpty(registration.getDataScopes())) {
-      throw new IllegalStateException("Data handler data-scopes must not be empty.");
-    }
-  }
+  static final String DATA_HANDLER_REGISTRATION_PREFIX = "forgetme.data-handler.registration";
 
   public enum DataScope {
     /**
@@ -118,38 +97,40 @@ public class DataHandlerProperties {
   }
 
   /**
-   * A single client registration.
+   * Client ID for the registration.
    */
-  @Getter
-  @Setter
-  public static class Registration {
+  private String name;
 
-    /**
-     * Client ID for the registration.
-     */
-    private String name;
+  /**
+   * Client secret of the registration.
+   */
+  private String displayName;
 
-    /**
-     * Client secret of the registration.
-     */
-    private String displayName;
+  /**
+   * Client authentication method. May be left blank then using a pre-defined
+   * provider.
+   */
+  private String description;
 
-    /**
-     * Client authentication method. May be left blank then using a pre-defined
-     * provider.
-     */
-    private String description;
+  /**
+   * Authorization grant type. May be left blank then using a pre-defined provider.
+   */
+  private URI url;
 
-    /**
-     * Authorization grant type. May be left blank then using a pre-defined provider.
-     */
-    private String url;
+  /**
+   * Authorization scopes. May be left blank then using a pre-defined provider.
+   */
+  private Set<DataScope> dataScopes;
 
-    /**
-     * Authorization scopes. May be left blank then using a pre-defined provider.
-     */
-    private Set<DataScope> dataScopes;
+  public Optional<URI> getUrl() {
+    return Optional.ofNullable(url);
+  }
 
+  public void validate() {
+    Assert.hasText(getName(), "Data handler name must not be empty.");
+    Assert.hasText(getDisplayName(), "Data handler display-name must not be empty.");
+    Assert.hasText(getDescription(), "Data handler description must not be empty.");
+    Assert.notEmpty(getDataScopes(), "Data handler data-scopes must not be empty.");
   }
 
 }

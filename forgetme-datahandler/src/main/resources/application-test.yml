@@ -1,5 +1,14 @@
 forgetme:
   data-handler:
+    registration:
+      mailerlite:
+        name: mailerlite
+        display-name: MailerLite
+        description: Email Marketing
+        url: https://www.mailerlite.com/
+        data-scopes:
+          - notification
+          - profile
     provider:
-      matching:
-        key: value
+      mailerlite:
+        apiKey: test
