@@ -50,11 +50,20 @@ public abstract class AbstractDataHandlerFlowConfig implements InitializingBean 
         false,
         applicationContext);
 
-    dataHandlerContext.setId(dataHandlerName);
+    String dataHandlerContextId = dataHandlerName + "-adapter-context";
+
+    dataHandlerContext.setId(dataHandlerContextId);
     dataHandlerContext.refresh();
 
     SingletonBeanRegistry applicationBeanRegistry =
         (SingletonBeanRegistry) applicationContext.getAutowireCapableBeanFactory();
+
+    // Register child context as a bean to the parent context
+
+    applicationBeanRegistry.registerSingleton(
+        dataHandlerContextId,
+        dataHandlerContext
+    );
 
     // Register channel for webhook dynamically
 
@@ -74,7 +83,7 @@ public abstract class AbstractDataHandlerFlowConfig implements InitializingBean 
         applicationBeanRegistry
     );
 
-    log.info("Data handler context {} initialized.", dataHandlerContext.getId());
+    log.info("Data handler context {} initialized.", dataHandlerContextId);
   }
 
   protected abstract String getDataHandlerName();

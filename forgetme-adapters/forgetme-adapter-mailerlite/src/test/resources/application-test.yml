@@ -11,4 +11,4 @@ forgetme:
           - profile
     provider:
       mailerlite:
-        api-key: test
+        api-key: ${MAILERLITE_API_KEY:#{null}}

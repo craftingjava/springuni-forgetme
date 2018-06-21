@@ -40,4 +40,4 @@ forgetme:
           - profile
     provider:
       mailerlite:
-        apiKey: ${MAILERLITE_API_KEY}
+        api-key: ${MAILERLITE_API_KEY:#{null}}
