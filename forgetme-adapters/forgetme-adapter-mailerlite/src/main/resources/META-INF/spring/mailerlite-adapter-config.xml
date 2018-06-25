@@ -13,9 +13,26 @@
   />
 
   <bean
+    class="com.springuni.forgetme.datahandler.adapter.mailerlite.MailerLiteRequestInterceptor"
+    id="mailerLiteRequestInterceptor"
+  >
+    <constructor-arg name="apiKey" value="${api-key}"/>
+  </bean>
+
+  <bean class="org.springframework.web.client.RestTemplate" id="mailerLiteRestTemplate">
+    <property name="interceptors">
+      <list>
+        <ref bean="mailerLiteRequestInterceptor"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean
     class="com.springuni.forgetme.datahandler.adapter.mailerlite.MailerLiteGateway"
     id="subscriberDataHandlerGateway"
-  />
+  >
+    <constructor-arg ref="mailerLiteRestTemplate"/>
+  </bean>
 
   <import resource="classpath:META-INF/spring/base-adapter-config.xml"/>
 

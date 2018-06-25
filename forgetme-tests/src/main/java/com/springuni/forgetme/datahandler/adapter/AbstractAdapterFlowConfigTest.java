@@ -68,6 +68,10 @@ public abstract class AbstractAdapterFlowConfigTest {
 
   protected abstract Map<String, String> expectedDataHandlerNameProperties();
 
+  protected <T> T getBean(String name, Class<T> requiredType) {
+    return dataHandlerContext.getBean(name, requiredType);
+  }
+
   protected abstract String getDataHandlerName();
 
   @RequiredArgsConstructor(staticName = "of")
