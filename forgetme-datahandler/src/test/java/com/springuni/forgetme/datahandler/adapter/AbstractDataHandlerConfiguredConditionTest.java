@@ -19,7 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
 @SpringBootTest(classes = TestConfig.class)
-public class AbstractDataHandlerConfiguredConditionTest {
+public abstract class AbstractDataHandlerConfiguredConditionTest {
 
   @Autowired
   private ApplicationContext applicationContext;
