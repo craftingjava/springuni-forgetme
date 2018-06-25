@@ -25,6 +25,38 @@ public class DataHandlerRegistration {
       Bindable.mapOf(String.class, DataHandlerRegistration.class);
 
   static final String DATA_HANDLER_REGISTRATION_PREFIX = "forgetme.data-handler.registration";
+  /**
+   * Client ID for the registration.
+   */
+  private String name;
+  /**
+   * Client secret of the registration.
+   */
+  private String displayName;
+  /**
+   * Client authentication method. May be left blank then using a pre-defined
+   * provider.
+   */
+  private String description;
+  /**
+   * Authorization grant type. May be left blank then using a pre-defined provider.
+   */
+  private URI url;
+  /**
+   * Authorization scopes. May be left blank then using a pre-defined provider.
+   */
+  private Set<DataScope> dataScopes;
+
+  public Optional<URI> getUrl() {
+    return Optional.ofNullable(url);
+  }
+
+  public void validate() {
+    Assert.hasText(getName(), "Data handler name must not be empty.");
+    Assert.hasText(getDisplayName(), "Data handler display-name must not be empty.");
+    Assert.hasText(getDescription(), "Data handler description must not be empty.");
+    Assert.notEmpty(getDataScopes(), "Data handler data-scopes must not be empty.");
+  }
 
   public enum DataScope {
     /**
@@ -94,43 +126,6 @@ public class DataHandlerRegistration {
      * services.
      */
     USAGE;
-  }
-
-  /**
-   * Client ID for the registration.
-   */
-  private String name;
-
-  /**
-   * Client secret of the registration.
-   */
-  private String displayName;
-
-  /**
-   * Client authentication method. May be left blank then using a pre-defined
-   * provider.
-   */
-  private String description;
-
-  /**
-   * Authorization grant type. May be left blank then using a pre-defined provider.
-   */
-  private URI url;
-
-  /**
-   * Authorization scopes. May be left blank then using a pre-defined provider.
-   */
-  private Set<DataScope> dataScopes;
-
-  public Optional<URI> getUrl() {
-    return Optional.ofNullable(url);
-  }
-
-  public void validate() {
-    Assert.hasText(getName(), "Data handler name must not be empty.");
-    Assert.hasText(getDisplayName(), "Data handler display-name must not be empty.");
-    Assert.hasText(getDescription(), "Data handler description must not be empty.");
-    Assert.notEmpty(getDataScopes(), "Data handler data-scopes must not be empty.");
   }
 
 }

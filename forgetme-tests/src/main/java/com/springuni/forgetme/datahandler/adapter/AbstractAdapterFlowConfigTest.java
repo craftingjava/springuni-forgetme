@@ -1,8 +1,13 @@
 package com.springuni.forgetme.datahandler.adapter;
 
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import com.springuni.forgetme.core.model.DataHandlerRegistry;
+import java.util.Map;
+import lombok.RequiredArgsConstructor;
+import org.hamcrest.Description;
+import org.hamcrest.TypeSafeMatcher;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.env.Environment;
 import org.springframework.integration.support.management.MappingMessageRouterManagement;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.test.context.ActiveProfiles;
@@ -35,7 +41,7 @@ public abstract class AbstractAdapterFlowConfigTest {
   @Autowired
   private ApplicationContext applicationContext;
 
-  ApplicationContext dataHandlerContext;
+  private ApplicationContext dataHandlerContext;
 
   @Before
   public void setUp() {
@@ -54,6 +60,33 @@ public abstract class AbstractAdapterFlowConfigTest {
     assertTrue(dataHandlerContext.containsBean("webhookDataTransformer"));
   }
 
+  @Test
+  public void contextShouldContainEnvironmentProperties() {
+    Map<String, String> properties = expectedDataHandlerNameProperties();
+    assertThat(dataHandlerContext.getEnvironment(), EnvironmentMatcher.of(properties));
+  }
+
+  protected abstract Map<String, String> expectedDataHandlerNameProperties();
+
   protected abstract String getDataHandlerName();
+
+  @RequiredArgsConstructor(staticName = "of")
+  private static class EnvironmentMatcher extends TypeSafeMatcher<Environment> {
+
+    private final Map<String, String> properties;
+
+    @Override
+    public void describeTo(Description description) {
+      description.appendText("properties ").appendValue(properties);
+    }
+
+    @Override
+    protected boolean matchesSafely(Environment environment) {
+      return properties.entrySet()
+          .stream()
+          .allMatch(it -> it.getValue().equals(environment.getProperty(it.getKey())));
+    }
+
+  }
 
 }

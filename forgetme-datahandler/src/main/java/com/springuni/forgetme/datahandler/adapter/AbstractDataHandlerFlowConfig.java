@@ -1,15 +1,25 @@
 package com.springuni.forgetme.datahandler.adapter;
 
+import static com.springuni.forgetme.datahandler.adapter.DataHandlerRegistration.DATA_HANDLER_PROVIDER_BINDABLE;
+import static com.springuni.forgetme.datahandler.adapter.DataHandlerRegistration.DATA_HANDLER_PROVIDER_PREFIX;
+
 import com.springuni.forgetme.core.model.DataHandlerRegistry;
+import java.util.Collections;
+import java.util.Map;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.SingletonBeanRegistry;
+import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.env.AbstractEnvironment;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.MapPropertySource;
+import org.springframework.core.env.PropertySource;
 import org.springframework.integration.support.management.MappingMessageRouterManagement;
 import org.springframework.messaging.MessageChannel;
 
@@ -45,25 +55,10 @@ public abstract class AbstractDataHandlerFlowConfig implements InitializingBean 
 
     initDataHandler(dataHandlerName);
 
-    dataHandlerContext = new ClassPathXmlApplicationContext(
-        new String[]{"/META-INF/spring/" + dataHandlerName + "-adapter-config.xml"},
-        false,
-        applicationContext);
-
-    String dataHandlerContextId = dataHandlerName + "-adapter-context";
-
-    dataHandlerContext.setId(dataHandlerContextId);
-    dataHandlerContext.refresh();
-
     SingletonBeanRegistry applicationBeanRegistry =
         (SingletonBeanRegistry) applicationContext.getAutowireCapableBeanFactory();
 
-    // Register child context as a bean to the parent context
-
-    applicationBeanRegistry.registerSingleton(
-        dataHandlerContextId,
-        dataHandlerContext
-    );
+    dataHandlerContext = createDataHandlerContext(dataHandlerName, applicationBeanRegistry);
 
     // Register channel for webhook dynamically
 
@@ -83,10 +78,44 @@ public abstract class AbstractDataHandlerFlowConfig implements InitializingBean 
         applicationBeanRegistry
     );
 
-    log.info("Data handler context {} initialized.", dataHandlerContextId);
+    log.info("Data handler context {} initialized.", dataHandlerContext.getId());
   }
 
   protected abstract String getDataHandlerName();
+
+  private ConfigurableApplicationContext createDataHandlerContext(
+      String dataHandlerName, SingletonBeanRegistry applicationBeanRegistry) {
+
+    ConfigurableApplicationContext dataHandlerContext = new ClassPathXmlApplicationContext(
+        new String[]{"/META-INF/spring/" + dataHandlerName + "-adapter-config.xml"},
+        false,
+        applicationContext);
+
+    String dataHandlerContextId = dataHandlerName + "-adapter-context";
+
+    dataHandlerContext.setId(dataHandlerContextId);
+
+    String propertyName = DATA_HANDLER_PROVIDER_PREFIX + "." + dataHandlerName;
+
+    Map<String, Object> properties = Binder.get(applicationContext.getEnvironment())
+        .bind(propertyName, DATA_HANDLER_PROVIDER_BINDABLE)
+        .map(Collections::<String, Object>unmodifiableMap)
+        .orElse(Collections.emptyMap());
+
+    ConfigurableEnvironment environment = new DataHandlerEnvironment(properties);
+
+    dataHandlerContext.setEnvironment(environment);
+    dataHandlerContext.refresh();
+
+    // Register child context as a bean to the parent context
+
+    applicationBeanRegistry.registerSingleton(
+        dataHandlerContextId,
+        dataHandlerContext
+    );
+
+    return dataHandlerContext;
+  }
 
   private void initDataHandler(String dataHandlerName) {
     UUID dataHandlerId = dataHandlerRegistry.register(dataHandlerName);
@@ -110,6 +139,17 @@ public abstract class AbstractDataHandlerFlowConfig implements InitializingBean 
         dataHandlerName,
         qualifiedChannelName
     );
+  }
+
+  private static class DataHandlerEnvironment extends AbstractEnvironment {
+
+    DataHandlerEnvironment(Map<String, Object> properties) {
+      PropertySource<?> propertySource =
+          new MapPropertySource("dataHandlerProperties", properties);
+
+      getPropertySources().addLast(propertySource);
+    }
+
   }
 
 }

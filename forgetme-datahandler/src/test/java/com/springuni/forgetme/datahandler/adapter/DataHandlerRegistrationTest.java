@@ -35,11 +35,9 @@ public class DataHandlerRegistrationTest {
 
   @Rule
   public ExpectedException expectedException = ExpectedException.none();
-
+  DataHandlerRegistration dataHandlerRegistration;
   @Autowired
   private Environment environment;
-
-  DataHandlerRegistration dataHandlerRegistration;
 
   @Before
   public void setUp() {
