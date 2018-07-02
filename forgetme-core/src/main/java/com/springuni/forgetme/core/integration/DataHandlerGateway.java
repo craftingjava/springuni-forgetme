@@ -1,4 +1,4 @@
-package com.springuni.forgetme.datahandler.adapter;
+package com.springuni.forgetme.core.integration;
 
 import com.springuni.forgetme.core.model.ForgetRequest;
 import com.springuni.forgetme.core.model.ForgetResponse;

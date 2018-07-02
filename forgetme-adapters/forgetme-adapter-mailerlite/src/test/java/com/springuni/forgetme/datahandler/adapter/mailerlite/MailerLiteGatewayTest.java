@@ -3,7 +3,7 @@ package com.springuni.forgetme.datahandler.adapter.mailerlite;
 import static org.springframework.http.HttpMethod.POST;
 
 import com.springuni.forgetme.datahandler.adapter.AbstractDataHandlerGatewayTest;
-import com.springuni.forgetme.datahandler.adapter.DataHandlerGateway;
+import com.springuni.forgetme.core.integration.DataHandlerGateway;
 import java.net.URI;
 import org.springframework.http.HttpMethod;
 import org.springframework.retry.RetryOperations;
