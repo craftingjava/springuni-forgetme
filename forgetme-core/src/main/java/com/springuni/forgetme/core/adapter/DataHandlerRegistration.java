@@ -9,9 +9,6 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.util.Assert;
 
-/**
- * A single client registration.
- */
 @Getter
 @Setter
 public class DataHandlerRegistration {
@@ -26,26 +23,10 @@ public class DataHandlerRegistration {
 
   public static final String DATA_HANDLER_REGISTRATION_PREFIX = "forgetme.data-handler.registration";
 
-  /**
-   * Client ID for the registration.
-   */
   private String name;
-  /**
-   * Client secret of the registration.
-   */
   private String displayName;
-  /**
-   * Client authentication method. May be left blank then using a pre-defined
-   * provider.
-   */
   private String description;
-  /**
-   * Authorization grant type. May be left blank then using a pre-defined provider.
-   */
   private URI url;
-  /**
-   * Authorization scopes. May be left blank then using a pre-defined provider.
-   */
   private Set<DataScope> dataScopes;
 
   public Optional<URI> getUrl() {
@@ -60,6 +41,7 @@ public class DataHandlerRegistration {
   }
 
   public enum DataScope {
+
     /**
      * The account data may include your name and email address. The source of the account data
      * is the subscriber.
@@ -127,6 +109,7 @@ public class DataHandlerRegistration {
      * services.
      */
     USAGE;
+
   }
 
 }
