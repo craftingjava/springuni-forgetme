@@ -9,8 +9,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.http.HttpRequest;

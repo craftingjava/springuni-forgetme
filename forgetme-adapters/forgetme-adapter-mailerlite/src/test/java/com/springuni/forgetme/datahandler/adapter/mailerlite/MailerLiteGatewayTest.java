@@ -2,8 +2,8 @@ package com.springuni.forgetme.datahandler.adapter.mailerlite;
 
 import static org.springframework.http.HttpMethod.POST;
 
-import com.springuni.forgetme.datahandler.adapter.AbstractDataHandlerGatewayTest;
 import com.springuni.forgetme.core.integration.DataHandlerGateway;
+import com.springuni.forgetme.datahandler.adapter.AbstractDataHandlerGatewayTest;
 import java.net.URI;
 import org.springframework.http.HttpMethod;
 import org.springframework.retry.RetryOperations;
@@ -25,7 +25,7 @@ public class MailerLiteGatewayTest extends AbstractDataHandlerGatewayTest {
 
   @Override
   protected URI expectedUrl() {
-    return URI.create("http://api.mailerlite.com/api/v2/subscribers/" + EMAIL + "/forget");
+    return URI.create("https://api.mailerlite.com/api/v2/subscribers/" + EMAIL + "/forget");
   }
 
 }
