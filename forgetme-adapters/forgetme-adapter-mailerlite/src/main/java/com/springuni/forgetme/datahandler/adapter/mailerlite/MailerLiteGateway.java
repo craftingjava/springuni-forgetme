@@ -12,7 +12,7 @@ import org.springframework.web.client.RestOperations;
 @Slf4j
 public class MailerLiteGateway extends AbstractDataHandlerGateway {
 
-  static final String MAILERLITE_API_BASE = "http://api.mailerlite.com/api/v2";
+  static final String MAILERLITE_API_BASE = "https://api.mailerlite.com/api/v2";
 
   public MailerLiteGateway(RestOperations restOperations, RetryOperations retryOperations) {
     super(restOperations, retryOperations);
