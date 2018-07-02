@@ -11,7 +11,7 @@ import org.springframework.http.client.ClientHttpResponse;
 @RequiredArgsConstructor
 public class MailerLiteRequestInterceptor implements ClientHttpRequestInterceptor {
 
-  static final String MAILERLITE_API_KEY = "MailerLite-ApiKey";
+  static final String MAILERLITE_API_KEY = "X-MailerLite-ApiKey";
 
   @NonNull
   private final String apiKey;
