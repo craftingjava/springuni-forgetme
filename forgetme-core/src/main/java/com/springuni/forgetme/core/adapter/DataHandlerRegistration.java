@@ -1,4 +1,4 @@
-package com.springuni.forgetme.datahandler.adapter;
+package com.springuni.forgetme.core.adapter;
 
 import java.net.URI;
 import java.util.Map;
@@ -16,15 +16,16 @@ import org.springframework.util.Assert;
 @Setter
 public class DataHandlerRegistration {
 
-  static final Bindable<Map<String, String>> DATA_HANDLER_PROVIDER_BINDABLE =
+  public static final Bindable<Map<String, String>> DATA_HANDLER_PROVIDER_BINDABLE =
       Bindable.mapOf(String.class, String.class);
 
-  static final String DATA_HANDLER_PROVIDER_PREFIX = "forgetme.data-handler.provider";
+  public static final String DATA_HANDLER_PROVIDER_PREFIX = "forgetme.data-handler.provider";
 
-  static final Bindable<Map<String, DataHandlerRegistration>> DATA_HANDLER_REGISTRATION_BINDABLE =
+  public static final Bindable<Map<String, DataHandlerRegistration>> DATA_HANDLER_REGISTRATION_BINDABLE =
       Bindable.mapOf(String.class, DataHandlerRegistration.class);
 
-  static final String DATA_HANDLER_REGISTRATION_PREFIX = "forgetme.data-handler.registration";
+  public static final String DATA_HANDLER_REGISTRATION_PREFIX = "forgetme.data-handler.registration";
+
   /**
    * Client ID for the registration.
    */

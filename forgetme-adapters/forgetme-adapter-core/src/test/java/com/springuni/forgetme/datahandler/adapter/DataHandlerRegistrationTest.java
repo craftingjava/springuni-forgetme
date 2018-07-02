@@ -1,13 +1,14 @@
 package com.springuni.forgetme.datahandler.adapter;
 
-import static com.springuni.forgetme.datahandler.adapter.DataHandlerRegistration.DATA_HANDLER_REGISTRATION_BINDABLE;
-import static com.springuni.forgetme.datahandler.adapter.DataHandlerRegistration.DATA_HANDLER_REGISTRATION_PREFIX;
-import static com.springuni.forgetme.datahandler.adapter.DataHandlerRegistration.DataScope.NOTIFICATION;
-import static com.springuni.forgetme.datahandler.adapter.DataHandlerRegistration.DataScope.PROFILE;
+import static com.springuni.forgetme.core.adapter.DataHandlerRegistration.DATA_HANDLER_REGISTRATION_BINDABLE;
+import static com.springuni.forgetme.core.adapter.DataHandlerRegistration.DATA_HANDLER_REGISTRATION_PREFIX;
+import static com.springuni.forgetme.core.adapter.DataHandlerRegistration.DataScope.NOTIFICATION;
+import static com.springuni.forgetme.core.adapter.DataHandlerRegistration.DataScope.PROFILE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
+import com.springuni.forgetme.core.adapter.DataHandlerRegistration;
 import com.springuni.forgetme.datahandler.adapter.DataHandlerRegistrationTest.TestConfig;
 import java.net.URI;
 import java.util.Collections;

@@ -1,6 +1,6 @@
 package com.springuni.forgetme.datahandler.adapter;
 
-import com.springuni.forgetme.core.integration.DataHandlerGateway;
+import com.springuni.forgetme.core.adapter.DataHandlerGateway;
 import com.springuni.forgetme.core.model.ForgetRequest;
 import com.springuni.forgetme.core.model.ForgetResponse;
 import java.net.URI;

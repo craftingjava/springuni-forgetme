@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import com.springuni.forgetme.core.model.DataHandlerRegistry;
+import com.springuni.forgetme.core.adapter.DataHandlerRegistry;
 import com.springuni.forgetme.core.model.EntityNotFoundException;
 import com.springuni.forgetme.subscriber.model.Subscriber;
 import com.springuni.forgetme.subscriber.model.Subscription;

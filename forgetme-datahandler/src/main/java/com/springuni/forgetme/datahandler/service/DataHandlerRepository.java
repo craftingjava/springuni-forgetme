@@ -1,6 +1,6 @@
 package com.springuni.forgetme.datahandler.service;
 
-import com.springuni.forgetme.core.model.DataHandlerRegistry;
+import com.springuni.forgetme.core.adapter.DataHandlerRegistry;
 import com.springuni.forgetme.core.model.EntityNotFoundException;
 import com.springuni.forgetme.core.orm.BaseRepository;
 import com.springuni.forgetme.datahandler.model.DataHandler;

@@ -1,7 +1,7 @@
 package com.springuni.forgetme.datahandler.adapter;
 
-import static com.springuni.forgetme.datahandler.adapter.DataHandlerRegistration.DATA_HANDLER_PROVIDER_BINDABLE;
-import static com.springuni.forgetme.datahandler.adapter.DataHandlerRegistration.DATA_HANDLER_PROVIDER_PREFIX;
+import static com.springuni.forgetme.core.adapter.DataHandlerRegistration.DATA_HANDLER_PROVIDER_BINDABLE;
+import static com.springuni.forgetme.core.adapter.DataHandlerRegistration.DATA_HANDLER_PROVIDER_PREFIX;
 
 import java.util.Collections;
 import java.util.Map;

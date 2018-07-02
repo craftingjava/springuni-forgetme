@@ -24,7 +24,7 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
 
-import com.springuni.forgetme.core.model.DataHandlerRegistry;
+import com.springuni.forgetme.core.adapter.DataHandlerRegistry;
 import com.springuni.forgetme.core.model.EntityNotFoundException;
 import com.springuni.forgetme.core.model.ForgetRequest;
 import com.springuni.forgetme.core.model.ForgetResponse;

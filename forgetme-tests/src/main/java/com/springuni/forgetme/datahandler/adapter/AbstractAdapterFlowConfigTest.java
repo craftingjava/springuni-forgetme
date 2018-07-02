@@ -4,7 +4,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import com.springuni.forgetme.core.integration.RetryConfig;
-import com.springuni.forgetme.core.model.DataHandlerRegistry;
+import com.springuni.forgetme.core.adapter.DataHandlerRegistry;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.hamcrest.Description;

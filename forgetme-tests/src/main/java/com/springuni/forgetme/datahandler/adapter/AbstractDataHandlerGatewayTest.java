@@ -13,7 +13,7 @@ import static org.springframework.http.HttpStatus.GATEWAY_TIMEOUT;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
-import com.springuni.forgetme.core.integration.DataHandlerGateway;
+import com.springuni.forgetme.core.adapter.DataHandlerGateway;
 import com.springuni.forgetme.core.model.ForgetRequest;
 import java.net.URI;
 import java.util.Objects;

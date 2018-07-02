@@ -2,7 +2,7 @@ package com.springuni.forgetme.ui.subscriber;
 
 import static java.util.stream.Collectors.toList;
 
-import com.springuni.forgetme.core.model.DataHandlerRegistry;
+import com.springuni.forgetme.core.adapter.DataHandlerRegistry;
 import com.springuni.forgetme.core.model.EntityNotFoundException;
 import com.springuni.forgetme.subscriber.model.Subscriber;
 import com.springuni.forgetme.subscriber.model.Subscription;

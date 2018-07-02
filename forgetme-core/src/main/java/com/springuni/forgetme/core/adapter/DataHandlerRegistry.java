@@ -1,4 +1,4 @@
-package com.springuni.forgetme.core.model;
+package com.springuni.forgetme.core.adapter;
 
 import java.util.UUID;
 

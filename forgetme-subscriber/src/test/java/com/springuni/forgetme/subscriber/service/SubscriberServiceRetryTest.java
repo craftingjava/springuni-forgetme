@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE;
 
 import com.springuni.forgetme.core.integration.RetryConfig;
-import com.springuni.forgetme.core.model.DataHandlerRegistry;
+import com.springuni.forgetme.core.adapter.DataHandlerRegistry;
 import com.springuni.forgetme.core.model.ForgetResponse;
 import com.springuni.forgetme.core.model.WebhookData;
 import com.springuni.forgetme.subscriber.model.Subscriber;
