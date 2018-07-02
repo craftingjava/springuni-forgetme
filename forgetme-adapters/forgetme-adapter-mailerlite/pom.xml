@@ -16,7 +16,7 @@
   <dependencies>
     <dependency>
       <groupId>com.springuni</groupId>
-      <artifactId>forgetme-datahandler</artifactId>
+      <artifactId>forgetme-adapter-core</artifactId>
       <version>0.1.0-SNAPSHOT</version>
     </dependency>
 

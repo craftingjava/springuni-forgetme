@@ -3,7 +3,7 @@ package com.springuni.forgetme.datahandler.adapter;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import com.springuni.forgetme.datahandler.adapter.AbstractDataHandlerConfiguredConditionTest.TestConfig;
+import com.springuni.forgetme.datahandler.adapter.DataHandlerConfiguredConditionTest.TestConfig;
 import java.util.Map;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
 @SpringBootTest(classes = TestConfig.class)
-public abstract class AbstractDataHandlerConfiguredConditionTest {
+public class DataHandlerConfiguredConditionTest {
 
   @Autowired
   private ApplicationContext applicationContext;
@@ -43,7 +43,7 @@ public abstract class AbstractDataHandlerConfiguredConditionTest {
 
     @Override
     protected boolean isDataHandlerConfigured(Map<String, String> dataHandlerProperties) {
-      return dataHandlerProperties.containsKey("apiKey");
+      return dataHandlerProperties.containsKey("api-key");
     }
 
   }

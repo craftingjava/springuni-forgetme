@@ -4,7 +4,6 @@ import static com.springuni.forgetme.datahandler.adapter.DataHandlerRegistration
 import static com.springuni.forgetme.datahandler.adapter.DataHandlerRegistration.DATA_HANDLER_REGISTRATION_PREFIX;
 import static com.springuni.forgetme.datahandler.adapter.DataHandlerRegistration.DataScope.NOTIFICATION;
 import static com.springuni.forgetme.datahandler.adapter.DataHandlerRegistration.DataScope.PROFILE;
-import static org.hamcrest.Matchers.hasItems;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
@@ -13,6 +12,7 @@ import com.springuni.forgetme.datahandler.adapter.DataHandlerRegistrationTest.Te
 import java.net.URI;
 import java.util.Collections;
 import java.util.Map;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -60,7 +60,7 @@ public class DataHandlerRegistrationTest {
     assertEquals("MailerLite", dataHandlerRegistration.getDisplayName());
     assertEquals("Email Marketing", dataHandlerRegistration.getDescription());
     assertEquals(URI.create("https://www.mailerlite.com/"), dataHandlerRegistration.getUrl().get());
-    assertThat(dataHandlerRegistration.getDataScopes(), hasItems(NOTIFICATION, PROFILE));
+    assertThat(dataHandlerRegistration.getDataScopes(), Matchers.hasItems(NOTIFICATION, PROFILE));
   }
 
   @Test
