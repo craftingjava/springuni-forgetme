@@ -1,5 +1,6 @@
 package com.springuni.forgetme.datahandler.adapter;
 
+import static com.springuni.forgetme.core.integration.RetryConfig.MAX_ATTEMPTS;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.isNull;
@@ -45,18 +46,14 @@ public abstract class AbstractDataHandlerGatewayTest {
   private static final UUID SUBSCRIPTION_ID_VALUE = UUID
       .fromString("a408b7d4-49dc-427e-ad60-e5d8a0dc5925");
 
-  private static final int MAX_ATTEMPTS = 3;
-
   @Mock
   private RestOperations restOperations;
-
-  private RetryTemplate retryTemplate;
 
   private DataHandlerGateway dataHandlerGateway;
 
   @Before
   public void setUp() {
-    retryTemplate = new RetryTemplate();
+    RetryTemplate retryTemplate = new RetryTemplate();
     retryTemplate.setRetryPolicy(new SimpleRetryPolicy(MAX_ATTEMPTS));
     dataHandlerGateway = createDataHandlerGateway(restOperations, retryTemplate);
   }

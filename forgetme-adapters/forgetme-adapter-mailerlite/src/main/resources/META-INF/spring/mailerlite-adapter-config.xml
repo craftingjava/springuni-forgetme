@@ -32,6 +32,7 @@
     id="subscriberDataHandlerGateway"
   >
     <constructor-arg ref="mailerLiteRestTemplate"/>
+    <constructor-arg ref="retryTemplate"/>
   </bean>
 
   <import resource="classpath:META-INF/spring/base-adapter-config.xml"/>

@@ -3,6 +3,7 @@ package com.springuni.forgetme.datahandler.adapter;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import com.springuni.forgetme.core.integration.RetryConfig;
 import com.springuni.forgetme.core.model.DataHandlerRegistry;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
 import org.springframework.integration.support.management.MappingMessageRouterManagement;
 import org.springframework.messaging.MessageChannel;
@@ -24,6 +26,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
 @SpringBootTest
+@Import(RetryConfig.class)
 public abstract class AbstractAdapterFlowConfigTest {
 
   @MockBean
