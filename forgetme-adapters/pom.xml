@@ -18,12 +18,4 @@
 
   <packaging>pom</packaging>
 
-  <dependencies>
-    <dependency>
-      <groupId>com.springuni</groupId>
-      <artifactId>forgetme-datahandler</artifactId>
-      <version>0.1.0-SNAPSHOT</version>
-    </dependency>
-  </dependencies>
-
 </project>
