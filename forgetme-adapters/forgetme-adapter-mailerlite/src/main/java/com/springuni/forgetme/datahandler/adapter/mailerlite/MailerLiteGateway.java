@@ -1,22 +1,30 @@
 package com.springuni.forgetme.datahandler.adapter.mailerlite;
 
-import com.springuni.forgetme.core.model.ForgetRequest;
-import com.springuni.forgetme.core.model.ForgetResponse;
+import static org.springframework.http.HttpMethod.POST;
+
 import com.springuni.forgetme.datahandler.adapter.AbstractDataHandlerGateway;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import java.net.URI;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpMethod;
+import org.springframework.retry.RetryOperations;
 import org.springframework.web.client.RestOperations;
 
-@RequiredArgsConstructor
+@Slf4j
 public class MailerLiteGateway extends AbstractDataHandlerGateway {
 
-  @NonNull
-  private final RestOperations restOperations;
+  static final String MAILERLITE_API_BASE = "http://api.mailerlite.com/api/v2";
 
-  @Override
-  public ForgetResponse handleForget(ForgetRequest forgetRequest) {
-    // TODO: Add real implementaion later
-    return new ForgetResponse(forgetRequest.getSubscriptionId(), true);
+  public MailerLiteGateway(RestOperations restOperations, RetryOperations retryOperations) {
+    super(restOperations, retryOperations);
   }
 
+  @Override
+  protected URI buildUri(String email) {
+    return URI.create(MAILERLITE_API_BASE + "/subscribers/" + email + "/forget");
+  }
+
+  @Override
+  protected HttpMethod getHttpMethod() {
+    return POST;
+  }
 }
