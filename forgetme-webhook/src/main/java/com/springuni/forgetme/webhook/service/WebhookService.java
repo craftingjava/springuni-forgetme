@@ -1,4 +1,4 @@
-package com.springuni.forgetme.datahandler.service;
+package com.springuni.forgetme.webhook.service;
 
 import java.util.Map;
 import java.util.UUID;

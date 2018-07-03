@@ -1,4 +1,4 @@
-package com.springuni.forgetme.datahandler;
+package com.springuni.forgetme.webhook;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

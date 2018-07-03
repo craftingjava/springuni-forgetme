@@ -1,4 +1,4 @@
-package com.springuni.forgetme.datahandler.web;
+package com.springuni.forgetme.webhook.web;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyMap;
@@ -10,8 +10,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.springuni.forgetme.core.model.EntityNotFoundException;
 import com.springuni.forgetme.core.web.RestErrorHandler;
-import com.springuni.forgetme.datahandler.service.WebhookService;
-import com.springuni.forgetme.datahandler.web.WebhookControllerTest.TestConfig;
+import com.springuni.forgetme.webhook.service.WebhookService;
+import com.springuni.forgetme.webhook.web.WebhookControllerTest.TestConfig;
 import java.util.UUID;
 import org.junit.After;
 import org.junit.Before;

@@ -1,10 +1,10 @@
-package com.springuni.forgetme.datahandler.service;
+package com.springuni.forgetme.webhook.service;
 
 import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_ID;
 import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_NAME;
 
 import com.springuni.forgetme.core.model.EntityNotFoundException;
-import com.springuni.forgetme.datahandler.model.DataHandler;
+import com.springuni.forgetme.webhook.model.DataHandler;
 import java.util.Map;
 import java.util.UUID;
 import org.springframework.messaging.Message;

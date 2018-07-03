@@ -10,7 +10,7 @@
   <modules>
     <module>forgetme-core</module>
     <module>forgetme-subscriber</module>
-    <module>forgetme-datahandler</module>
+    <module>forgetme-webhook</module>
     <module>forgetme-adapters</module>
     <module>forgetme-tests</module>
     <module>forgetme-integration-tests</module>

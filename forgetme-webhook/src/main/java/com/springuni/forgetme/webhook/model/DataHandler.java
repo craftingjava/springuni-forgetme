@@ -1,4 +1,4 @@
-package com.springuni.forgetme.datahandler.model;
+package com.springuni.forgetme.webhook.model;
 
 import com.springuni.forgetme.core.orm.AbstractEntity;
 import java.util.UUID;

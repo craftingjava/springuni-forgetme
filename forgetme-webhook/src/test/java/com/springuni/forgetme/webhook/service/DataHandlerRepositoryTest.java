@@ -1,7 +1,8 @@
-package com.springuni.forgetme.datahandler.service;
+package com.springuni.forgetme.webhook.service;
 
 import com.springuni.forgetme.core.orm.BaseRepositoryTest;
-import com.springuni.forgetme.datahandler.model.DataHandler;
+import com.springuni.forgetme.webhook.model.DataHandler;
+import com.springuni.forgetme.webhook.service.DataHandlerRepository;
 
 public class DataHandlerRepositoryTest
     extends BaseRepositoryTest<DataHandler, DataHandlerRepository> {

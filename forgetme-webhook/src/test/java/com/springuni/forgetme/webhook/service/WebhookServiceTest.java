@@ -1,4 +1,4 @@
-package com.springuni.forgetme.datahandler.service;
+package com.springuni.forgetme.webhook.service;
 
 import static java.util.Collections.EMPTY_MAP;
 import static org.mockito.ArgumentMatchers.any;
@@ -6,7 +6,10 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
 import com.springuni.forgetme.core.model.EntityNotFoundException;
-import com.springuni.forgetme.datahandler.model.DataHandler;
+import com.springuni.forgetme.webhook.model.DataHandler;
+import com.springuni.forgetme.webhook.service.DataHandlerRepository;
+import com.springuni.forgetme.webhook.service.WebhookService;
+import com.springuni.forgetme.webhook.service.WebhookServiceImpl;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.Assert;

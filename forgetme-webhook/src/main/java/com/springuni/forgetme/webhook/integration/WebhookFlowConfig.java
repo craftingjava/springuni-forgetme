@@ -1,4 +1,4 @@
-package com.springuni.forgetme.datahandler.integration;
+package com.springuni.forgetme.webhook.integration;
 
 import static com.springuni.forgetme.core.amqp.QueueConfig.FORGETME_WEBHOOK_EXCHANGE_NAME;
 import static com.springuni.forgetme.core.amqp.QueueConfig.FORGETME_WEBHOOK_QUEUE_NAME;
