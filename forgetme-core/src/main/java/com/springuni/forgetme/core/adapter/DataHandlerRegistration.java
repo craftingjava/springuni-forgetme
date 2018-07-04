@@ -5,12 +5,14 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.util.Assert;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class DataHandlerRegistration {
 
   public static final Bindable<Map<String, String>> DATA_HANDLER_PROVIDER_BINDABLE =
@@ -22,6 +24,10 @@ public class DataHandlerRegistration {
       Bindable.of(DataHandlerRegistration.class);
 
   public static final String DATA_HANDLER_REGISTRATION_PREFIX = "forgetme.data-handler.registration";
+
+  public DataHandlerRegistration(String name) {
+    this.name = name;
+  }
 
   private String name;
   private String displayName;

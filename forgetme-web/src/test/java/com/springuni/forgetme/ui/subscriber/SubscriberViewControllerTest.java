@@ -1,5 +1,6 @@
 package com.springuni.forgetme.ui.subscriber;
 
+import static com.springuni.forgetme.subscriber.Mocks.DATA_HANDLER_NAME_VALUE;
 import static com.springuni.forgetme.subscriber.Mocks.EMAIL;
 import static com.springuni.forgetme.subscriber.Mocks.createSubscription;
 import static com.springuni.forgetme.ui.subscriber.SubscriberViewController.FORGETME_ENABLED_MODEL_NAME;
@@ -11,6 +12,7 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -19,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import com.springuni.forgetme.core.adapter.DataHandlerRegistration;
 import com.springuni.forgetme.core.adapter.DataHandlerRegistry;
 import com.springuni.forgetme.core.model.EntityNotFoundException;
 import com.springuni.forgetme.subscriber.model.Subscriber;
@@ -55,6 +58,9 @@ public class SubscriberViewControllerTest {
   public void setUp() {
     Subscription subscription = createSubscription();
     subscriber = subscription.getSubscriber();
+
+    when(dataHandlerRegistry.lookup(DATA_HANDLER_NAME_VALUE))
+        .thenReturn(Optional.of(new DataHandlerRegistration(DATA_HANDLER_NAME_VALUE)));
   }
 
   @Test

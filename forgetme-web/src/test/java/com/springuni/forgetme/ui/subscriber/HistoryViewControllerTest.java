@@ -1,18 +1,23 @@
 package com.springuni.forgetme.ui.subscriber;
 
+import static com.springuni.forgetme.subscriber.Mocks.DATA_HANDLER_NAME_VALUE;
 import static com.springuni.forgetme.subscriber.Mocks.EMAIL;
 import static com.springuni.forgetme.subscriber.Mocks.createSubscriber;
+import static com.springuni.forgetme.subscriber.Mocks.createSubscription;
 import static com.springuni.forgetme.ui.subscriber.HistoryViewController.MODEL_NAME;
 import static com.springuni.forgetme.ui.subscriber.HistoryViewController.VIEW_NAME;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import com.springuni.forgetme.core.adapter.DataHandlerRegistration;
 import com.springuni.forgetme.core.adapter.DataHandlerRegistry;
 import com.springuni.forgetme.subscriber.model.Subscriber;
+import com.springuni.forgetme.subscriber.model.Subscription;
 import com.springuni.forgetme.subscriber.service.SubscriberService;
 import java.util.Optional;
 import org.junit.Before;
@@ -42,7 +47,11 @@ public class HistoryViewControllerTest {
 
   @Before
   public void setUp() {
-    subscriber = createSubscriber();
+    Subscription subscription = createSubscription();
+    subscriber = subscription.getSubscriber();
+
+    when(dataHandlerRegistry.lookup(DATA_HANDLER_NAME_VALUE))
+        .thenReturn(Optional.of(new DataHandlerRegistration(DATA_HANDLER_NAME_VALUE)));
   }
 
   @Test

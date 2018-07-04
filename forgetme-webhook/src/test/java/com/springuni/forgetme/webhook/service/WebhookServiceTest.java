@@ -68,7 +68,8 @@ public class WebhookServiceTest {
 
   @Test
   public void givenValidDataHandlerKey_whenSubmitData_thenSent() {
-    DataHandlerRegistration dataHandlerRegistration = new DataHandlerRegistration();
+    DataHandlerRegistration dataHandlerRegistration =
+        new DataHandlerRegistration(DATA_HANDLER_NAME);
 
     given(dataHandlerRegistry.lookup(DATA_HANDLER_NAME))
         .willReturn(Optional.of(dataHandlerRegistration));
