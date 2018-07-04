@@ -14,7 +14,7 @@
     <module>forgetme-adapters</module>
     <module>forgetme-tests</module>
     <module>forgetme-integration-tests</module>
-    <module>forgetme-web</module>
+    <module>forgetme-ui</module>
     <module>forgetme-packaging</module>
   </modules>
 
