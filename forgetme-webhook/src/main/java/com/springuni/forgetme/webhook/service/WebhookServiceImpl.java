@@ -2,8 +2,13 @@ package com.springuni.forgetme.webhook.service;
 
 import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_NAME;
 
+import com.springuni.forgetme.core.adapter.DataHandlerRegistration;
+import com.springuni.forgetme.core.adapter.DataHandlerRegistry;
+import com.springuni.forgetme.core.model.EntityNotFoundException;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.support.MessageBuilder;
@@ -11,13 +16,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class WebhookServiceImpl implements WebhookService {
 
+  private final DataHandlerRegistry dataHandlerRegistry;
   private final MessageChannel webhookOutboundChannel;
-
-  public WebhookServiceImpl(MessageChannel webhookOutboundChannel) {
-    this.webhookOutboundChannel = webhookOutboundChannel;
-  }
 
   @Override
   @Transactional
@@ -29,6 +32,12 @@ public class WebhookServiceImpl implements WebhookService {
       throw new EntityNotFoundException("key", key);
     }
     */
+    Optional<DataHandlerRegistration> dataHandlerRegistration =
+        dataHandlerRegistry.lookup(dataHandlerName);
+
+    if (!dataHandlerRegistration.isPresent()) {
+      throw new EntityNotFoundException("dataHandlerName", dataHandlerName);
+    }
 
     Message<Map<String, Object>> message = MessageBuilder
         .withPayload(data)
