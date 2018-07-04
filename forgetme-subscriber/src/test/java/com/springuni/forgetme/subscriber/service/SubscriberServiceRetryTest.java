@@ -2,6 +2,7 @@ package com.springuni.forgetme.subscriber.service;
 
 import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIPTION_CREATED;
 import static com.springuni.forgetme.subscriber.Mocks.DATA_HANDLER_ID_VALUE;
+import static com.springuni.forgetme.subscriber.Mocks.DATA_HANDLER_NAME_VALUE;
 import static com.springuni.forgetme.subscriber.Mocks.EMAIL;
 import static com.springuni.forgetme.subscriber.Mocks.EMAIL_HASH;
 import static com.springuni.forgetme.subscriber.Mocks.SUBSCRIBER_ID_VALUE;
@@ -109,7 +110,8 @@ public class SubscriberServiceRetryTest {
         .willThrow(TRANSIENT_DATA_ACCESS_EXCEPTION);
 
     subscriberService.updateSubscription(
-        WebhookData.of(DATA_HANDLER_ID_VALUE, EMAIL, SUBSCRIPTION_CREATED),
+        WebhookData.of(EMAIL, SUBSCRIPTION_CREATED),
+        DATA_HANDLER_NAME_VALUE,
         LocalDateTime.MIN
     );
   }
@@ -123,7 +125,8 @@ public class SubscriberServiceRetryTest {
         .willThrow(NON_TRANSIENT_DATA_ACCESS_EXCEPTION);
 
     subscriberService.updateSubscription(
-        WebhookData.of(DATA_HANDLER_ID_VALUE, EMAIL, SUBSCRIPTION_CREATED),
+        WebhookData.of(EMAIL, SUBSCRIPTION_CREATED),
+        DATA_HANDLER_NAME_VALUE,
         LocalDateTime.MIN
     );
   }
@@ -200,12 +203,11 @@ public class SubscriberServiceRetryTest {
 
     @Bean
     SubscriberService subscriberService(
-        DataHandlerRegistry dataHandlerRegistry, SubscriberRepository subscriberRepository,
+        SubscriberRepository subscriberRepository,
         SubscriptionRepository subscriptionRepository,
         MessageChannel subscriberForgetRequestOutboundChannel) {
 
       return new SubscriberServiceImpl(
-          dataHandlerRegistry,
           subscriberRepository,
           subscriptionRepository,
           subscriberForgetRequestOutboundChannel

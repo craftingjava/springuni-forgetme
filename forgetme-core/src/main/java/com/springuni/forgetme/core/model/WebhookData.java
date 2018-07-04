@@ -6,7 +6,6 @@ import lombok.Value;
 @Value(staticConstructor = "of")
 public class WebhookData {
 
-  private UUID dataHandlerId;
   private String subscriberEmail;
   private SubscriptionStatus subscriptionStatus;
 

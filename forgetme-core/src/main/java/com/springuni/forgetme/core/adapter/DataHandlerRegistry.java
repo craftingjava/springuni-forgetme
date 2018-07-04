@@ -1,11 +1,9 @@
 package com.springuni.forgetme.core.adapter;
 
-import java.util.UUID;
+import java.util.Optional;
 
 public interface DataHandlerRegistry {
 
-  UUID register(String name);
-
-  String lookup(UUID id);
+  Optional<DataHandlerRegistration> lookup(String name);
 
 }

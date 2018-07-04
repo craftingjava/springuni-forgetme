@@ -2,11 +2,12 @@ package com.springuni.forgetme.datahandler.adapter;
 
 import static com.springuni.forgetme.core.adapter.DataHandlerRegistration.DATA_HANDLER_PROVIDER_BINDABLE;
 import static com.springuni.forgetme.core.adapter.DataHandlerRegistration.DATA_HANDLER_PROVIDER_PREFIX;
+import static com.springuni.forgetme.core.adapter.DataHandlerRegistration.DATA_HANDLER_REGISTRATION_BINDABLE;
+import static com.springuni.forgetme.core.adapter.DataHandlerRegistration.DATA_HANDLER_REGISTRATION_PREFIX;
 
-import com.springuni.forgetme.core.adapter.DataHandlerRegistry;
+import com.springuni.forgetme.core.adapter.DataHandlerRegistration;
 import java.util.Collections;
 import java.util.Map;
-import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.env.AbstractEnvironment;
 import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.Environment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.PropertySource;
 import org.springframework.integration.support.management.MappingMessageRouterManagement;
@@ -44,16 +46,11 @@ public abstract class AbstractDataHandlerFlowConfig implements InitializingBean 
   @Autowired
   private MappingMessageRouterManagement subscriberForgetRequestRouter;
 
-  @Autowired
-  private DataHandlerRegistry dataHandlerRegistry;
-
   private ConfigurableApplicationContext dataHandlerContext;
 
   @Override
   public void afterPropertiesSet() {
     String dataHandlerName = getDataHandlerName();
-
-    initDataHandler(dataHandlerName);
 
     SingletonBeanRegistry applicationBeanRegistry =
         (SingletonBeanRegistry) applicationContext.getAutowireCapableBeanFactory();
@@ -86,6 +83,8 @@ public abstract class AbstractDataHandlerFlowConfig implements InitializingBean 
   private ConfigurableApplicationContext createDataHandlerContext(
       String dataHandlerName, SingletonBeanRegistry applicationBeanRegistry) {
 
+    // Create child application context
+
     ConfigurableApplicationContext dataHandlerContext = new ClassPathXmlApplicationContext(
         new String[]{"/META-INF/spring/" + dataHandlerName + "-adapter-config.xml"},
         false,
@@ -97,14 +96,16 @@ public abstract class AbstractDataHandlerFlowConfig implements InitializingBean 
 
     String propertyName = DATA_HANDLER_PROVIDER_PREFIX + "." + dataHandlerName;
 
+    Environment environment = applicationContext.getEnvironment();
+
     Map<String, Object> properties = Binder.get(applicationContext.getEnvironment())
         .bind(propertyName, DATA_HANDLER_PROVIDER_BINDABLE)
         .map(Collections::<String, Object>unmodifiableMap)
         .orElse(Collections.emptyMap());
 
-    ConfigurableEnvironment environment = new DataHandlerEnvironment(properties);
+    ConfigurableEnvironment dataHandlerEnvironment = new DataHandlerEnvironment(properties);
 
-    dataHandlerContext.setEnvironment(environment);
+    dataHandlerContext.setEnvironment(dataHandlerEnvironment);
     dataHandlerContext.refresh();
 
     // Register child context as a bean to the parent context
@@ -114,12 +115,16 @@ public abstract class AbstractDataHandlerFlowConfig implements InitializingBean 
         dataHandlerContext
     );
 
-    return dataHandlerContext;
-  }
+    // Register data handler
 
-  private void initDataHandler(String dataHandlerName) {
-    UUID dataHandlerId = dataHandlerRegistry.register(dataHandlerName);
-    log.info("Data handler UUID is {} for {}.", dataHandlerId, dataHandlerName);
+    String dataHandlerRegistrationName = DATA_HANDLER_REGISTRATION_PREFIX + "." + dataHandlerName;
+    DataHandlerRegistration dataHandlerRegistration = Binder.get(environment)
+        .bind(dataHandlerRegistrationName, DATA_HANDLER_REGISTRATION_BINDABLE)
+        .get();
+
+    applicationContext.publishEvent(dataHandlerRegistration);
+
+    return dataHandlerContext;
   }
 
   private void registerMessageChannel(

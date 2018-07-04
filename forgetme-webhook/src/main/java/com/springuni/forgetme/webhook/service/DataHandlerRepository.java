@@ -1,7 +1,6 @@
 package com.springuni.forgetme.webhook.service;
 
 import com.springuni.forgetme.core.adapter.DataHandlerRegistry;
-import com.springuni.forgetme.core.model.EntityNotFoundException;
 import com.springuni.forgetme.core.orm.BaseRepository;
 import com.springuni.forgetme.webhook.model.DataHandler;
 import java.util.Optional;
@@ -22,17 +21,5 @@ public interface DataHandlerRepository
   @Override
   @RestResource
   DataHandler save(DataHandler dataHandler);
-
-  @Override
-  default UUID register(String name) {
-    return findByName(name).orElseGet(() -> save(new DataHandler(name))).getId();
-  }
-
-  @Override
-  default String lookup(UUID id) {
-    return findById(id)
-        .map(DataHandler::getName)
-        .orElseThrow(() -> new EntityNotFoundException("id", id));
-  }
 
 }

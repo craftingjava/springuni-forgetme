@@ -2,6 +2,7 @@ package com.springuni.forgetme.webhook.web;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.willThrow;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -54,12 +55,12 @@ public class WebhookControllerTest {
   @Test
   public void givenNonExistentDataHandler_whenSubmitData_thenNotFound() throws Exception {
     willThrow(EntityNotFoundException.class)
-        .given(webhookService).submitData(any(UUID.class), any(UUID.class), anyMap());
+        .given(webhookService).submitData(anyString(), any(UUID.class), anyMap());
 
     mockMvc
         .perform(
             post(
-                "/webhook/{dataHandlerId}/{dataHandlerKey}",
+                "/webhook/{dataHandlerName}/{dataHandlerKey}",
                 UUID.randomUUID(),
                 UUID.randomUUID()
             ).content(jsonData).contentType(APPLICATION_JSON)
@@ -71,7 +72,7 @@ public class WebhookControllerTest {
     mockMvc
         .perform(
             post(
-                "/webhook/{dataHandlerId}/{dataHandlerKey}",
+                "/webhook/{dataHandlerName}/{dataHandlerKey}",
                 UUID.randomUUID(),
                 UUID.randomUUID()
             ).content("bad").contentType(APPLICATION_JSON)
@@ -84,7 +85,7 @@ public class WebhookControllerTest {
     mockMvc
         .perform(
             post(
-                "/webhook/{dataHandlerId}/{dataHandlerKey}",
+                "/webhook/{dataHandlerName}/{dataHandlerKey}",
                 UUID.randomUUID(),
                 UUID.randomUUID()
             ).content(jsonData).contentType(APPLICATION_JSON)

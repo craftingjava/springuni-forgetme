@@ -3,6 +3,7 @@ package com.springuni.forgetme.subscriber.model;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIPTION_CREATED;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIPTION_UPDATED;
 import static com.springuni.forgetme.subscriber.Mocks.DATA_HANDLER_ID_VALUE;
+import static com.springuni.forgetme.subscriber.Mocks.DATA_HANDLER_NAME_VALUE;
 import static com.springuni.forgetme.subscriber.Mocks.EVENT_TIMESTAMP_VALUE;
 import static com.springuni.forgetme.subscriber.Mocks.createSubscription;
 import static java.util.Collections.singletonList;
@@ -27,7 +28,7 @@ public class SubscriberTest {
     subscriber.setSubscriptions(new ArrayList<>());
 
     subscriber.updateSubscription(
-        DATA_HANDLER_ID_VALUE,
+        DATA_HANDLER_NAME_VALUE,
         SUBSCRIPTION_CREATED,
         EVENT_TIMESTAMP_VALUE
     );
@@ -41,7 +42,7 @@ public class SubscriberTest {
     subscriber.setSubscriptions(singletonList(subscription));
 
     subscriber.updateSubscription(
-        DATA_HANDLER_ID_VALUE,
+        DATA_HANDLER_NAME_VALUE,
         SUBSCRIPTION_UPDATED,
         EVENT_TIMESTAMP_VALUE
     );

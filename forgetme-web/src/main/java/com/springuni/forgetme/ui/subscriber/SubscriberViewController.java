@@ -2,6 +2,7 @@ package com.springuni.forgetme.ui.subscriber;
 
 import static java.util.stream.Collectors.toList;
 
+import com.springuni.forgetme.core.adapter.DataHandlerRegistration;
 import com.springuni.forgetme.core.adapter.DataHandlerRegistry;
 import com.springuni.forgetme.core.model.EntityNotFoundException;
 import com.springuni.forgetme.subscriber.model.Subscriber;
@@ -86,9 +87,11 @@ public class SubscriberViewController extends AbstractViewController {
   }
 
   private SubscriptionViewModel toSubscriptionViewModel(Subscription subscription) {
-    String dataHandlerName = dataHandlerRegistry.lookup(subscription.getDataHandlerId());
+    DataHandlerRegistration dataHandlerRegistration =
+        dataHandlerRegistry.lookup(subscription.getDataHandlerName()).get();
+
     return new SubscriptionViewModel(
-        dataHandlerName,
+        dataHandlerRegistration.getName(),
         subscription.getStatus(),
         subscription.getCreatedDate(),
         subscription.getLastModifiedDate()

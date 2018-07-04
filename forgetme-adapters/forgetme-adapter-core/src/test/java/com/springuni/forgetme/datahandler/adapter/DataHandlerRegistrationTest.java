@@ -5,14 +5,13 @@ import static com.springuni.forgetme.core.adapter.DataHandlerRegistration.DATA_H
 import static com.springuni.forgetme.core.adapter.DataHandlerRegistration.DataScope.NOTIFICATION;
 import static com.springuni.forgetme.core.adapter.DataHandlerRegistration.DataScope.PROFILE;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeTrue;
 
 import com.springuni.forgetme.core.adapter.DataHandlerRegistration;
 import com.springuni.forgetme.datahandler.adapter.DataHandlerRegistrationTest.TestConfig;
 import java.net.URI;
-import java.util.Collections;
-import java.util.Map;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Rule;
@@ -20,6 +19,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Configuration;
@@ -36,27 +36,32 @@ public class DataHandlerRegistrationTest {
 
   @Rule
   public ExpectedException expectedException = ExpectedException.none();
-  DataHandlerRegistration dataHandlerRegistration;
+
   @Autowired
   private Environment environment;
 
+  private BindResult<DataHandlerRegistration> dataHandlerRegistrationBindResult;
+
   @Before
   public void setUp() {
-    Map<String, DataHandlerRegistration> dataHandlerRegistrationMap = Binder.get(environment)
-        .bind(DATA_HANDLER_REGISTRATION_PREFIX, DATA_HANDLER_REGISTRATION_BINDABLE)
-        .orElse(Collections.emptyMap());
-
-    dataHandlerRegistration =
-        dataHandlerRegistrationMap.get(DATA_HANDLER_NAME);
+    dataHandlerRegistrationBindResult = Binder.get(environment)
+        .bind(
+            DATA_HANDLER_REGISTRATION_PREFIX + "." + DATA_HANDLER_NAME,
+            DATA_HANDLER_REGISTRATION_BINDABLE
+        );
   }
 
   @Test
   public void shouldContainRegistration() {
-    assertNotNull(dataHandlerRegistration);
+    assertTrue(dataHandlerRegistrationBindResult.isBound());
   }
 
   @Test
   public void registrationDataShouldMatch() {
+    assumeTrue(dataHandlerRegistrationBindResult.isBound());
+
+    DataHandlerRegistration dataHandlerRegistration = dataHandlerRegistrationBindResult.get();
+
     assertEquals(DATA_HANDLER_NAME, dataHandlerRegistration.getName());
     assertEquals("MailerLite", dataHandlerRegistration.getDisplayName());
     assertEquals("Email Marketing", dataHandlerRegistration.getDescription());
@@ -66,6 +71,8 @@ public class DataHandlerRegistrationTest {
 
   @Test
   public void validationShouldPass() {
+    assumeTrue(dataHandlerRegistrationBindResult.isBound());
+    DataHandlerRegistration dataHandlerRegistration = dataHandlerRegistrationBindResult.get();
     dataHandlerRegistration.validate();
   }
 

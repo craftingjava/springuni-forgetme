@@ -5,6 +5,6 @@ import java.util.UUID;
 
 public interface WebhookService {
 
-  void submitData(UUID dataHandlerId, UUID key, Map<String, Object> data);
+  void submitData(String dataHandlerName, UUID key, Map<String, Object> data);
 
 }

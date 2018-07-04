@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Subscription extends AbstractEntity {
 
-  private UUID dataHandlerId;
+  private String dataHandlerName;
 
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "subscriber_id")
@@ -45,15 +45,15 @@ public class Subscription extends AbstractEntity {
   @OrderBy("eventTimestamp DESC")
   private List<SubscriptionDetail> subscriptionChanges = new ArrayList<>();
 
-  public Subscription(UUID dataHandlerId, Subscriber subscriber) {
-    this(dataHandlerId, subscriber, SUBSCRIPTION_CREATED);
+  public Subscription(String dataHandlerName, Subscriber subscriber) {
+    this(dataHandlerName, subscriber, SUBSCRIPTION_CREATED);
   }
 
   public Subscription(
-      UUID dataHandlerId, Subscriber subscriber, SubscriptionStatus status) {
+      String dataHandlerName, Subscriber subscriber, SubscriptionStatus status) {
 
     this.subscriber = subscriber;
-    this.dataHandlerId = dataHandlerId;
+    this.dataHandlerName = dataHandlerName;
   }
 
   void setDetail(SubscriptionDetail detail) {

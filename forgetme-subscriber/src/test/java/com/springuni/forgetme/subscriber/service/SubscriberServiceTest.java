@@ -51,9 +51,6 @@ import org.springframework.transaction.support.TransactionSynchronizationUtils;
 public class SubscriberServiceTest {
 
   @Mock
-  private DataHandlerRegistry dataHandlerRegistry;
-
-  @Mock
   private SubscriberRepository subscriberRepository;
 
   @Mock
@@ -72,7 +69,7 @@ public class SubscriberServiceTest {
     subscriber = createSubscriber();
 
     subscriber.updateSubscription(
-        DATA_HANDLER_ID_VALUE,
+        DATA_HANDLER_NAME_VALUE,
         SUBSCRIPTION_CREATED,
         EVENT_TIMESTAMP_VALUE
     );
@@ -80,7 +77,6 @@ public class SubscriberServiceTest {
     subscriber.setId(SUBSCRIBER_ID_VALUE);
     subscriber.getSubscriptions().get(0).setId(SUBSCRIPTION_ID_VALUE);
 
-    when(dataHandlerRegistry.lookup(DATA_HANDLER_ID_VALUE)).thenReturn(DATA_HANDLER_NAME_VALUE);
     when(subscriberRepository.save(any(Subscriber.class))).thenAnswer(returnsFirstArg());
 
     TransactionSynchronizationManager.initSynchronization();
@@ -113,7 +109,8 @@ public class SubscriberServiceTest {
     given(subscriberRepository.findByEmailHash(EMAIL_HASH)).willReturn(Optional.of(subscriber));
 
     subscriberService.updateSubscription(
-        WebhookData.of(DATA_HANDLER_ID_VALUE, EMAIL, UNSUBSCRIBED),
+        WebhookData.of(EMAIL, UNSUBSCRIBED),
+        DATA_HANDLER_NAME_VALUE,
         EVENT_TIMESTAMP_VALUE
     );
 
@@ -125,7 +122,8 @@ public class SubscriberServiceTest {
     given(subscriberRepository.findByEmailHash(EMAIL_HASH)).willReturn(Optional.empty());
 
     subscriberService.updateSubscription(
-        WebhookData.of(DATA_HANDLER_ID_VALUE, EMAIL, SUBSCRIPTION_CREATED),
+        WebhookData.of(EMAIL, SUBSCRIPTION_CREATED),
+        DATA_HANDLER_NAME_VALUE,
         EVENT_TIMESTAMP_VALUE
     );
 
@@ -145,9 +143,7 @@ public class SubscriberServiceTest {
 
     assertSubscriptionStatusFromSavedSubscription(FORGET_PENDING, DATA_HANDLER_ID_VALUE);
 
-    assertForgetRequestMessage(
-        DATA_HANDLER_ID_VALUE, DATA_HANDLER_NAME_VALUE, SUBSCRIPTION_ID_VALUE, EMAIL
-    );
+    assertForgetRequestMessage(DATA_HANDLER_NAME_VALUE, SUBSCRIPTION_ID_VALUE, EMAIL);
   }
 
   @Test
@@ -206,8 +202,7 @@ public class SubscriberServiceTest {
   }
 
   private void assertForgetRequestMessage(
-      UUID expectedDataHandlerId, String expectedDataHandlerName, UUID expectedSubscriptionId,
-      String expectedEmail) {
+      String expectedDataHandlerName, UUID expectedSubscriptionId, String expectedEmail) {
 
     ArgumentCaptor<Message<ForgetRequest>> messageArgumentCaptor =
         ArgumentCaptor.forClass(Message.class);
@@ -215,7 +210,6 @@ public class SubscriberServiceTest {
     then(subscriberForgetRequestOutboundChannel).should().send(messageArgumentCaptor.capture());
 
     Message<ForgetRequest> forgetRequestMessage = messageArgumentCaptor.getValue();
-    assertEquals(expectedDataHandlerId, forgetRequestMessage.getHeaders().get(DATA_HANDLER_ID));
     assertEquals(expectedDataHandlerName, forgetRequestMessage.getHeaders().get(
         DATA_HANDLER_NAME));
     assertEquals(expectedSubscriptionId, forgetRequestMessage.getPayload().getSubscriptionId());
@@ -230,7 +224,7 @@ public class SubscriberServiceTest {
 
     Subscription subscription = subscriber.getSubscriptions()
         .stream()
-        .filter(it -> dataHandlerId.equals(it.getDataHandlerId()))
+        .filter(it -> dataHandlerId.equals(it.getDataHandlerName()))
         .findFirst()
         .get();
 

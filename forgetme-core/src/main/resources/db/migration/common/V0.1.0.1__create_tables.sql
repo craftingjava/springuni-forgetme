@@ -8,20 +8,9 @@ CREATE TABLE subscriber (
   CONSTRAINT subscriber_uk UNIQUE (email_hash)
 );
 
-CREATE TABLE data_handler (
-  id uuid NOT NULL,
-  name varchar(25) not null,
-  key uuid not null,
-  created_date timestamp not NULL default CURRENT_TIMESTAMP,
-  last_modified_date timestamp not NULL default CURRENT_TIMESTAMP,
-  version_ integer not null,
-  CONSTRAINT data_handler_pk PRIMARY KEY (id),
-  CONSTRAINT data_handler_uk UNIQUE (name)
-);
-
 CREATE TABLE subscription (
   id uuid NOT NULL,
-  data_handler_id uuid NOT NULL,
+  data_handler_name varchar(25) NOT NULL,
   subscriber_id uuid NOT NULL,
   status varchar(25) not null,
   event_timestamp timestamp not NULL default CURRENT_TIMESTAMP,
@@ -29,8 +18,7 @@ CREATE TABLE subscription (
   last_modified_date timestamp not NULL default CURRENT_TIMESTAMP,
   version_ integer not null,
   CONSTRAINT subscription_pk PRIMARY KEY (id),
-  CONSTRAINT subscription_uk UNIQUE (data_handler_id, subscriber_id),
-  CONSTRAINT subscription_data_handler_id_fk FOREIGN KEY (data_handler_id) REFERENCES data_handler(id),
+  CONSTRAINT subscription_uk UNIQUE (data_handler_name, subscriber_id),
   CONSTRAINT subscription_subscriber_id_fk FOREIGN KEY (subscriber_id) REFERENCES subscriber(id)
 );
 

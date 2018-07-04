@@ -2,6 +2,7 @@ package com.springuni.forgetme.ui.subscriber;
 
 import static java.util.stream.Collectors.toList;
 
+import com.springuni.forgetme.core.adapter.DataHandlerRegistration;
 import com.springuni.forgetme.core.adapter.DataHandlerRegistry;
 import com.springuni.forgetme.subscriber.model.Subscriber;
 import com.springuni.forgetme.subscriber.model.Subscription;
@@ -49,12 +50,14 @@ public class HistoryViewController extends AbstractViewController {
   }
 
   private List<SubscriptionViewModel> toSubscriptionViewModel(Subscription subscription) {
-    String dataHandlerName = dataHandlerRegistry.lookup(subscription.getDataHandlerId());
+    DataHandlerRegistration dataHandlerRegistration =
+        dataHandlerRegistry.lookup(subscription.getDataHandlerName()).get();
+
     return subscription.getSubscriptionChanges()
         .stream()
         .map(
             it -> new SubscriptionViewModel(
-                dataHandlerName, it.getStatus(), it.getEventTimestamp(), null
+                dataHandlerRegistration.getName(), it.getStatus(), it.getEventTimestamp(), null
             )
         )
         .collect(toList());

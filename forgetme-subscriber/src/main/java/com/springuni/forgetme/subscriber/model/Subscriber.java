@@ -7,7 +7,6 @@ import com.springuni.forgetme.core.orm.AbstractEntity;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -39,18 +38,18 @@ public class Subscriber extends AbstractEntity {
   }
 
   public void updateSubscription(
-      UUID dataHandlerId, SubscriptionStatus status, LocalDateTime eventTimestamp) {
+      String dataHandlerName, SubscriptionStatus status, LocalDateTime eventTimestamp) {
 
     Subscription subscription = subscriptions.stream()
-        .filter(it -> dataHandlerId.equals(it.getDataHandlerId()))
+        .filter(it -> dataHandlerName.equals(it.getDataHandlerName()))
         .findFirst()
-        .orElseGet(() -> createSubscription(dataHandlerId));
+        .orElseGet(() -> createSubscription(dataHandlerName));
 
     subscription.updateStatus(status, eventTimestamp);
   }
 
-  private Subscription createSubscription(UUID dataHandlerId) {
-    Subscription newSubscription = new Subscription(dataHandlerId, this);
+  private Subscription createSubscription(String dataHandlerName) {
+    Subscription newSubscription = new Subscription(dataHandlerName, this);
     subscriptions.add(newSubscription);
     return newSubscription;
   }

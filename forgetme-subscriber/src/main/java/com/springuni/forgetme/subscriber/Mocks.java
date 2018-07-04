@@ -33,7 +33,7 @@ public class Mocks {
 
   public static Subscription createSubscription() {
     Subscriber subscriber = createSubscriber();
-    subscriber.updateSubscription(DATA_HANDLER_ID_VALUE, SUBSCRIPTION_CREATED, LocalDateTime.now());
+    subscriber.updateSubscription(DATA_HANDLER_NAME_VALUE, SUBSCRIPTION_CREATED, LocalDateTime.now());
     return subscriber.getSubscriptions().get(0);
   }
 

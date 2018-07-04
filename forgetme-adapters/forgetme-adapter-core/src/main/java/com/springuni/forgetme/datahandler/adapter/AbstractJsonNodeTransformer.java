@@ -22,10 +22,8 @@ public abstract class AbstractJsonNodeTransformer
   @Override
   public final List<Message<WebhookData>> transform(Message<JsonNode> message) {
     try {
-      UUID dataHandlerId = extractDataHandlerId(message);
-
       List<Message<WebhookData>> results = extractEvents(message).stream()
-          .map(it -> transformEvent(dataHandlerId, it))
+          .map(this::transformEvent)
           .collect(toList());
 
       if (results == null) {
@@ -39,11 +37,11 @@ public abstract class AbstractJsonNodeTransformer
     }
   }
 
-  protected Message<WebhookData> transformEvent(UUID dataHandlerId, Message<JsonNode> event) {
+  protected Message<WebhookData> transformEvent(Message<JsonNode> event) {
     String subscriberEmail = extractSubscriberEmail(event);
     SubscriptionStatus subscriptionStatus = extractSubscriptionStatus(event);
 
-    WebhookData webhookData = WebhookData.of(dataHandlerId, subscriberEmail, subscriptionStatus);
+    WebhookData webhookData = WebhookData.of(subscriberEmail, subscriptionStatus);
 
     Instant eventTimestamp = extractEventTimestamp(event);
 
@@ -59,19 +57,5 @@ public abstract class AbstractJsonNodeTransformer
   protected abstract SubscriptionStatus extractSubscriptionStatus(Message<JsonNode> event);
 
   protected abstract Instant extractEventTimestamp(Message<JsonNode> event);
-
-  private UUID extractDataHandlerId(Message<JsonNode> message) {
-    Object dataHandlerId = message.getHeaders().get(DATA_HANDLER_ID);
-    if (dataHandlerId instanceof UUID) {
-      return (UUID) dataHandlerId;
-    }
-
-    dataHandlerId = String.valueOf(dataHandlerId);
-    try {
-      return UUID.fromString((String) dataHandlerId);
-    } catch (IllegalArgumentException e) {
-      throw new MessageTransformationException(message, "invalid UUID: " + dataHandlerId, e);
-    }
-  }
 
 }

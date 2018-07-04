@@ -7,6 +7,7 @@ import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGET_FAILED
 import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGET_PENDING;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGOTTEN;
 
+import com.springuni.forgetme.core.adapter.DataHandlerRegistration;
 import com.springuni.forgetme.core.adapter.DataHandlerRegistry;
 import com.springuni.forgetme.core.model.EntityNotFoundException;
 import com.springuni.forgetme.core.model.ForgetRequest;
@@ -43,7 +44,6 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 @RequiredArgsConstructor
 public class SubscriberServiceImpl implements SubscriberService {
 
-  private final DataHandlerRegistry dataHandlerRegistry;
   private final SubscriberRepository subscriberRepository;
   private final SubscriptionRepository subscriptionRepository;
   private final MessageChannel subscriberForgetRequestOutboundChannel;
@@ -67,6 +67,7 @@ public class SubscriberServiceImpl implements SubscriberService {
   @ServiceActivator(inputChannel = "webhookDataHandlerOutboundChannel")
   public void updateSubscription(
       @NonNull @Payload WebhookData webhookData,
+      @NonNull @Header(DATA_HANDLER_NAME) String dataHandlerName,
       @NonNull @Header(EVENT_TIMESTAMP) LocalDateTime eventTimestamp) {
 
     Subscriber newSubscriber = new Subscriber(webhookData.getSubscriberEmail());
@@ -74,7 +75,7 @@ public class SubscriberServiceImpl implements SubscriberService {
         .orElse(newSubscriber);
 
     subscriber.updateSubscription(
-        webhookData.getDataHandlerId(),
+        dataHandlerName,
         webhookData.getSubscriptionStatus(),
         eventTimestamp
     );
@@ -103,13 +104,9 @@ public class SubscriberServiceImpl implements SubscriberService {
 
       subscription.updateStatus(FORGET_PENDING);
 
-      UUID dataHandlerId = subscription.getDataHandlerId();
-      String dataHandlerName = dataHandlerRegistry.lookup(dataHandlerId);
-
       Message<ForgetRequest> forgetRequestMessage = MessageBuilder
           .withPayload(new ForgetRequest(subscription.getId(), email))
-          .setHeader(DATA_HANDLER_ID, subscription.getDataHandlerId())
-          .setHeader(DATA_HANDLER_NAME, dataHandlerName)
+          .setHeader(DATA_HANDLER_NAME, subscription.getDataHandlerName())
           .build();
 
       forgetRequestMessages.add(forgetRequestMessage);
