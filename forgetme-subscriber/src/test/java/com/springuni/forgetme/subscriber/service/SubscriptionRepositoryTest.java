@@ -1,35 +1,15 @@
 package com.springuni.forgetme.subscriber.service;
 
 import static com.springuni.forgetme.core.model.SubscriptionStatus.UNSUBSCRIBED;
-import static com.springuni.forgetme.subscriber.Mocks.DATA_HANDLER_ID_VALUE;
 import static com.springuni.forgetme.subscriber.Mocks.createSubscription;
 import static org.junit.Assert.assertTrue;
 
 import com.springuni.forgetme.core.orm.BaseRepositoryTest;
 import com.springuni.forgetme.subscriber.model.Subscription;
-import java.util.UUID;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import org.junit.Test;
 
 public class SubscriptionRepositoryTest
     extends BaseRepositoryTest<Subscription, SubscriptionRepository> {
-
-  @PersistenceContext
-  private EntityManager entityManager;
-
-  @Override
-  public void setUp() throws Exception {
-    entityManager
-        .createNativeQuery("insert into data_handler (id, name, key, version_) values (?, ?, ?, ?)")
-        .setParameter(1, DATA_HANDLER_ID_VALUE)
-        .setParameter(2, "test")
-        .setParameter(3, UUID.randomUUID().toString())
-        .setParameter(4, 0)
-        .executeUpdate();
-
-    super.setUp();
-  }
 
   @Test
   public void givenSubscriptionStatusChanged_whenFindById_thenChangePersisted() {

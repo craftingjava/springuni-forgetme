@@ -1,6 +1,5 @@
 package com.springuni.forgetme.subscriber.service;
 
-import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_ID;
 import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_NAME;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGET_FAILED;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGET_PENDING;
@@ -24,7 +23,6 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
 
-import com.springuni.forgetme.core.adapter.DataHandlerRegistry;
 import com.springuni.forgetme.core.model.EntityNotFoundException;
 import com.springuni.forgetme.core.model.ForgetRequest;
 import com.springuni.forgetme.core.model.ForgetResponse;
@@ -114,7 +112,7 @@ public class SubscriberServiceTest {
         EVENT_TIMESTAMP_VALUE
     );
 
-    assertSubscriptionStatusFromSavedSubscriber(UNSUBSCRIBED, DATA_HANDLER_ID_VALUE);
+    assertSubscriptionStatusFromSavedSubscriber(UNSUBSCRIBED, DATA_HANDLER_NAME_VALUE);
   }
 
   @Test
@@ -127,7 +125,7 @@ public class SubscriberServiceTest {
         EVENT_TIMESTAMP_VALUE
     );
 
-    assertSubscriptionStatusFromSavedSubscriber(SUBSCRIPTION_CREATED, DATA_HANDLER_ID_VALUE);
+    assertSubscriptionStatusFromSavedSubscriber(SUBSCRIPTION_CREATED, DATA_HANDLER_NAME_VALUE);
   }
 
   /// requestForget ///
@@ -217,14 +215,14 @@ public class SubscriberServiceTest {
   }
 
   private void assertSubscriptionStatusFromSavedSubscriber(
-      SubscriptionStatus expectedStatus, UUID dataHandlerId) {
+      SubscriptionStatus expectedStatus, String dataHandlerName) {
 
     ArgumentCaptor<Subscriber> subscriberArgumentCaptor = ArgumentCaptor.forClass(Subscriber.class);
     then(subscriberRepository).should().save(subscriberArgumentCaptor.capture());
 
     Subscription subscription = subscriber.getSubscriptions()
         .stream()
-        .filter(it -> dataHandlerId.equals(it.getDataHandlerName()))
+        .filter(it -> dataHandlerName.equals(it.getDataHandlerName()))
         .findFirst()
         .get();
 
