@@ -41,6 +41,10 @@ forgetme:
     provider:
       mailerlite:
         api-key: ${MAILERLITE_API_KEY:#{null}}
+  api:
+    auth:
+      access-key: ${API_ACCESS_KEY:#{null}}
+      secret-key: ${API_SECRET_KEY:#{null}}
   webhook:
     auth:
       access-key: ${WEBHOOK_ACCESS_KEY:#{null}}
