@@ -7,7 +7,6 @@ import com.springuni.forgetme.core.adapter.DataHandlerRegistry;
 import com.springuni.forgetme.core.model.EntityNotFoundException;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
@@ -24,14 +23,7 @@ public class WebhookServiceImpl implements WebhookService {
 
   @Override
   @Transactional
-  public void submitData(String dataHandlerName, UUID key, Map<String, Object> data) {
-    // For security reasons, it's safer to throw EntityNotFoundException, which will be exposed as
-    // HTTP 404, so that an attacker couldn't differentiate a non-existent ID from a bad key.
-    /*
-    if (!dataHandler.getKey().equals(key)) {
-      throw new EntityNotFoundException("key", key);
-    }
-    */
+  public void submitData(String dataHandlerName, Map<String, Object> data) {
     Optional<DataHandlerRegistration> dataHandlerRegistration =
         dataHandlerRegistry.lookup(dataHandlerName);
 

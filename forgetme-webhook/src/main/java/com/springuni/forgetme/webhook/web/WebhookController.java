@@ -22,14 +22,13 @@ public class WebhookController {
   }
 
   @PostMapping(
-      path = "/webhook/{dataHandlerName}/{dataHandlerKey}",
+      path = "/webhook/{dataHandlerName}",
       consumes = APPLICATION_JSON_VALUE
   )
   public HttpEntity submitData(
-      @PathVariable String dataHandlerName, @PathVariable UUID dataHandlerKey,
-      @RequestBody Map<String, Object> jsonData) {
+      @PathVariable String dataHandlerName, @RequestBody Map<String, Object> jsonData) {
 
-    webhookService.submitData(dataHandlerName, dataHandlerKey, jsonData);
+    webhookService.submitData(dataHandlerName, jsonData);
 
     return ResponseEntity.accepted().build();
   }
