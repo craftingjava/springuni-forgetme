@@ -38,12 +38,12 @@ public abstract class AbstractBasicAuthSecurityConfig
         .bind(getBasicAuthKeysPrefix(), BasicAuthKeys.class)
         .get();
 
-    basicAuthKeys.resolveKeys(valueResolver);
-
     log.info(
         "Setting up access and secret keys for {}.",
         getClass().getSuperclass().getSimpleName()
     );
+
+    basicAuthKeys.resolveKeys(valueResolver);
 
     auth.inMemoryAuthentication()
         .withUser(basicAuthKeys.getAccessKey())

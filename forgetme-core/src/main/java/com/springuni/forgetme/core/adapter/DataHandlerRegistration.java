@@ -22,15 +22,15 @@ public class DataHandlerRegistration {
 
   public static final String DATA_HANDLER_REGISTRATION_PREFIX = "forgetme.data-handler.registration";
 
-  public DataHandlerRegistration(String name) {
-    this.name = name;
-  }
-
   private String name;
   private String displayName;
   private String description;
   private URI url;
   private Set<DataScope> dataScopes;
+
+  public DataHandlerRegistration(String name) {
+    this.name = name;
+  }
 
   public Optional<URI> getUrl() {
     return Optional.ofNullable(url);

@@ -1,7 +1,6 @@
 package com.springuni.forgetme.subscriber.service;
 
 import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIPTION_CREATED;
-import static com.springuni.forgetme.subscriber.Mocks.DATA_HANDLER_ID_VALUE;
 import static com.springuni.forgetme.subscriber.Mocks.DATA_HANDLER_NAME_VALUE;
 import static com.springuni.forgetme.subscriber.Mocks.EMAIL;
 import static com.springuni.forgetme.subscriber.Mocks.EMAIL_HASH;
@@ -17,8 +16,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE;
 
-import com.springuni.forgetme.core.integration.RetryConfig;
 import com.springuni.forgetme.core.adapter.DataHandlerRegistry;
+import com.springuni.forgetme.core.integration.RetryConfig;
 import com.springuni.forgetme.core.model.ForgetResponse;
 import com.springuni.forgetme.core.model.WebhookData;
 import com.springuni.forgetme.subscriber.model.Subscriber;

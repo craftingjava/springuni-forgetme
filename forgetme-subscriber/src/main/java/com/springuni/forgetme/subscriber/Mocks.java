@@ -15,9 +15,6 @@ public class Mocks {
 
   public static final String DATA_HANDLER_NAME_VALUE = "mailerlite";
 
-  public static final UUID DATA_HANDLER_ID_VALUE =
-      UUID.fromString("e408b7d4-49dc-427e-ad60-e5d8a0dc5925");
-
   public static final UUID SUBSCRIBER_ID_VALUE =
       UUID.fromString("f408b7d4-49dc-427e-ad60-e5d8a0dc5925");
 
@@ -33,7 +30,11 @@ public class Mocks {
 
   public static Subscription createSubscription() {
     Subscriber subscriber = createSubscriber();
-    subscriber.updateSubscription(DATA_HANDLER_NAME_VALUE, SUBSCRIPTION_CREATED, LocalDateTime.now());
+
+    subscriber.updateSubscription(
+        DATA_HANDLER_NAME_VALUE, SUBSCRIPTION_CREATED, LocalDateTime.now()
+    );
+
     return subscriber.getSubscriptions().get(0);
   }
 

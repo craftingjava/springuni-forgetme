@@ -2,7 +2,6 @@ package com.springuni.forgetme.ui.subscriber;
 
 import static com.springuni.forgetme.subscriber.Mocks.DATA_HANDLER_NAME_VALUE;
 import static com.springuni.forgetme.subscriber.Mocks.EMAIL;
-import static com.springuni.forgetme.subscriber.Mocks.createSubscriber;
 import static com.springuni.forgetme.subscriber.Mocks.createSubscription;
 import static com.springuni.forgetme.ui.subscriber.HistoryViewController.MODEL_NAME;
 import static com.springuni.forgetme.ui.subscriber.HistoryViewController.VIEW_NAME;

@@ -3,8 +3,8 @@ package com.springuni.forgetme.datahandler.adapter;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import com.springuni.forgetme.core.integration.RetryConfig;
 import com.springuni.forgetme.core.adapter.DataHandlerRegistry;
+import com.springuni.forgetme.core.integration.RetryConfig;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.hamcrest.Description;

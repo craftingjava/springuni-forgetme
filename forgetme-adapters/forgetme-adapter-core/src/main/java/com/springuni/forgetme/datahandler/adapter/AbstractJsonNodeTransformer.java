@@ -1,6 +1,5 @@
 package com.springuni.forgetme.datahandler.adapter;
 
-import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_ID;
 import static com.springuni.forgetme.core.model.MessageHeaderNames.EVENT_TIMESTAMP;
 import static java.util.stream.Collectors.toList;
 
@@ -10,7 +9,6 @@ import com.springuni.forgetme.core.model.WebhookData;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 import org.springframework.integration.transformer.GenericTransformer;
 import org.springframework.integration.transformer.MessageTransformationException;
 import org.springframework.messaging.Message;

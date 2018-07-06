@@ -43,16 +43,16 @@ public class WebRequestAuthenticationIT {
   private static final String TEST_ACCESS_KEY = "test";
   private static final String TEST_SECRET_KEY = "secret";
 
+  private static final String ROOT_PATH = "/";
+  private static final String TEST_API_PATH = "/api/links/2";
+  private static final String TEST_WEBHOOK_PATH = "/webhook/test";
+  private static final String TEST_PAGE_PATH = "/pages/subscriber";
+
   @Autowired
   protected MockMvc mockMvc;
 
   @MockBean
   protected ClientRegistrationRepository clientRegistrationRepository;
-
-  private static final String ROOT_PATH = "/";
-  private static final String TEST_API_PATH = "/api/links/2";
-  private static final String TEST_WEBHOOK_PATH = "/webhook/test";
-  private static final String TEST_PAGE_PATH = "/pages/subscriber";
 
   @Before
   public void setUp() throws Exception {

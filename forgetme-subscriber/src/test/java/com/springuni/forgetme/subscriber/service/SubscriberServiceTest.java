@@ -6,7 +6,6 @@ import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGET_PENDIN
 import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGOTTEN;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.SUBSCRIPTION_CREATED;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.UNSUBSCRIBED;
-import static com.springuni.forgetme.subscriber.Mocks.DATA_HANDLER_ID_VALUE;
 import static com.springuni.forgetme.subscriber.Mocks.DATA_HANDLER_NAME_VALUE;
 import static com.springuni.forgetme.subscriber.Mocks.EMAIL;
 import static com.springuni.forgetme.subscriber.Mocks.EMAIL_HASH;
@@ -139,7 +138,7 @@ public class SubscriberServiceTest {
 
     then(subscriberForgetRequestOutboundChannel).should().send(any(Message.class));
 
-    assertSubscriptionStatusFromSavedSubscription(FORGET_PENDING, DATA_HANDLER_ID_VALUE);
+    assertSubscriptionStatusFromSavedSubscription(FORGET_PENDING);
 
     assertForgetRequestMessage(DATA_HANDLER_NAME_VALUE, SUBSCRIPTION_ID_VALUE, EMAIL);
   }
@@ -184,7 +183,7 @@ public class SubscriberServiceTest {
         new ForgetResponse(SUBSCRIPTION_ID_VALUE, true), EVENT_TIMESTAMP_VALUE
     );
 
-    assertSubscriptionStatusFromSavedSubscription(FORGOTTEN, DATA_HANDLER_ID_VALUE);
+    assertSubscriptionStatusFromSavedSubscription(FORGOTTEN);
   }
 
   @Test
@@ -196,7 +195,7 @@ public class SubscriberServiceTest {
         new ForgetResponse(SUBSCRIPTION_ID_VALUE, false), EVENT_TIMESTAMP_VALUE
     );
 
-    assertSubscriptionStatusFromSavedSubscription(FORGET_FAILED, DATA_HANDLER_ID_VALUE);
+    assertSubscriptionStatusFromSavedSubscription(FORGET_FAILED);
   }
 
   private void assertForgetRequestMessage(
@@ -229,9 +228,7 @@ public class SubscriberServiceTest {
     assertEquals(expectedStatus, subscription.getStatus());
   }
 
-  private void assertSubscriptionStatusFromSavedSubscription(
-      SubscriptionStatus expectedStatus, UUID dataHandlerId) {
-
+  private void assertSubscriptionStatusFromSavedSubscription(SubscriptionStatus expectedStatus) {
     ArgumentCaptor<Subscription> subscriptionArgumentCaptor = ArgumentCaptor
         .forClass(Subscription.class);
     then(subscriptionRepository).should().save(subscriptionArgumentCaptor.capture());

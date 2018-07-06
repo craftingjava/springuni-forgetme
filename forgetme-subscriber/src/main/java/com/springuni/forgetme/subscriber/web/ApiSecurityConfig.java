@@ -1,7 +1,5 @@
 package com.springuni.forgetme.subscriber.web;
 
-import static org.springframework.boot.autoconfigure.security.SecurityProperties.BASIC_AUTH_ORDER;
-
 import com.springuni.forgetme.core.security.authn.AbstractBasicAuthSecurityConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;

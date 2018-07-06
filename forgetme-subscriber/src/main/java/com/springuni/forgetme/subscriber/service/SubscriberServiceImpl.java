@@ -1,14 +1,11 @@
 package com.springuni.forgetme.subscriber.service;
 
-import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_ID;
 import static com.springuni.forgetme.core.model.MessageHeaderNames.DATA_HANDLER_NAME;
 import static com.springuni.forgetme.core.model.MessageHeaderNames.EVENT_TIMESTAMP;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGET_FAILED;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGET_PENDING;
 import static com.springuni.forgetme.core.model.SubscriptionStatus.FORGOTTEN;
 
-import com.springuni.forgetme.core.adapter.DataHandlerRegistration;
-import com.springuni.forgetme.core.adapter.DataHandlerRegistry;
 import com.springuni.forgetme.core.model.EntityNotFoundException;
 import com.springuni.forgetme.core.model.ForgetRequest;
 import com.springuni.forgetme.core.model.ForgetResponse;
