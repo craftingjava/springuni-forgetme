@@ -20,9 +20,6 @@ public class DataHandlerRegistration {
 
   public static final String DATA_HANDLER_PROVIDER_PREFIX = "forgetme.data-handler.provider";
 
-  public static final Bindable<DataHandlerRegistration> DATA_HANDLER_REGISTRATION_BINDABLE =
-      Bindable.of(DataHandlerRegistration.class);
-
   public static final String DATA_HANDLER_REGISTRATION_PREFIX = "forgetme.data-handler.registration";
 
   public DataHandlerRegistration(String name) {

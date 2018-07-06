@@ -2,7 +2,6 @@ package com.springuni.forgetme.datahandler.adapter;
 
 import static com.springuni.forgetme.core.adapter.DataHandlerRegistration.DATA_HANDLER_PROVIDER_BINDABLE;
 import static com.springuni.forgetme.core.adapter.DataHandlerRegistration.DATA_HANDLER_PROVIDER_PREFIX;
-import static com.springuni.forgetme.core.adapter.DataHandlerRegistration.DATA_HANDLER_REGISTRATION_BINDABLE;
 import static com.springuni.forgetme.core.adapter.DataHandlerRegistration.DATA_HANDLER_REGISTRATION_PREFIX;
 
 import com.springuni.forgetme.core.adapter.DataHandlerRegistration;
@@ -119,7 +118,7 @@ public abstract class AbstractDataHandlerFlowConfig implements InitializingBean 
 
     String dataHandlerRegistrationName = DATA_HANDLER_REGISTRATION_PREFIX + "." + dataHandlerName;
     DataHandlerRegistration dataHandlerRegistration = Binder.get(environment)
-        .bind(dataHandlerRegistrationName, DATA_HANDLER_REGISTRATION_BINDABLE)
+        .bind(dataHandlerRegistrationName, DataHandlerRegistration.class)
         .get();
 
     applicationContext.publishEvent(dataHandlerRegistration);

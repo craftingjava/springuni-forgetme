@@ -10,9 +10,9 @@ import com.springuni.forgetme.core.adapter.DataHandlerRegistry;
 import com.springuni.forgetme.core.model.EntityNotFoundException;
 import java.util.Optional;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.messaging.Message;
@@ -29,16 +29,12 @@ public class WebhookServiceTest {
   @Mock
   private MessageChannel webhookOutboundChannel;
 
-  private WebhookService webhookService;
-
-  @Before
-  public void setUp() throws Exception {
-    webhookService = new WebhookServiceImpl(dataHandlerRegistry, webhookOutboundChannel);
-  }
+  @InjectMocks
+  private WebhookServiceImpl webhookService;
 
   @Test
   public void givenNonExistentDataHandler_whenSubmitData_thenEntityNotFoundException() {
-    given(dataHandlerRegistry.lookup(DATA_HANDLER_NAME)).willReturn(Optional.empty());
+    given(dataHandlerRegistry.lookup(DATA_HANDLER_NAME, true)).willReturn(Optional.empty());
 
     try {
       webhookService.submitData(DATA_HANDLER_NAME, EMPTY_MAP);
@@ -55,7 +51,7 @@ public class WebhookServiceTest {
     DataHandlerRegistration dataHandlerRegistration =
         new DataHandlerRegistration(DATA_HANDLER_NAME);
 
-    given(dataHandlerRegistry.lookup(DATA_HANDLER_NAME))
+    given(dataHandlerRegistry.lookup(DATA_HANDLER_NAME, true))
         .willReturn(Optional.of(dataHandlerRegistration));
 
     webhookService.submitData(DATA_HANDLER_NAME, EMPTY_MAP);

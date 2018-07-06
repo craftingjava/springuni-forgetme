@@ -25,7 +25,7 @@ public class WebhookServiceImpl implements WebhookService {
   @Transactional
   public void submitData(String dataHandlerName, Map<String, Object> data) {
     Optional<DataHandlerRegistration> dataHandlerRegistration =
-        dataHandlerRegistry.lookup(dataHandlerName);
+        dataHandlerRegistry.lookup(dataHandlerName, true);
 
     if (!dataHandlerRegistration.isPresent()) {
       throw new EntityNotFoundException("dataHandlerName", dataHandlerName);

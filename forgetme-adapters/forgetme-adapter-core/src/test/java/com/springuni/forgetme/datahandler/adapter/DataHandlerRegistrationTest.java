@@ -1,6 +1,5 @@
 package com.springuni.forgetme.datahandler.adapter;
 
-import static com.springuni.forgetme.core.adapter.DataHandlerRegistration.DATA_HANDLER_REGISTRATION_BINDABLE;
 import static com.springuni.forgetme.core.adapter.DataHandlerRegistration.DATA_HANDLER_REGISTRATION_PREFIX;
 import static com.springuni.forgetme.core.adapter.DataHandlerRegistration.DataScope.NOTIFICATION;
 import static com.springuni.forgetme.core.adapter.DataHandlerRegistration.DataScope.PROFILE;
@@ -47,7 +46,7 @@ public class DataHandlerRegistrationTest {
     dataHandlerRegistrationBindResult = Binder.get(environment)
         .bind(
             DATA_HANDLER_REGISTRATION_PREFIX + "." + DATA_HANDLER_NAME,
-            DATA_HANDLER_REGISTRATION_BINDABLE
+            DataHandlerRegistration.class
         );
   }
 

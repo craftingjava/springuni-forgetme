@@ -6,4 +6,6 @@ public interface DataHandlerRegistry {
 
   Optional<DataHandlerRegistration> lookup(String name);
 
+  Optional<DataHandlerRegistration> lookup(String name, boolean active);
+
 }
