@@ -16,6 +16,24 @@
   <dependencies>
     <dependency>
       <groupId>com.springuni</groupId>
+      <artifactId>forgetme-subscriber</artifactId>
+      <version>0.1.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.springuni</groupId>
+      <artifactId>forgetme-ui</artifactId>
+      <version>0.1.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.springuni</groupId>
+      <artifactId>forgetme-webhook</artifactId>
+      <version>0.1.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.springuni</groupId>
       <artifactId>forgetme-tests</artifactId>
       <version>0.1.0-SNAPSHOT</version>
       <scope>test</scope>

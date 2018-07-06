@@ -9,21 +9,15 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 
 @Configuration
 @EnableWebSecurity
-@Order(BASIC_AUTH_ORDER)
+@Order(1)
 public class ApiSecurityConfig extends AbstractBasicAuthSecurityConfig {
 
   private static final String API_URL_PATTERN = "/api/**";
-  private static final String API_ROLE = "API";
   private static final String API_BASIC_AUTH_KEYS_PREFIX = "forgetme.api.auth";
 
   @Override
   protected String getBasicAuthKeysPrefix() {
     return API_BASIC_AUTH_KEYS_PREFIX;
-  }
-
-  @Override
-  protected String getRole() {
-    return API_ROLE;
   }
 
   @Override

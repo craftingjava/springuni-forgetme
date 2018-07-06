@@ -1,4 +1,4 @@
-package com.springuni.forgetme.core.security.authn;
+package com.springuni.forgetme.ui.config;
 
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
@@ -6,6 +6,7 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -26,9 +27,9 @@ import org.springframework.security.web.util.matcher.AnyRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+@Order(2)
+public class UISecurityConfig extends WebSecurityConfigurerAdapter {
 
-  private static final String API_URL_PATTERN = "/api/**";
   private static final String PAGES_URL_PATTERN = "/pages/**";
   private static final String STATIC_URL_PATTERN = "/assets/**";
 
@@ -58,7 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity httpSecurity) throws Exception {
     httpSecurity
-        .csrf().ignoringAntMatchers(API_URL_PATTERN)
+        .csrf()
         .and()
         .oauth2Login()
         .authorizationEndpoint()
@@ -72,10 +73,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         .exceptionHandling()
         .defaultAuthenticationEntryPointFor(
-            new HttpStatusEntryPoint(UNAUTHORIZED),
-            new AntPathRequestMatcher(API_URL_PATTERN, null)
-        )
-        .defaultAuthenticationEntryPointFor(
             new LoginUrlAuthenticationEntryPoint(LOGIN_URL),
             AnyRequestMatcher.INSTANCE
         )
@@ -86,7 +83,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers(GET, STATIC_URL_PATTERN).permitAll()
         .antMatchers(GET, PAGES_URL_PATTERN).hasAuthority("ROLE_USER")
         .antMatchers(POST, PAGES_URL_PATTERN).hasAuthority("ROLE_USER")
-        .antMatchers(API_URL_PATTERN).hasAuthority("ROLE_USER")
         .anyRequest().denyAll()
         .and();
   }

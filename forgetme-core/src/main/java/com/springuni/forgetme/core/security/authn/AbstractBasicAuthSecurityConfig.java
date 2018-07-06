@@ -48,7 +48,7 @@ public abstract class AbstractBasicAuthSecurityConfig
     auth.inMemoryAuthentication()
         .withUser(basicAuthKeys.getAccessKey())
         .password(basicAuthKeys.getSecretKey())
-        .roles(getRole());
+        .roles();
   }
 
   @Override
@@ -56,6 +56,7 @@ public abstract class AbstractBasicAuthSecurityConfig
     String urlPattern = getUrlPattern();
 
     httpSecurity
+        .antMatcher(urlPattern)
         .csrf().disable()
         .httpBasic()
         .and()
@@ -66,15 +67,11 @@ public abstract class AbstractBasicAuthSecurityConfig
         )
         .and()
         .authorizeRequests()
-        .antMatchers(urlPattern).hasAuthority("ROLE_" + getRole())
-        .anyRequest().denyAll();
+        .antMatchers(urlPattern).authenticated();
   }
 
   @NonNull
   protected abstract String getBasicAuthKeysPrefix();
-
-  @NonNull
-  protected abstract String getRole();
 
   @NonNull
   protected abstract String getUrlPattern();
