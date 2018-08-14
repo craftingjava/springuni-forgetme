@@ -11,8 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.SingletonBeanRegistry;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -26,7 +28,8 @@ import org.springframework.messaging.MessageChannel;
 
 @Slf4j
 @Configuration
-public abstract class AbstractDataHandlerFlowConfig implements InitializingBean {
+public abstract class AbstractDataHandlerFlowConfig
+    implements ApplicationListener<ApplicationStartedEvent>, InitializingBean {
 
   private static final String QUALIFIED_CHANNEL_NAME_DELIMITER = "#";
 
@@ -45,7 +48,7 @@ public abstract class AbstractDataHandlerFlowConfig implements InitializingBean 
   @Autowired
   private MappingMessageRouterManagement subscriberForgetRequestRouter;
 
-  private ConfigurableApplicationContext dataHandlerContext;
+  private DataHandlerRegistration dataHandlerRegistration;
 
   @Override
   public void afterPropertiesSet() {
@@ -54,12 +57,14 @@ public abstract class AbstractDataHandlerFlowConfig implements InitializingBean 
     SingletonBeanRegistry applicationBeanRegistry =
         (SingletonBeanRegistry) applicationContext.getAutowireCapableBeanFactory();
 
-    dataHandlerContext = createDataHandlerContext(dataHandlerName, applicationBeanRegistry);
+    ConfigurableApplicationContext dataHandlerContext =
+        createDataHandlerContext(dataHandlerName, applicationBeanRegistry);
 
     // Register channel for webhook dynamically
 
     registerMessageChannel(
         dataHandlerName,
+        dataHandlerContext,
         WEBHOOK_DATA_HANDLER_INBOUND_CHANNEL_NAME,
         webhookInboundRouter,
         applicationBeanRegistry
@@ -69,12 +74,25 @@ public abstract class AbstractDataHandlerFlowConfig implements InitializingBean 
 
     registerMessageChannel(
         dataHandlerName,
+        dataHandlerContext,
         SUBSCRIBER_DATA_HANDLER_INBOUND_CHANNEL_NAME,
         subscriberForgetRequestRouter,
         applicationBeanRegistry
     );
 
+    // Prepare data handler registration
+
+    String dataHandlerRegistrationName = DATA_HANDLER_REGISTRATION_PREFIX + "." + dataHandlerName;
+    dataHandlerRegistration = Binder.get(applicationContext.getEnvironment())
+        .bind(dataHandlerRegistrationName, DataHandlerRegistration.class)
+        .get();
+
     log.info("Data handler context {} initialized.", dataHandlerContext.getId());
+  }
+
+  @Override
+  public void onApplicationEvent(ApplicationStartedEvent event) {
+    applicationContext.publishEvent(dataHandlerRegistration);
   }
 
   protected abstract String getDataHandlerName();
@@ -90,7 +108,6 @@ public abstract class AbstractDataHandlerFlowConfig implements InitializingBean 
         applicationContext);
 
     String dataHandlerContextId = dataHandlerName + "-adapter-context";
-
     dataHandlerContext.setId(dataHandlerContextId);
 
     String propertyName = DATA_HANDLER_PROVIDER_PREFIX + "." + dataHandlerName;
@@ -114,20 +131,12 @@ public abstract class AbstractDataHandlerFlowConfig implements InitializingBean 
         dataHandlerContext
     );
 
-    // Register data handler
-
-    String dataHandlerRegistrationName = DATA_HANDLER_REGISTRATION_PREFIX + "." + dataHandlerName;
-    DataHandlerRegistration dataHandlerRegistration = Binder.get(environment)
-        .bind(dataHandlerRegistrationName, DataHandlerRegistration.class)
-        .get();
-
-    applicationContext.publishEvent(dataHandlerRegistration);
-
     return dataHandlerContext;
   }
 
   private void registerMessageChannel(
-      String dataHandlerName, String channelName, MappingMessageRouterManagement routerManagement,
+      String dataHandlerName, ConfigurableApplicationContext dataHandlerContext,
+      String channelName, MappingMessageRouterManagement routerManagement,
       SingletonBeanRegistry applicationBeanRegistry) {
 
     String qualifiedChannelName = dataHandlerName + QUALIFIED_CHANNEL_NAME_DELIMITER + channelName;
