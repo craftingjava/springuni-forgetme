@@ -7,8 +7,8 @@ forgetme:
         description: Email Marketing
         url: https://www.mailerlite.com/
         data-scopes:
-          - notification
-          - profile
+        - notification
+        - profile
     provider:
       mailerlite:
         api-key: ${MAILERLITE_API_KEY:#{null}}

@@ -3,4 +3,4 @@ install: ./mvnw install -Dgpg.skip=true -Dmaven.javadoc.skip=true -B -V
 jdk: oraclejdk8
 
 after_success:
-  - ./mvnw clean test jacoco:report coveralls:report
+- ./mvnw clean test jacoco:report coveralls:report
